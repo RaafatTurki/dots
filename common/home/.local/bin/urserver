@@ -2,7 +2,7 @@
 
 OP=$1
 
-CONFIG_PATH="$XDG_CONFIG_HOME/unified_remote_server"
+CONFIG_PATH="$XDG_DATA_HOME/unified_remote_server"
 
 EXEC_PATH="/opt/urserver/urserver"
 ICON_PATH="/usr/share/icons/hicolor/96x96/apps/urserver.png"

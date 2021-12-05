@@ -1,0 +1,70 @@
+#! /bin/sh
+
+# aliases
+alias once="execute -o -c"
+alias reload="execute -r -c"
+
+# COMMANDS
+# xrandr --output DVI-D-0 --mode 1920x1080 --output HDMI-0 --mode 1366x768 --right-of DVI-D-0
+xwallpaper --zoom ~/media/pics/wallpapers/20.png
+xrdb ~/.config/x11/xresources
+xmodmap ~/.config/x11/xmodmap
+
+xsetroot -cursor_name left_ptr
+# moue, keyboard, bell
+xset m 20/10 10
+xset r rate 300 30
+xset b on
+# screen saver and dpms
+xset s blank
+xset s on
+xset s 300 300
+# xset s noexpose
+xset dpms 300 0 0
+
+# /usr/share/X11/xkb/rules/base.lst
+# setxkbmap -layout us,ara -option 'grp:alt_shift_toggle'
+setxkbmap -layout us
+
+wmname LG3D
+
+
+# DAEMONIZED PROCESSES
+once 'xsettingsd'
+once 'mpd'
+once 'mpDris2'
+once 'urserver start'
+once 'pcmanfm -d' -e "SHELL=$TERM_SHELL"
+once 'polkit-dumb-agent'
+# replay-sorcery &
+# lf -server &
+
+
+# REFRESHABLE PROCESSES
+reload 'sxhkd'
+reload 'unclutter --timeout 3 --jitter 10 --ignore-scrolling'
+reload 'dunst'
+reload 'polybar main'
+reload 'picom --experimental-backends'
+reload 'flashfocus'
+reload 'nm-applet'
+reload 'udiskie -asm nested'
+reload 'barrierc -f --disable-crypto -n led krastiva'
+
+# pkill replay-sorcery; replay-sorcery &
+# pkill syncthing-gtk; syncthing-gtk -m &
+# pkill twmnd; twmnd &
+# pkill lemon_launcher; pkill lemonbar; ~/.config/lemonbar/lemon_launcher &
+# pkill yambar; yambar &
+
+# pkill picom; picom=~/sectors/c/picom/build/src/picom
+# pkill picom; picom-epic-animations --experimental-backends &
+
+
+
+# TO_READ_ABOUT:
+# ssh-agent
+# polkit
+
+
+

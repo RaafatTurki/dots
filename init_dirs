@@ -12,5 +12,11 @@ mkdir -p ~/.config
 mkdir -p ~/.config/ncmpcpp
 mkdir -p ~/.config/transmission
 mkdir -p ~/.config/mpv
+mkdir -p ~/.config/lazygit
 
 mkdir -p ~/.mozilla/firefox/profile_potato
+
+
+# created due to multiple machine setup (directory can't be owned by a stow symlink)
+mkdir -p ~/.config/bspwm
+mkdir -p ~/.config/x11

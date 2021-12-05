@@ -1,0 +1,45 @@
+#! /bin/sh
+
+declare -A mods_cache
+
+function mod() {
+    # Interval = $1/$TICK
+    EveryTick=$1
+    if (( $EveryTick > $MAX_TICK )); then
+        MAX_TICK=$EveryTick
+    fi
+    Cmd=$2
+    Name=${FUNCNAME[1]}
+
+#     if (( $TICK % $EveryTick )); then
+#         # echo "${mods_cache[$Name]}"
+#         echo ${mods_cache[test]}
+#     else
+#         # Res=`$Cmd`
+#         mods_cache+=([$Name]=":D")
+#         echo ":c"
+# 
+#         # echo "${mods_cache[$Name]}"
+#         # echo "${#mods_cache[@]}"
+#         # echo $Res
+#     fi
+
+echo `$Cmd`
+}
+
+function tick() {
+    # mod 1 "echo $TICK"
+    echo $TICK
+}
+
+function clock() {
+    date "+%I:%M %p"
+}
+
+function calendar() {
+    date "+%b %d"
+}
+
+function volume() {
+    pamixer --get-volume
+}

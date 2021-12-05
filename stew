@@ -1,0 +1,88 @@
+#!/usr/bin/bash
+# this script handles all stowing related to the $DOTS_ROOT directory
+
+# DOTS_ROOT=`pwd`
+DOTS_ROOT=$DOTS
+
+MODE='reload'
+MACHINE=
+MOD_HOME=true
+MOD_SYSTEM=false
+
+while getopts "ridm:Hs" FLAG; do
+    case "$FLAG" in
+        r) MODE='reload';;
+        i) MODE='init';;
+        d) MODE='delete';;
+        m) MACHINE=$OPTARG;;
+        H) MOD_HOME=false;;
+        s) MOD_SYSTEM=true;;
+    esac
+done
+
+print() {
+    echo "$1: $2"
+}
+
+init() {
+    if $MOD_HOME; then
+        print "init" "HOME"
+        $DOTS_ROOT/init_dirs
+        stow -d . -t ~ home
+        # stow -d . -t ~ home --ignore='.profile'
+    fi
+
+    if $MOD_SYSTEM; then
+        print "init" "SYSTEM"
+    fi
+}
+
+delete() {
+    if $MOD_HOME; then
+        print " del" "HOME"
+        stow -D -d . -t ~ home
+    fi
+
+    if $MOD_SYSTEM; then
+        print " del" "SYSTEM"
+        # stow -D -d . -t ~ home
+    fi
+}
+
+reload() {
+    if $MOD_HOME; then
+        print " rel" "HOME"
+        stow -R -d . -t ~ home
+    fi
+
+    if $MOD_SYSTEM; then
+        print " rel" "SYSTEM"
+        # stow -D -d . -t ~ home
+    fi
+}
+
+operate_on_pwd() {
+    case $1 in
+        "reload") reload ;;
+        "init") init ;;
+        "delete") delete ;;
+    esac
+}
+
+operate() {
+    if [ $MACHINE ]; then
+        if [ -d "./machines/$MACHINE" ]; then
+            cd $DOTS_ROOT/common
+            operate_on_pwd $1
+            cd $DOTS_ROOT/machines/$MACHINE
+            operate_on_pwd $1
+        else
+            echo "$MACHINE machine not found"
+        fi
+    else
+        cd common
+        operate_on_pwd $1
+    fi
+}
+
+operate $MODE

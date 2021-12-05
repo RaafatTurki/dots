@@ -1,0 +1,27 @@
+#!/bin/sh
+
+xdotool mousemove 450 1050
+# xdotool mousemove 190 1050
+xdotool click 1
+# for word in `cat source.txt`
+# do
+#     for i in $(seq 1 ${#word})
+#     do
+#         xdotool key ${word:i-1:1}
+#     done
+# xdotool key Return
+# sleep 0.001
+# done
+
+for k in `seq 1 60`
+do
+	word=`date +%S`
+	for i in $(seq 1 ${#word})
+    do
+        xdotool key ${word:i-1:1}
+    done
+xdotool key Return
+sleep 0.2
+done
+
+

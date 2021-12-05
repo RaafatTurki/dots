@@ -1,0 +1,109 @@
+
+# 2021-11-03 00:23:15.402272
++.tables
+
+# 2021-11-03 00:23:47.374512
++.schema clover_event
+
+# 2021-11-03 00:24:18.881316
++.databases
+
+# 2021-11-03 00:24:30.553532
++SELECT TABLE clover_event
+
+# 2021-11-03 00:24:39.348913
++SELECT * FROM clover_event
+
+# 2021-11-03 01:24:39.449109
++cls
+
+# 2021-11-03 01:24:40.932014
++clear
+
+# 2021-11-03 01:27:50.449117
++.schema clover_event
+
+# 2021-11-03 05:13:46.321070
++SELECT * FROM clover_event
+
+# 2021-11-03 05:14:04.865850
++SELECT * FROM clover_event WHERE day = 21
+
+# 2021-11-03 05:14:15.767003
++SELECT * FROM clover_event WHERE day = 21 AND month = 6
+
+# 2021-11-03 05:14:27.345754
++SELECT * FROM clover_event
+
+# 2021-11-03 05:43:20.044265
++SELECT * FROM clover_eventmodel
+
+# 2021-11-03 05:50:27.714961
++SELECT * FROM clover_model
+
+# 2021-11-03 06:59:39.654080
++SELECT * FROM clover_eventmodel
+
+# 2021-11-04 19:54:13.771909
++ls
+
+# 2021-11-04 19:54:43.092067
++DROP TABLE commerce_product
+
+# 2021-11-04 20:24:05.870732
++SELECT * FROM clover_eventmodel
+
+# 2021-11-04 23:49:18.177368
++delete from clover_eventmodel where id = 25
+
+# 2021-11-05 00:02:56.629118
++SELECT * FROM clover_eventmodel
+
+# 2021-11-05 01:51:21.360283
++SELECT * FROM clover_eventmodel;
+
+# 2021-11-05 01:59:12.176927
++asd
++
++
++;
+
+# 2021-11-05 02:00:24.263172
++SELECT * FROM clover_eventmodel;
+
+# 2021-11-05 02:02:56.778334
++ALL clover_eventmodel;
+
+# 2021-11-05 02:04:02.610306
++ALL clover_eventmodel
++;
+
+# 2021-11-05 02:04:07.131030
++ALL clover_eventmodel
+
+# 2021-11-05 02:04:38.519229
++SELECT * FROM clover_eventmodel;
+
+# 2021-11-05 02:04:41.128182
++SELECT * FROM clover_eventmodel
+
+# 2021-11-05 02:07:14.021778
++delete from clover_eventmodel where id = 27
+
+# 2021-11-05 02:07:25.279181
++delete from clover_eventmodel where id = 26
+
+# 2021-11-05 02:08:05.274773
++delete from clover_eventmodel where id = 13
+
+# 2021-11-05 02:09:10.657242
++delete from clover_eventmodel where id = 10
+
+# 2021-11-05 02:09:18.821910
++delete from clover_eventmodel where id = 11
+
+# 2021-11-05 02:09:31.495122
++delete from clover_eventmodel where id = 0
+
+# 2021-11-05 20:57:51.513539
++SELECT * FROM clover_eventmodel

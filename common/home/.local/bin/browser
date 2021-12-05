@@ -1,0 +1,26 @@
+#!/bin/sh -e
+# deps: $BROWSER
+
+
+#browser=firefox
+browser=$BROWSER
+
+if [ -t 0 ]; then
+  if [ -n "$1" ]; then
+    $broswer $1
+  else
+    cat <<usage
+Usage: browser
+       pipe html to a browser
+
+Examples:
+$ echo '<h1>hi friend!</h1>' | browser
+$ ls | xargs -n 1 -I{} echo '<input type="button" value="{}"/><br>' | browser
+usage
+fi
+
+else
+  f="/tmp/browser.$RANDOM.html"
+  cat /dev/stdin > $f
+  $browser $f
+fi

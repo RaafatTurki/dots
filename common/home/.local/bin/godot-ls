@@ -1,0 +1,34 @@
+#!/bin/sh
+
+PIDS_LOG=/tmp/godot-ls-pids.log
+IS_GDLS_ON=false
+
+# launch godot in PWD, add its PID to $PIDS_LOG and sleep for 2 secs
+launch_godot() {
+    godot -e --no-window &
+    echo $! >> $PIDS_LOG
+    sleep 2
+}
+
+# loop over all pids in $PIDS_LOG and mark $IS_GDLS_ON as true if
+# one of them has a matching PWD to the current PWD
+if [ -f $PIDS_LOG ]; then
+    while read PID; do
+        GDLS_PWD=`pwdx $PID 2>/dev/null | cut -d ':'  -f 2`
+        if [ $PWD = $GDLS_PWD ]; then
+            IS_GDLS_ON=true
+            break
+        fi
+    done < $PIDS_LOG
+# launch godot for this project if no $PIDS_LOG file exists
+else
+    launch_godot
+fi
+
+# launch godot for this project if it's not already launched
+if [ $IS_GDLS_ON = false ]; then
+    launch_godot
+fi
+
+# default godot lsp connection
+nc localhost 6008

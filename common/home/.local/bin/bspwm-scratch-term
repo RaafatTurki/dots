@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+OP=$1
+
+case $OP in
+    init)
+        $TERMINAL --class scratchterm &
+        echo $!
+        ;;
+    toggle)
+        id=$(xdotool search --class scratchterm)
+
+        if [ "$id" != "" ]; then
+            bspc node "$id" --flag hidden -f
+        fi
+        ;;
+esac

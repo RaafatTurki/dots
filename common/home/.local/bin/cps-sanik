@@ -1,0 +1,3 @@
+#!/bin/sh
+
+xdotool click --repeat 30 --delay 0.01 1

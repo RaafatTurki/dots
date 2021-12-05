@@ -1,0 +1,15 @@
+#! /bin/sh
+
+name=$1
+iso=$2
+
+virt-install \
+    --name $name \
+    --memory 2048 \
+    --vcpus 2 \
+    --boot loader=/usr/share/edk2-ovmf/x64/OVMF_CODE.fd \
+    --os-type linux \
+    --os-variant generic \
+    --console pty,target_type=serial \
+    --disk size=10,path=/var/lib/libvirt/images/$name.qcow2 \
+    --cdrom $iso

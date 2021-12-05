@@ -1,0 +1,232 @@
+-- vim: filetype=xdefaults:commentstring=!%s
+
+! Definitions
+#define BL	#000000
+#define WH	#ffffff
+#define RED	#ED9831
+#define ERR	#DE3F4F
+
+! #define BG	#06050b
+! #define MG	#0A151F
+! #define FG	#434775
+! #define SEL	#ABAECF
+
+#define BG	#000000
+#define MG	#0A151F
+#define FG	#861F3D
+#define SEL	#FEFFFF
+
+#define	FN	Terminus
+#define FN1 Ionicons
+#define	FS	12
+#define TFN FN
+#define TFS FS
+#define	DPI 102
+!102.46
+
+#define	TERM_EMU	alacritty
+apply_dpi:			DPI
+
+!! General
+col.bl:             BL
+col.wh:             WH
+col.bg:             BG
+col.mg:             MG
+col.fg:             FG
+col.sel:            SEL
+
+setting.fn:         FN
+setting.fs:         FS
+setting.notif_to:   2
+settings.dpi:		DPI
+
+
+!! XFT
+Xft.dpi:            DPI
+Xft.antialias:      true
+Xft.hinting:        true
+Xft.autohint:       true
+Xft.rgba:           rgb
+Xft.hintstyle:      hintfull
+Xft.lcdfilter:      lcddefault
+
+
+!! St
+st.termname:        st-256color
+st.borderless:      1
+
+! USR1 signal reloadable
+! st.font: FN:size=FS:antialias=true:autohint=true
+st.font: TFN:size=TFS:antialias=true:autohint=true
+st.borderpx:                    10
+st.cursorshape:                 3
+st.cursorthickness:             1
+st.cursorblinkstyle:            0
+st.cursorblinkontype:           0
+st.disablebold:                 0
+st.disableitalics:              0
+st.disableroman:                0
+st.scrollrate:                  1
+st.blinktimeout:                100
+st.bellvolume:                  5
+st.actionfps:                   60
+st.mouseScrollLines:            3
+st.boxdraw:                     1
+st.boxdraw_bold:                1
+st.boxdraw_braille:             1
+st.opacity:                     255
+st.disable_alpha_correction:    0
+st.prompt_char:                 λ  !`printf '\033[z'`
+! st.shell:                       /usr/bin/fish
+st.shell:                       /usr/bin/bash
+! st.chscale:                     1.0
+! st.cwscale:                     0.5
+
+
+!! URxvt
+! General
+URxvt.font: xft:FN:size=FS
+!URxvt.boldFont: xft:FN:size=FS
+URxvt.letterSpace: 0
+URxvt.cursorUnderline: 1
+URxvt.cursorBlink: 1
+URxvt.imLocale: en_US.UTF-8
+URxvt.termName: xterm
+URxvt.intensityStyles: false
+URxvt.iso14755: false
+URxvt.iso14755_52: false
+URxvt.saveLines: 1000
+URxvt.skipBuiltinGlyphs: true
+URxvt.buffered: false
+URxvt.depth: 24
+URxvt.fading: 0
+URxvt.scrollBar: false
+URxvt.scrollTtyOutput: false
+URxvt.scrollTtyKeypress: true
+URxvt.scrollWithBuffer: true
+URxvt.internalBorder: 10
+
+!! Perls Extensions
+!URxvt.perl-ext-common: default,clipboard,matcher,resize-font
+
+!clipboard
+!URxvt.clipboard.autocopy: false
+!URxvt.keysym.C-c: perl:clipboard:copy
+!URxvt.keysym.C-v: perl:clipboard:paste
+
+!matcher (clickable urls)
+!URxvt.url-launcher: /usr/bin/xdg-open
+!URxvt.matcher.rend.0: Uline
+!URxvt.matcher.button: 1
+
+!resize-font
+!URxvt.keysym.C-Down:  resize-font:smaller
+!URxvt.keysym.C-Up:    resize-font:bigger
+
+!! Escaping Unescaped Sequences
+!URxvt.keysym.Control-Top:      \033[1;5A
+!URxvt.keysym.Control-Bottom:   \033[1;5B
+!URxvt.keysym.Control-Right:    \033[1;5C
+!URxvt.keysym.Control-Left:     \033[1;5D
+!URxvt.keysym.Home:             \033[H
+!URxvt.keysym.End:              \033[F
+!URxvt.keysym.Delete:           \033[3;5~
+
+
+!! Rofi
+rofi.start:						rofi -show drun
+rofi.modi:						drun,window,run,ssh
+rofi.font:					    FN FS
+rofi.disable-history:   		true
+rofi.sidebar-mode:      		true
+rofi.scroll-method:         	1
+rofi.sort:                  	true
+rofi.terminal:              	TERM_EMU
+rofi.lines:                 	40
+rofi.columns:               	1
+rofi.bw:                    	1
+rofi.width:                 	20
+rofi.location:              	0
+rofi.yoffset:               	0
+rofi.xoffset:               	0
+rofi.padding:               	15
+rofi.line-margin:           	2
+rofi.show-icons:            	true
+rofi.hide-scrollbar:        	false
+rofi.separator-style:       	solid
+rofi.scrollbar-width:       	1
+rofi.drun-display-format:   	{name}
+rofi.window-format:         	{c}
+rofi.display-drun:          	run
+rofi.display-window:        	go
+rofi.display-run:           	execute
+rofi.display-ssh:           	ssh
+!rofi.theme:			~/.config/rofi/themes/line
+!rofi.theme: 			"~/.cache/wal/colors-rofi-dark"
+
+
+!                     BG        border      seperator
+rofi.color-window:    BG,       BG,         BG
+!                     BG        col         BG-alt      highlight       col-selected
+rofi.color-normal:    BG,       SEL,        BG,         SEL,            BG
+rofi.color-active:    BG,       SEL,        BG,         SEL,            BG
+rofi.color-urgent:    BG,       SEL,        BG,         SEL,            BG
+
+
+!! i3
+i3.fn:              FN
+i3.fs:              FS
+i3.bl:              BL
+i3.wh:              WH
+i3.bg:              BG
+i3.mg:              MG
+i3.fg:              FG
+i3.sel:             SEL
+i3.resize_step:     5
+i3.volume_step:     10
+i3.brightness_step: 20
+i3.gaps_step:       5
+i3.gaps.inner:      5
+i3.gaps.outer:      0
+i3.border_radius:   1
+
+
+!! Polybar
+polybar.font-0:     FN:size=13
+polybar.font-1:     FN1:size=13
+polybar.width:      100%
+polybar.height:     24px
+polybar.dpi:		DPI
+
+!! Wild Cards
+! *.font:				FN
+! *.background:       BG
+! *.foreground:       WH
+! *.underlineColor:   FG
+! *.colorUL:          WH
+! *.highlightColor:   SEL
+! *.cursorColor:      SEL
+
+!*.text:			#0c0e14
+!*.cursor:			#fbfffe
+
+*.background:		#0F1419
+*.foreground:		#FFFFFF
+
+*.color0:			#1c1c25
+*.color1:			#fa2975
+*.color2:			#50fa7b
+*.color3:			#ffb87c
+*.color4:			#5d73f9
+*.color5:			#ff69b6
+*.color6:			#8be9fd
+*.color7:			#ffffff
+
+*.color8:			#1c1c25
+*.color9:			#fa2975
+*.color10:			#50fa7b
+*.color11:			#ffb87c
+*.color12:			#5d73f9
+*.color13:			#ff69b6
+*.color14:			#8be9fd
+*.color15:			#ffffff

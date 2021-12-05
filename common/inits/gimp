@@ -1,0 +1,6 @@
+#!/usr/bin/bash
+
+echo "WIP: GIMP init"
+
+# cd /temp
+# wget https://github.com/Diolinux/PhotoGIMP/releases/download/1.0/PhotoGIMP.by.Diolinux.v2020.for.Flatpak.zip

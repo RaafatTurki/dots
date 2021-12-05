@@ -1,0 +1,9 @@
+#!/usr/bin/bash
+
+mkdir -p ~/.local/share/applications
+mkdir -p ~/.local/bin
+
+mkdir -p ~/.config
+mkdir -p ~/.config/ncmpcpp
+mkdir -p ~/.config/transmission
+mkdir -p ~/.config/mpv

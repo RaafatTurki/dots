@@ -1,0 +1,331 @@
+# vim: filetype=dosini commentstring=#%s
+
+[module/bspwm]
+type = internal/bspwm
+pin-workspaces = true
+enable-click = true
+fuzzy-match = true
+enable-scroll = false
+
+label-focused = %name%
+label-focused-foreground = ${g.sel}
+;label-focused-underline = ${g.sel}
+label-focused-padding = 1
+
+label-occupied = %name%
+label-occupied-foreground = ${g.fg_}
+label-occupied-padding = 1
+
+label-urgent = !
+label-urgent-foreground = ${g.sel}
+label-urgent-padding = 1
+
+label-empty = .
+label-empty-foreground = ${g.fg_}
+label-empty-padding = 1
+
+
+[module/date]
+type = internal/date
+interval = 1.0
+format = <label>
+format-foreground = ${g.sel}
+label =  %date% - %time%
+label-foreground = ${g.fg_}
+date = %a %d %b
+time = %I:%M %p
+
+[module/xkeyboard]
+type = internal/xkeyboard
+blacklist-0 = num lock
+blacklist-1 = caps lock
+blacklist-2 = scroll lock
+
+format = 󰌌 <label-layout>
+format-foreground = ${g.sel}
+
+label-layout = %layout%
+label-layout-foreground = ${g.fg_}
+
+
+
+[module/pulseaudio]
+type = internal/pulseaudio
+interval = 1
+
+format-volume =墳 <label-volume>
+format-volume-foreground = ${g.sel}
+
+label-volume = %percentage%%
+label-volume-foreground = ${g.fg_}
+
+format-muted =ﱝ <label-muted>
+format-muted-foreground = ${g.fg_}
+label-muted = %percentage%%
+
+;click-right = pavucontrol &
+
+
+[module/memory]
+type = internal/memory
+interval = 1
+format = RAM <label>
+format-foreground = ${g.sel}
+
+label = %gb_used%
+label-foreground = ${g.fg_}
+
+
+[module/mpd]
+type = internal/mpd
+host = 127.0.0.1
+port = 6600
+interval = 1
+#click-left = xst -e ncmpcpp
+#format-online = <icon-prev> <icon-seekb> <icon-stop> <toggle> <icon-seekf> <icon-next>  <icon-repeat> <icon-random>  <bar-progress> <label-time>  <label-song>
+
+format-playing = <label-song> <bar-progress>
+format-paused = Paused <bar-progress>
+format-stopped = 
+format-online = 
+format-offline = 
+
+format-playing-foreground = ${g.sel}
+format-paused-foreground = ${g.sel}
+
+label-song = %title%
+label-song-maxlen = 50
+label-song-ellipsis = true
+label-song-foreground = ${g.sel}
+
+bar-progress-width = 30
+bar-progress-fill = ━
+bar-progress-indicator = ┫
+bar-progress-empty = ─
+bar-progress-fill-foreground = ${g.sel}
+bar-progress-indicator-foreground = ${g.sel}
+bar-progress-empty-foreground = ${g.fg_}
+
+
+[module/cpu]
+type = internal/cpu
+interval = 0.5
+
+format = CPU <label> <ramp-coreload>
+format-foreground = ${g.sel}
+
+label = %percentage%%
+label-foreground = ${g.fg_}
+
+ramp-coreload-spacing = 0
+ramp-coreload-0 = ▁
+ramp-coreload-1 = ▂
+ramp-coreload-2 = ▃
+ramp-coreload-3 = ▄
+ramp-coreload-4 = ▅
+ramp-coreload-5 = ▆
+ramp-coreload-6 = ▇
+ramp-coreload-7 = █
+ramp-coreload-0-foreground = ${g.fg_}
+
+
+[module/net_up]
+type = internal/network
+interval = 1.0
+interface = enp2s0
+accumulate-stats = true
+unknown-as-up = false
+
+format-connected = <label-connected>
+format-connected-foreground = ${g.sel}
+
+label-connected = %upspeed%
+label-connected-foreground = ${g.fg_}
+
+format-disconnected = <label-disconnected>
+label-disconnected = 
+#label-connected-foreground = ${g.fg_}
+
+
+[module/net_down]
+type = internal/network
+interval = 1.0
+interface = enp2s0
+accumulate-stats = true
+unknown-as-up = false
+
+format-connected = <label-connected>
+format-connected-foreground = ${g.sel}
+
+label-connected = %downspeed%
+label-connected-foreground = ${g.fg_}
+
+format-disconnected = <label-disconnected>
+label-disconnected = 
+#label-connected-foreground = ${g.fg_}
+
+
+[module/filesystem]
+interval = 3.0
+type = internal/fs
+
+mount-0 = /home
+mount-1 = /
+# mount-2 = /home/potato/dupes
+
+format-mounted = <label-mounted>
+label-mounted = %mountpoint% %free%
+label-mounted-foreground = ${g.fg_}
+
+format-mounted-prefix = "󰋊 "
+format-mounted-prefix-foreground = ${g.sel}
+
+
+
+# UNUSED MODULES
+
+[module/temperature]
+type = internal/temperature
+hwmon-path = /sys/class/hwmon/hwmon1/temp1_input
+thermal-zone = 0
+warn-temperature = 80
+
+format = <label>
+format-prefix = ""
+format-underline = ${colors.red}
+format-warn = <label-warn>
+;format-warn-underline = ${self.format-underline}
+
+label = %temperature-c%
+label-warn = %temperature-c%
+label-warn-foreground = ${colors.darkmagenta}
+
+[module/github]
+type = internal/github
+interval = 10
+
+; token = ${file:/path/to/file/containing/github/access.token}
+; token = ${env:GITHUB_ACCESS_TOKEN}
+
+user = RaafatTurki
+empty-notifications = true
+;api-url = https://hub.example.org/api/v3/
+
+format = 󰊤 <label>
+format-foreground = ${g.sel}
+
+label = %notifications%
+label-foreground = ${g.fg_}
+
+format-offline = <label-offline>
+label-offline =
+
+
+[module/i3]
+type = internal/i3
+format = <label-state> <label-mode>
+index-sort = true
+wrapping-scroll = false
+pin-workspaces = true
+strip-wsnumbers = true
+
+label-mode-padding = 1
+label-mode-foreground = ${g.fg_}
+
+label-focused = %name%
+label-focused-foreground = ${g.sel}
+label-focused-padding = 1
+
+label-unfocused = %name%
+label-unfocused-foreground = ${g.fg_}
+label-unfocused-padding = 1
+
+label-visible = %name%
+label-visible-foreground = ${g.fg_}
+label-visible-padding = 1
+
+label-urgent = %name%
+label-urgent-underline = ${g.sel}
+label-urgent-padding = 1
+
+label-separator =
+label-separator-padding = 0
+label-separator-foreground = ${g.fg_}
+
+
+[module/battery]
+type = internal/battery
+
+full-at = 99
+; $ ls -1 /sys/class/power_supply/
+battery = BAT0
+adapter = ADP1
+poll-interval = 3
+time-format = %H:%M
+
+format-charging = <animation-charging> <label-charging>
+label-charging = %percentage%%
+
+format-discharging = <ramp-capacity> <label-discharging>
+label-discharging = %percentage%%
+
+format-full = <ramp-capacity> <label-full>
+label-full = ""
+
+ramp-capacity-0 = ""
+ramp-capacity-1 = ""
+ramp-capacity-2 = ""
+ramp-capacity-3 = ""
+ramp-capacity-4 = ""
+ramp-capacity-foreground = ${g.sel}
+
+animation-charging-0 = ""
+animation-charging-1 = ""
+animation-charging-2 = ""
+animation-charging-3 = ""
+animation-charging-4 = ""
+animation-charging-framerate = 250
+animation-charging-foreground = ${g.sel}
+
+
+[module/title]
+type = internal/xwindow
+
+format = <label>
+format-background = ${g.bg_}
+format-foreground = ${g.sel}
+format-padding = 4
+
+label = %title%
+label-maxlen = 50
+
+label-empty = ...
+label-empty-foreground = ${g.fg_}
+
+
+[module/ewmh]
+type = internal/xworkspaces
+
+pin-workspaces = true
+enable-click = true
+enable-scroll = true
+format = <label-state>
+
+label-active = %name%
+label-active-foreground = ${g.sel}
+label-active-padding = 1
+
+label-occupied = %name%
+label-occupied-foreground = ${g.fg_}
+label-occupied-padding = 1
+
+label-urgent = !
+label-urgent-foreground = ${g.sel}
+label-urgent-padding = 1
+
+label-empty = .
+label-empty-foreground = ${g.fg_}
+label-empty-padding = 1
+
+# 
+# ﳀ

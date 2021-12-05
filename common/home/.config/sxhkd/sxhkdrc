@@ -1,0 +1,173 @@
+# General
+
+super + Return
+	SHELL=$TERM_SHELL $TERMINAL
+
+super + d
+	$LAUNCHER
+
+super + e
+	$FM
+
+super + z
+	/home/potato/meh.sh
+
+super + r
+	replay-sorcery save
+
+# super + t
+# 	open_terminal_here
+
+super + KP_Enter
+	$FM trash:/// -n
+
+super + Escape
+	$COLOR_PICKER
+	# XCOLOR_DISABLE_SHAPE=1 xcolor --format HEX | xclip -selection clipboard
+
+super + l
+	$LOCKER
+
+Print + {_, shift, ctrl, super}
+	screenshot {clip, save, ocr, decode}
+
+XF86Audio{LowerVolume,RaiseVolume}
+	pactl set-sink-volume @DEFAULT_SINK@ {-,+}10%
+KP_{Subtract,Add} + {_,shift}
+	pactl set-sink-volume @DEFAULT_SINK@ {-,+}{10%,1%}
+XF86AudioMute
+	pactl set-sink-mute @DEFAULT_SINK@ toggle
+#XF86MonBrightness{Up,Down}
+#	light {-A 2,-U 2}
+
+XF86Tools
+    $MUSIC_CLIENT
+XF86Audio{Stop,Prev,Play,Next}
+	mpc {stop,prev,toggle,next}
+KP_Enter
+	mpc toggle
+
+
+# BSPWM
+super + shift + r
+	bspc wm -r
+
+super + {_, shift +} q
+	bspc node -{c, k}
+
+super + f
+	bspc desktop -l next
+
+super + w
+    bspwm-window-state
+
+super + shift + Return
+    bspwm-scratch-term toggle
+
+# send the newest marked node to the newest preselected node
+#super + y
+#	bspc node newest.marked.local -n newest.!automatic.local
+
+# set the window state
+#super + {t,shift + t,s,f}
+#	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+
+#super + {t,shift + t,s,f}
+#	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+
+# set the node flags
+#super + ctrl + {m,x,y,z}
+#	bspc node -g {marked,locked,sticky,private}
+
+
+
+
+# Focuse & Swap
+
+# focus the node in the given direction
+super + {Left,Down,Up,Right}
+	bspc node -f {west,south,north,east}
+
+# focus the next/previous desktop in the current monitor
+super + shift + {Left, Right}
+	bspc desktop -f {prev, next}
+
+# focus the last node/desktop
+super + {Tab, grave}
+	bspc {node, desktop} -f last
+
+
+super + {_, shift +} {1-8}
+	bspc {desktop -f,node -d} '^{1-8}'
+
+# focus the parent or 1st node
+super + {a, z}
+	bspc node -f @{parent,first}
+
+# focus or send to the given desktop
+#super + {_, shift +} {1-9,0}
+#	bspc {desktop -f,node -d} '^{1-9,10}'
+
+#	bspc node -d '^{1-8}'
+#   bspc desktop -f '^{1-8}'
+
+
+# focus the older or newer node in the focus history
+#super + {o,i}
+#	bspc wm -h off; \
+#	bspc node {older,newer} -f; \
+#	bspc wm -h on
+
+# focus the next/previous node in the current desktop
+#super + {_,shift+} c
+#	bspc node -f {next,prev}.local
+
+
+
+
+
+# Modes
+
+# Resize Mode (Horizontal)
+super + ctrl + {Left,Right}: {Left,Right}
+    bspc node -z {left,right} {-,_}101 0
+
+# Resize Mode (Vertical)
+super + ctrl + {Up,Down}: {Up,Down}
+    bspc node -z {top,bottom} 0 {-,_}101
+
+# Shift Mode
+super + s: {Left,Down,Up,Right}
+    bspc node -s {west,south,north,east}
+
+# Gaps Mode
+super + g: {Up, Down}
+    { bspc config -d focused window_gap $(( $(bspc config -d focused window_gap) + 5 )), \
+	[ $(bspc config -d focused window_gap) -gt 0 ] && \
+	bspc config -d focused window_gap $(( $(bspc config -d focused window_gap) - 5 )) }
+
+
+
+# move a floating window
+#super + {Left,Down,Up,Right}
+#	bspc node -v {-20 0,0 20,0 -20,20 0}
+
+
+# Preselection
+
+# preselect the direction
+super + alt + {Left,Down,Up,Right}
+	bspc node -p \~{west,south,north,east}
+
+# cancel the preselection for the focused desktop
+super + alt + Escape
+	bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
+
+# preselect the ratio
+#super + ctrl + {1-9}
+#	bspc node -o 0.{1-9}
+
+# cancel the preselection for the focused node
+#super + ctrl + space
+#	bspc node -p cancel
+

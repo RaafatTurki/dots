@@ -1,0 +1,10 @@
+
+2021/10/31 (21:20:57) | ===> btop++ v.1.0.20
+2021/10/31 (21:20:57) | INFO: Logger set to INFO
+2021/10/31 (21:20:59) | INFO: Logger set to INFO
+2021/10/31 (21:20:59) | INFO: Logger set to DEBUG
+2021/10/31 (21:21:02) | INFO: Logger set to INFO
+
+2021/10/31 (21:25:47) | ===> btop++ v.1.0.20
+2021/10/31 (21:25:47) | ERROR: No tty detected!
+btop++ needs an interactive shell to run.

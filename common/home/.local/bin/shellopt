@@ -1,0 +1,62 @@
+#!/bin/bash
+# https://stackoverflow.com/questions/192249/how-do-i-parse-command-line-arguments-in-bash
+
+# DEPS
+# exa
+# prettier
+
+# EXIT CODES
+# 0 = OK
+# 1 = System Unsupported (no gnu implementation of getopts present)
+# 2 = Argument(s) Parsing Error
+# 3 = Invalid Argument(s)
+
+set -o errexit -o pipefail -o noclobber -o nounset
+getopt --test > /dev/null
+if [[ $? -ne 4 ]]; then
+    echo '`getopt --test` failed in this environment.'
+    exit 1
+fi
+
+
+OPTIONS=al1t
+LONGOPTS=all,long,one,tree
+
+PARSED=$(getopt --options=$OPTIONS --longoptions=$LONGOPTS --name "$0" -- "$@")
+if [[ $? -ne 0 ]]; then
+    exit 2
+fi
+
+
+eval set -- "$PARSED"
+
+CMD="exa "
+
+while true; do
+    case "$1" in
+        -a|--all)
+						$CMD+='-a '
+            shift
+            ;;
+        -l|--long)
+            $CMD+='-l '
+            shift
+            ;;
+        -1|--one)
+            $CMD+='-1 '
+            shift
+            ;;
+        -t|--tree)
+            $CMD+='-T '
+            shift
+            ;;
+        --)
+            shift
+            break
+            ;;
+        *)
+            echo "Programming error"
+            exit 3
+            ;;
+    esac
+done

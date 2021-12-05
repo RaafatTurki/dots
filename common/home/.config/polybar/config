@@ -1,0 +1,98 @@
+# vim: filetype=dosini
+
+[section/base]
+include-file = ~/.config/polybar/modules
+
+[g]
+tr_ = #00000000
+bl_ = ${xrdb:col.bl}
+wh_ = ${xrdb:col.wh}
+bg_ = ${xrdb:col.bg}
+mg_ = ${xrdb:col.mg}
+fg_ = ${xrdb:col.fg}
+sel = ${xrdb:col.sel}
+
+#[global/wm]
+#margin-top = 0
+#margin-bottom = 0
+
+[settings]
+throttle-output = 5
+throttle-output-for = 10
+
+; Reload upon receiving XCB_RANDR_SCREEN_CHANGE_NOTIFY events
+screenchange-reload = true
+
+; Compositing operators
+; @see: https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-operator-t
+compositing-background = source
+compositing-foreground = over
+compositing-overline = over
+compositing-underline = over
+compositing-border = over
+
+pseudo-transparency = false
+; Define fallback values used by all module formats
+;format-foreground = 
+;format-background = 
+;format-underline =
+;format-overline =
+;format-spacing =
+;format-padding =
+;format-margin =
+;format-offset =
+
+
+[bar/default]
+background = ${g.bg_}
+foreground = ${g.fg_}
+
+font-0 = ${xrdb:polybar.font-0}
+font-1 = ${xrdb:polybar.font-1}
+width = ${xrdb:polybar.width}
+height = ${xrdb:polybar.height}
+
+fixed-center = true
+line-size = 1
+padding = 1
+module-margin = 2
+;locale = en_US.UTF-8
+wm-name = bspwm
+wm-restack = bspwm
+;override-redirect = false
+
+dpi-x = ${xrdb:polybar.dpi}
+dpi-y = ${xrdb:polybar.dpi}
+enable-ipc = true
+cursor-click = pointer
+cursor-scroll = ns-resize
+
+modules-left = date mpd
+; modules-center = bspwm 
+modules-center = ewmh
+modules-right = net_up net_down filesystem memory cpu pulseaudio
+
+[bar/main]
+inherit = bar/default
+tray-position = right
+tray-maxsize = 16
+tray-padding = 0
+tray-scale = 1
+
+;[bar/left]
+;inherit = bar/default
+;monitor = DVI-D-0
+;
+;tray-position = right
+;tray-maxsize = 20
+;tray-padding = 0
+;tray-scale = 1
+;#tray-detached = false
+;#tray-offset-x = 0
+;#tray-offset-y = 0
+;
+;
+;
+;[bar/right]
+;inherit = bar/default
+;monitor = HDMI-0

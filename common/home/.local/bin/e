@@ -1,0 +1,104 @@
+#!/bin/sh
+# DEPS:
+# $EDITOR or nvim (changeable at $OP definition)
+# fzf
+# bat (optional)
+
+# setting default values for args and flags
+PROJECT_TYPE='con'
+# QUERY=""
+QUERIES=()
+OP=${EDITOR:-nvim}
+
+# start parsing flags from the 2nd arg and onwards if the 1st arg doesn't start with a "-"
+if [ ! ${1:0:1} = '-' ]; then
+    OPTIND=2
+    PROJECT_TYPE=$1
+fi
+
+# parsing flags
+while getopts "q:o:" FLAG; do
+    case "$FLAG" in
+        q) QUERIES+=($OPTARG);;
+        o) OP=$OPTARG;;
+    esac
+done
+
+
+QUERY_INDEX=0
+get_query() {
+    echo ${QUERIES[$QUERY_INDEX]}
+    QUERY_INDEX=$(($QUERY_INDEX+1))
+}
+
+fzf_fancy() {
+    if [ -z `command -v bat` ]; then
+        PREVIEW="cat {} -n"
+    else
+        PREVIEW="bat --color=always --tabs 2 {} -n"
+    fi
+    PREVIEW_WINDOW="right:70%:nowrap"
+    QUERY=$(get_query)
+    fzf --preview="$PREVIEW" --preview-window="$PREVIEW_WINDOW" --query ${QUERY:-""} -1 -0 --exact
+}
+
+fzf_simple() {
+    QUERY=$(get_query)
+    fzf --query ${QUERY:-""} -1 -0 --exact
+}
+
+find_project_with_root_identifier() {
+    ROOT_IDENT=$1
+    ROOT_IDENT_TYPE=$2
+    PROJECT_PATH=""
+    while :; do
+        QUERY=$(get_query)
+        QUERY_INDEX=$(($QUERY_INDEX+1))
+        SELECTION=`find . -type $ROOT_IDENT_TYPE -name $ROOT_IDENT | cut -d / -f 2 | uniq | fzf --query ${QUERY:-''} -1 -0`
+        if [ -z $SELECTION ]; then exit ;fi
+        cd $SELECTION
+        PROJECT_PATH="$PROJECT_PATH/$SELECTION"
+        if [ -$ROOT_IDENT_TYPE $ROOT_IDENT ]; then break ;fi
+    done
+    echo $PROJECT_PATH
+}
+
+# setting $SELECTION depending on $PROJECT_TYPE
+case $PROJECT_TYPE in
+    con)
+        cd $DOTS/common/.config
+        SELECTION=`find . -type f -printf '%P\n' | fzf_fancy`
+        ;;
+    bin)
+        cd $DOTS/common/.local/bin/
+        SELECTION=`find . -maxdepth 1 -type f -executable -printf '%P\n' | fzf_fancy`
+        ;;
+    godot)
+        cd ~/sectors/godot/
+        SELECTION=$(find_project_with_root_identifier project.godot f)
+        if [ ! -z $SELECTION ]; then cd ~/sectors/godot/$SELECTION ;fi
+        ;;
+    nvim)
+        cd $XDG_CONFIG_HOME/nvim/
+        SELECTION=`find . -path ./.git -prune -o -type f -printf '%P\n' | fzf_fancy`
+        ;;
+    nvimp)
+        cd ~/.local/share/nvim/site/pack/packer/start/
+        SELECTION=`ls | fzf_simple`
+        ;;
+    nviml)
+        cd $XDG_CACHE_HOME/nvim
+        SELECTION=`find . -printf '%P\n' | fzf_fancy`
+        ;;
+    note)
+        cd ~/desk/notes
+        SELECTION=`find . -type f -printf '%P\n' | fzf_fancy`
+        ;;
+    *)
+        echo "unknown project type '$PROJECT_TYPE'"
+        ;;
+esac
+
+# checking a $SELECTION was selected and passes it as an argument to $OP
+if [ -z $SELECTION ]; then exit ;fi
+$OP $SELECTION

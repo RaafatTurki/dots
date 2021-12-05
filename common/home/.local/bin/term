@@ -1,0 +1,23 @@
+#!/usr/bin/bash
+
+exec $TERMINAL $1
+
+# TERMS=(
+# kitty
+# xst
+# st
+# termite
+# xfce-terminal
+# gnome-terminal
+# urxvt
+# xterm
+# )
+# 
+# for t in ${TERMS[@]}; do
+#     if [ `command -v $t` ]; then
+#         export SHELL=$TERM_SHELL
+#         exec $t
+#     fi
+# done
+# 
+# echo "none of the listed terminals was found on this system!"

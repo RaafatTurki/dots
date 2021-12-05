@@ -1,0 +1,38 @@
+#! /bin/sh
+
+. ./modules
+
+# deps:
+# xgetres (xrdb support)
+
+H="24"                  # height
+FN="Terminus"           # font name
+FG=`xgetres col.fg`     # foreground color
+BG=`xgetres col.bg`     # background color
+INT=0.5                 # global clock interval (seconds)
+S="    "                # spacer between modules
+
+# internal vars (don't edit)
+TICK=0                  # global tick counter
+MAX_TICK=1              # max TICK value, set to the highest EveryTick in all modules
+
+alias dzen="dzen2 -dock -p -h $H -ta l -fn $FN -fg '$FG' -bg '$BG'"
+
+function layout() {
+    # echo "`inc`"
+    echo "`clock` $S `calendar` $S `volume`%"
+}
+
+function main_loop() {
+    while true; do
+        layout
+        sleep $INT
+        if (( $TICK > $MAX_TICK-1 )); then
+            TICK=0;
+        else
+            ((TICK++))
+        fi
+    done
+}
+
+main_loop | dzen

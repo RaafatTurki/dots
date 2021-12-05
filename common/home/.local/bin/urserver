@@ -1,0 +1,101 @@
+#!/bin/bash
+
+OP=$1
+
+CONFIG_PATH="$XDG_CONFIG_HOME/unified_remote_server"
+
+EXEC_PATH="/opt/urserver/urserver"
+ICON_PATH="/usr/share/icons/hicolor/96x96/apps/urserver.png"
+
+PID_PATH="$CONFIG_PATH/urserver.pid"
+REMOTES_PATH="$CONFIG_PATH/remotes"
+BACKUP_PATH="$CONFIG_PATH/backup"
+
+WIPE_PATH="$HOME/.urserver/"
+
+NO_NOTIFY=false
+NO_COPY=false
+NO_WIPE=false
+
+# copies user files
+copy_user_data() {
+    if [ "$NO_COPY" = false ]; then
+        echo "copying user files"
+        # mkdir -p "$HOME/.config/autostart/"
+        # yes | cp -u /opt/urserver/urserver-autostart.desktop $HOME/.config/autostart/urserver.desktop
+
+        echo "backup remotes"
+        mkdir -p $BACKUP_PATH/
+        yes | cp -a $REMOTES_PATH/. $BACKUP_PATH/
+
+        echo "create custom folder"
+        mkdir -p $REMOTES_PATH/custom/
+
+        echo "copying remotes"
+        rm -rf $REMOTES_PATH/remotes/
+        rm -rf $REMOTES_PATH/bundled/
+        mkdir -p $REMOTES_PATH/bundled/
+        yes | cp -a /opt/urserver/remotes/. $REMOTES_PATH/bundled/
+    else
+        echo "skipping copy"
+    fi
+}
+
+# tries to push a notification
+try_notify_send() {
+    NOTIF_DESC=$1
+    if [ $NO_NOTIFY = false ]; then
+        if hash notify-send 2>/dev/null; then
+            notify-send -i $ICON_PATH 'Unified Remote' "$NOTIF_DESC"
+        else
+            echo "notify-send not available"
+        fi
+    fi
+}
+
+# starts the server if not already running
+server_start() {
+    if ! ps -p $(cat $PID_PATH) 2>/dev/null; then
+        mkdir -p "$CONFIG_PATH"
+        copy_user_data
+        $EXEC_PATH --remotes=$REMOTES_PATH --daemon --pidfile=$PID_PATH
+        echo "server started"
+
+        if [ $NO_WIPE = false ]; then
+            sleep 1
+            rm -rf $WIPE_PATH
+            echo "wiping $WIPE_PATH"
+        fi
+
+    else
+        echo "server already running"
+    fi
+}
+
+# tries to kill the process specified by the PID file and removes the file
+server_stop() {
+    if ps -p $(cat $PID_PATH) 2>/dev/null; then
+        kill -TERM $(cat $PID_PATH)
+        echo "server stopped"
+    else
+        echo "no process detected"
+    fi
+    rm $PID_PATH
+}
+
+# opens the web manager
+open_web_manager() {
+    echo "opening manager"
+    sleep 1
+    xdg-open http://localhost:9510/web 2> /dev/null
+}
+
+if [ $OP == 'start' ]; then
+    try_notify_send 'Starting Unified Remote Server'
+    server_start
+elif [ $OP == 'stop' ]; then
+    server_stop
+elif [ $OP == 'web' ]; then
+    try_notify_send 'Stopping Unified Remote Server'
+    open_web_manager
+fi

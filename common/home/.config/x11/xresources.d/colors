@@ -1,0 +1,29 @@
+! vim: filetype=xdefaults:commentstring=!%s
+
+*.background:       #0D1017
+*.foreground:       #F1F7ED
+
+*.color0:           #252550
+*.color1:           #D7263D
+*.color2:           #B0DB43
+*.color3:           #FFAE03
+*.color4:           #0061FE
+*.color5:           #F53385
+*.color6:           #3FA7D6
+*.color7:           #FFFFFF
+
+*.color8:           #353570
+*.color9:           #E7365D
+*.color10:		    #C0EB63
+*.color11:		    #FFBE23
+*.color12:		    #1071FE
+*.color13:		    #F543A5
+*.color14:		    #4FB7F6
+*.color15:		    #FFFFFF
+! colors -- this is the base16-twilight colorscheme.
+! *.color16:      #cda869
+! *.color17:      #9b703f
+! *.color18:      #323537
+! *.color19:      #464b50
+! *.color20:      #838184
+! *.color21:      #c3c3c3

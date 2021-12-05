@@ -1,0 +1,85 @@
+#!/usr/bin/bash
+
+# GAME=~/games/executables/win_64/adrena_line
+# GAME=~/games/executables/win_64/mirrors_edge/Binaries/MirrorsEdge.exe
+# GAME=~/games/executables/win_64/beatbanger/BeatBanger.exe
+# GAME=~/games/executables/win_64/ktane/ktane.exe
+# GAME=~/games/executables/win_64/the_evil_within_2/TEW2.exe
+# GAME=~/games/executables/win_64/faith_free/FAITH_v1-4_gj.exe
+# GAME="/home/potato/games/executables/win_64/katana_zero/Katana ZERO.exe"
+# GAME="/home/potato/games/executables/win_64/nuclear_throne/nuclearthrone.exe"
+# GAME="/home/potato/games/executables/win_64/dread_templar/Dread Templar/DreadTemplar.exe"
+# GAME="/home/potato/games/executables/win_32/tradewinds_legends/tw3_vista.exe"
+
+# GAME="/home/potato/games/executables/win_32/hercules/HERCULES.EXE"
+# GAME="/home/potato/games/executables/win_32/star_defender_3/game-shell.exe"
+# GAME="/home/potato/games/executables/win_32/red_alert_2/game.exe"
+
+
+# GAME="/home/potato/games/executables/win_64/flat_heroes/Flat Heroes/FlatHeroes.exe"
+# GAME=~/games/executables/win_64/ultrakill/ULTRAKILL/ULTRAKILL.exe
+# GAME=~/games/executables/win_64/gunpoint/Gunpoint.exe
+# GAME=~/games/doom_eternal/game/files/idTechLauncher.exe
+
+
+
+
+
+# General
+
+# export QUARKPREFIX="$HOME/quarkscrew/"
+
+# export WINEPREFIX=~/.wine
+# export WINEARCH=win64
+
+# export WINEPREFIX=~/.wine32
+# export WINEARCH=win32
+
+# export WINEPREFIX=~/.wine_setup
+# export WINEARCH=win64
+# export WINEARCH=win32
+
+# export WINEDLLOVERRIDES="mscoree=d;mshtml=d"
+# export WINEDLLOVERRIDES="mshtml=d"
+
+EXE=${1:-$GAME}
+mkdir -p $WINEPREFIX
+
+
+DXVK
+setup_dxvk install
+
+# wineboot
+# wine "$GAME"
+# winecfg
+# wineconsole cmd
+
+
+
+# SYM LINK SYSTEM FONTS
+#
+# FREETYPE_PROPERTIES="truetype:interpreter-version=35"
+# cd $WINEPREFIX/drive_c/windows/Fonts
+# for i in /usr/share/fonts/**/*.{ttf,otf}; do ln -s "$i" ; done
+
+
+# LIBS
+#
+# graphics
+#   lib32-nvidia-utils
+#   lib32-libxrandr
+#   lib32-libxinerama
+# sound
+#   lib32-libpulse
+#   lib32-openal
+# net
+#   lib32-gnutls
+# others
+#   lib32-mpg123
+#   lib32-giflib
+#   lib32-libpng
+#   lib32-gnutls
+#   lib32-gst-plugins-base
+#   lib32-gst-plugins-good
+#   lib32-gst-plugins-bad
+#   lib32-gst-plugins-ugly

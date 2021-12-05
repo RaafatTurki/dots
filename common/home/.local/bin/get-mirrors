@@ -1,0 +1,53 @@
+#!/bin/sh
+
+#url="https://www.archlinux.org/mirrorlist/?"
+url="https://archlinux.org/mirrorlist/?"
+mirrs_unsorted="mirrorlist.unsorted"
+mirrs_sorted="mirrorlist"
+
+#countries="TR AT BE CA DK FI FR DE GR IN IR IE IL IT KZ LV LT LU NL NZ NO PL RO RU RS SK SI ES SE CH UA"
+countries="TR DE GR IR IL AT LV LT RO RU SE UA"
+protocols="http https"
+ipvs="4 6"
+use_mirror_status="on"
+rank_args="-v"
+
+
+append() {
+	url=$url$1
+}
+
+for c in $countries; do
+    append "country=$c&"
+done
+
+for p in $protocols; do
+    append "protocol=$p&"
+done
+
+for ip in $ipvs; do
+    append "ip_version=$ip&"
+done
+
+append "use_mirror_status=$use_mirror_status"
+
+
+# Curling, Storing and Uncommenting the unsorted mirrors
+echo "Fetching ..."
+touch $mirrs_unsorted 
+echo "#!/bin/sh" > $mirrs_unsorted
+curl -s $url >> $mirrs_unsorted
+sed -i 's/^#Server/Server/' $mirrs_unsorted
+
+server_count=`cat $mirrs_sorted | grep 'Server' | wc -l`
+echo "Fetched $server_count"
+
+# Ranking, Storing the sorted mirrors
+echo "Sorting ..."
+touch $mirrs_sorted
+rankmirrors $rank_args $mirrs_unsorted > $mirrs_sorted
+sed -i -e '1i#!/bin/sh\' $mirrs_sorted
+
+# Done
+cat $mirrs_sorted
+echo "Done ..."

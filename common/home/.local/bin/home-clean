@@ -1,0 +1,45 @@
+#!/bin/bash
+
+GARBAGE=(
+.ICEauthority
+.android
+.anydesk
+.anydesk
+.cache
+.degit
+.dotnet
+.eclipse
+.gtkrc-2.0
+.java
+.lesshst
+.mono
+.npm
+.nuget
+.pki
+.pulse-cookie
+.stack
+.steampath
+.steampid
+.subversion
+.swt
+.synergy
+.urserver
+.viminfo
+.wget-hsts
+.wine
+.yarn
+.yarnrc
+unity.lock
+)
+
+for p in ${GARBAGE[@]}; do
+    if [ -e $p ]; then
+        trash -r $p
+        echo "$p"
+    fi
+    if [ -L $p ]; then
+        trash -r $p
+        echo "$p"
+    fi
+done
+

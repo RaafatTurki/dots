@@ -1,0 +1,292 @@
+#! /bin/sh
+#	    ____        __        __           __                   __
+#	   / __ \____  / /_____ _/ /_____     / /   ____  _________/ /
+#	  / /_/ / __ \/ __/ __ `/ __/ __ \   / /   / __ \/ ___/ __  /
+#	 / ____/ /_/ / /_/ /_/ / /_/ /_/ /  / /___/ /_/ / /  / /_/ /
+#	/_/    \____/\__/\__,_/\__/\____/  /_____/\____/_/   \__,_/
+#
+#
+#	this is a dot file made by PotatoLord (RaafatTurki on github)
+#	feel free to use, edit and distribute
+#___________________________________________________________________
+
+
+
+
+
+exec_always --no-startup-id xrdb "/home/potato/.config/x11/xresources"
+#exec_always $nsi xrdb "$XDG_CONFIG_HOME/x11/xresources"
+exec --no-startup-id i3-msg restart
+
+
+
+
+# -=-=-=- Importing Vars From xrdb -=-=-=-
+
+set_from_resource $resize_step i3.resize_step
+set_from_resource $volume_step i3.volume_step
+set_from_resource $brightness_step i3.brightness_step
+set_from_resource $gaps_step i3.gaps_step
+
+set_from_resource $gaps_inner i3.gaps.inner
+set_from_resource $gaps_outer i3.gaps.outer
+set_from_resource $border_radius i3.border_radius
+
+set_from_resource $font_name i3.fn
+set_from_resource $font_size i3.fs
+
+set_from_resource $bl_ i3.bl
+set_from_resource $wh_ i3.wh
+set_from_resource $bg_ i3.bg
+set_from_resource $mg_ i3.mg
+set_from_resource $fg_ i3.fg
+set_from_resource $sel i3.sel
+
+set_from_resource $notif_to dunst.notif_to
+
+
+# -=-=-=- Theme -=-=-=-
+
+#state                          border           background       text             indicator        child_border
+client.focused                  $bg_             $bg_             $sel             $wh_             $sel
+client.unfocused                $bg_             $bg_             $fg_             $wh_             $fg_
+client.focused_inactive         $bg_             $bg_             $fg_             $wh_             $fg_
+client.urgent                   $sel             $sel             $sel             $wh_             $sel
+#client.placeholder
+
+
+
+
+# -=-=-=- Settings -=-=-=-
+
+# General Vars
+set $mod Mod4
+set $nsi --no-startup-id
+
+# Workspace Names
+set $ws1 1:1
+set $ws2 2:2
+set $ws3 3:3
+set $ws4 4:4
+set $ws5 5:5
+set $ws6 6:6
+set $ws7 7:7
+set $ws8 8:8
+set $ws9 9:9
+#
+
+# Others
+default_border pixel 1
+default_floating_border pixel 1
+title_align left
+hide_edge_borders both
+popup_during_fullscreen smart
+default_orientation horizontal
+focus_follows_mouse yes
+#floating_minimum_size 110 x 75
+#floating_maximum_size -1 x -1
+
+# Applying properties
+font xft:$font_name $font_size
+floating_modifier $mod
+
+# Applying forked properties
+gaps inner $gaps_inner
+gaps outer $gaps_inner
+border_radius $border_radius
+
+
+
+
+# -=-=-=- Startup -=-=-=-
+
+# Startup Apps
+exec $nsi mpd
+
+# Refresh Apps
+exec_always $nsi setroot --blank-color "$bg_"
+#exec_always $nsi setroot --span "$HOME/media/pictures/walpapers/wolverine.png" --bg-color "$bg"
+exec_always $nsi pkill polybar; polybar main
+exec_always $nsi picom -bfCG --vsync --config "$HOME/.config/picom/picom.conf" --experimental-backends
+#exec_always $nsi thunar --daemon
+exec_always $nsi pkill xsettingsd; xsettingsd
+
+# Refresh Tray
+exec_always $nsi pkill nm-applet; nm-applet
+exec_always $nsi pkill udiskie; udiskie -asm nested
+exec_always $nsi pkill copyq; copyq
+exec_always $nsi pkill volumeicon; volumeicon
+
+# Testing
+#set $bg_method "--bg-scale"
+#set $bg_path "/home/tom/Pictures/bg/forrest.jpg"
+#exec_always $nsi feh $bg_method $bg_path
+#exec $nsi sleep 1 && feh $bg_method $bg_path
+bindsym KP_Enter exec "dunstify $(date +%s)"
+bindsym KP_Insert exec xed /home/potato/doc/notes.ini
+
+
+exec_always $nsi pkill dunst; dunst                                 \
+    -lb     "$mg_"      -nb     "$mg_"      -cb "$mg_"              \
+    -lf     "$fg_"      -nf     "$fg_"      -cf "$fg_"              \
+    -lto    "$notif_to"   -nto    "$notif_to"   -cto "$notif_to"    \
+    -sep_color  "$mg_"                                              \
+
+#-li (string)                             - Icon for notifications with low urgency
+#-ni (string)                             - Icon for notifications with normal urgency
+#-ci (string)                             - Icon for notifications with critical urgency
+
+
+
+
+# -=-=-=- Key Bindings -=-=-=-
+
+# i3 Commands
+bindsym $mod+Shift+r restart
+bindsym $mod+Shift+c reload
+
+bindsym $mod+q kill
+bindsym $mod+Shift+space floating toggle
+bindsym $mod+Shift+s sticky toggle
+bindsym $mod+a focus mode_toggle
+bindsym $mod+f fullscreen toggle
+bindsym $mod+x split toggle
+#bindsym $mod+f fullscreen toggle global
+#bindsym $mod+w layout toggle default tabbed
+
+# Apps
+bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+d exec rofi -show drun
+bindsym $mod+Shift+d exec sudo rofi -show drun
+bindsym $mod+e exec thunar
+
+# Screenshot (maim + xclip + tesseract)
+bindsym Print exec screenshot clip "$fg_"
+bindsym Shift+Print exec screenshot save "$fg_"
+bindsym Shift+Control+Print exec screenshot decode "$fg_"
+bindsym Control+Print exec screenshot ocr "$fg_"
+
+# Sound Volume (i3-volume)
+bindsym XF86AudioRaiseVolume exec $nsi i3-volume -i $volume_step -x 100
+bindsym XF86AudioLowerVolume exec $nsi i3-volume -d $volume_step -x 100
+bindsym XF86AudioMute        exec $nsi i3-volume -m
+
+# Others
+#bindsym Menu exec xkb-switch -n
+bindsym XF86Tools exec $nsi pavucontrol --tab 5
+
+# Sound Volume and Brightness (pulseaudio)
+#bindsym XF86AudioRaiseVolume exec $nsi pactl set-sink-volume @DEFAULT_SINK@ +$volume_step%
+#bindsym XF86AudioLowerVolume exec $nsi pactl set-sink-volume @DEFAULT_SINK@ -$volume_step%
+#bindsym XF86AudioMute exec $nsi pactl set-sink-mute @DEFAULT_SINK@ toggle
+
+# Brightness (xorg-xbacklight)
+bindsym XF86MonBrightnessUp exec $nsi xbacklight -inc $brightness_step
+bindsym XF86MonBrightnessDown exec $nsi xbacklight -dec $brightness_step
+
+# Testing
+
+
+
+# -=-=-=- Rules -=-=-=-
+
+#for_window [instance=urxvt] fullscreen enable
+#for_window [instance=urxvt] floating enable
+#for_window [instance=urxvt] sticky enable
+
+
+
+
+# -=-=-=- Navigation -=-=-=-
+
+# Move Focus
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# Switching between Workspaces
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
+bindsym $mod+7 workspace $ws7
+bindsym $mod+8 workspace $ws8
+bindsym $mod+9 workspace $ws9
+bindsym $mod+Tab workspace back_and_forth
+bindsym $mod+Shift+Left workspace prev_on_output
+bindsym $mod+Shift+Right workspace next_on_output
+
+# Moving Windows To A Workspace and Switching to it
+bindsym $mod+Shift+1 move container to workspace $ws1; workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2; workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3; workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4; workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5; workspace $ws5
+bindsym $mod+Shift+6 move container to workspace $ws6; workspace $ws6
+bindsym $mod+Shift+7 move container to workspace $ws7; workspace $ws7
+bindsym $mod+Shift+8 move container to workspace $ws8; workspace $ws8
+bindsym $mod+Shift+9 move container to workspace $ws9; workspace $ws9
+
+
+
+
+# -=-=-=- Modes -=-=-=-
+
+# default Mode
+bindsym $mod+r mode "Resize"
+bindsym $mod+s mode "Shift"
+bindsym $mod+g mode "Gaps"
+
+
+# Resize Mode
+mode "Resize" {
+    bindsym Left resize shrink width $resize_step px or $resize_step ppt
+    bindsym Down resize grow height $resize_step px or $resize_step ppt
+    bindsym Up resize shrink height $resize_step px or $resize_step ppt
+    bindsym Right resize grow width $resize_step px or $resize_step ppt
+
+	# Switching to other Modes
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+	bindsym $mod+r mode "default"
+
+	bindsym $mod+s mode "Shift"
+    bindsym $mod+g mode "Gaps"
+}
+
+
+# Shift Mode
+mode "Shift" {
+    bindsym Left move left
+    bindsym Down move down
+    bindsym Up move up
+    bindsym Right move right
+
+	# Switching to other Modes
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+    bindsym $mod+s mode "default"
+
+	bindsym $mod+r mode "Resize"
+    bindsym $mod+g mode "Gaps"
+}
+
+
+# Gaps Mode
+mode "Gaps" {
+    bindsym Down    gaps inner current plus $gaps_step
+    bindsym Up      gaps inner current minus $gaps_step
+    bindsym Right   gaps outer current plus $gaps_step
+    bindsym Left    gaps outer current minus $gaps_step
+
+	# Switching to other Modes
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+    bindsym $mod+g mode "default"
+
+    bindsym $mod+r mode "Resize"
+    bindsym $mod+s mode "Shift"
+}

@@ -1,0 +1,68 @@
+#! /bin/sh
+#	    ____        __        __           __                   __	
+#	   / __ \____  / /_____ _/ /_____     / /   ____  _________/ /	
+#	  / /_/ / __ \/ __/ __ `/ __/ __ \   / /   / __ \/ ___/ __  /	
+#	 / ____/ /_/ / /_/ /_/ / /_/ /_/ /  / /___/ /_/ / /  / /_/ /	
+#	/_/    \____/\__/\__,_/\__/\____/  /_____/\____/_/   \__,_/		
+#___________________________________________________________________
+#
+#	this is a dot file made by PotatoLord (RaafatTurki on github)   
+#	feel free to use, edit and redistribute
+#___________________________________________________________________
+
+def_key "+"
+    show_clock
+
+def_key "="
+    volume_up
+def_key "-"
+    volume_down
+
+def_key "."
+    show_lyrics
+def_key "n"
+    next_found_item
+def_key "N"
+    previous_found_item
+
+# not used but bound
+def_key "J"
+    move_sort_order_down
+def_key "K"
+    move_sort_order_up
+def_key "h"
+  jump_to_parent_directory
+def_key "l"
+  enter_directory
+def_key "l"
+  run_action
+def_key "l"
+  play_item
+def_key "m"
+  show_media_library
+def_key "m"
+  toggle_media_library_columns_mode
+def_key "t"
+  show_tag_editor
+def_key "v"
+  show_visualizer
+def_key "G"
+  move_end
+def_key "g"
+  move_home
+
+#jump_to_position_in_song
+def_key "U"
+  update_database
+def_key "s"
+  reset_search_engine
+def_key "s"
+  show_search_engine
+def_key "f"
+  show_browser
+def_key "f"
+  change_browse_mode
+def_key "x"
+  delete_playlist_items
+def_key "P"
+  show_playlist

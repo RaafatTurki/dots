@@ -1,0 +1,3 @@
+#! /bin/sh
+
+xcolor -S 4 -P 100 -s

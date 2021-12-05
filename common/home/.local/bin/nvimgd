@@ -1,0 +1,60 @@
+#!/bin/sh
+
+MODE=${1:-init}
+
+case $MODE in
+    init)
+        godot -e 2>/dev/null &
+        $0 init_nvim
+        ;;
+    init_nvim)
+        FILE=$2
+        SOCKET=/tmp/nvim`echo $PWD | tr '/' '_'`.socket
+
+        if [ -f project.godot ]; then
+            # notify-send "created $SOCKET"
+            nvim --listen $SOCKET $FILE
+            # NVIM_LISTEN_ADDRESS=$SOCKET $TERMINAL --detach -e nvim $FILE
+            # $TERMINAL -e nvim --listen $SOCKET $FILE & disown
+        else
+            echo "no godot project detected!"
+        fi
+        ;;
+    remote)
+        PROJECT=$2
+        FILE=$3
+        LINE=$4
+        COL=$5
+        SOCKET=/tmp/nvim`echo $PROJECT | tr '/' '_'`.socket
+
+        # NVIM_LISTEN_ADDRESS=$SOCKET nvr --nostart --remote-tab $FILE --remote-send "${LINE}G${COL}|"
+        NVIM_LISTEN_ADDRESS=$SOCKET nvr --nostart --remote-tab $FILE
+        # notify-send "remoted $SOCKET"
+        ;;
+    *)
+        echo "no such mode exists '$MODE'"
+        exit
+        ;;
+esac
+
+# USAGE:
+# in godot > Editor > Editor Settings > Text Editor > External
+# Use External Editor   On
+# Exec Path             nvimgd
+# Exec Flags            remote {project} {file} {line} {col}
+#
+# now in any godot project (folder must contain project.godot) execute
+# `nvimgd init`
+
+# DEPS:
+# nvr
+# won't be needed soonish see
+# https://github.com/neovim/neovim/issues/1750
+# https://github.com/neovim/neovim/pull/8326
+
+# FALLBACKS:
+# godots simple recommended way (replace $TERMINAL with your terminal name)
+# $TERMINAL -e nvim "+call cursor(${LINE}, ${COL})" $FILE
+#
+# for a single socket system comment all the SOCKET variables above and put this line above everything
+# SOCKET="/tmp/nvim_godot.socket"

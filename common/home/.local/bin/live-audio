@@ -1,0 +1,8 @@
+#!/bin/bash
+
+SRC=alsa_input.usb-0c76_RAMPAGE_MIRACLE-00.mono-fallback
+SINK=alsa_output.usb-0c76_RAMPAGE_MIRACLE-00.analog-stereo
+
+pactl load-module module-null-sink sink_name=Virtual1
+pactl load-module module-loopback source=$SRC sink=Virtual1
+pactl load-module module-loopback source=Virtual1.monitor sink=$SINK

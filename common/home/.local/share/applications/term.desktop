@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=term
+Comment=Default system terminal
+TryExec=term
+Exec=term %f
+Icon=terminal
+Type=Application
+Categories=System;TerminalEmulator;

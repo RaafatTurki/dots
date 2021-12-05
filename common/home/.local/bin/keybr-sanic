@@ -1,0 +1,21 @@
+#!/bin/sh
+
+xdotool mousemove 550 490
+xdotool click 1
+for word in `cat words.txt`
+do
+    for i in $(seq 1 ${#word})
+    do
+        if [ ${word:i-1:1} == '␣' ]; then
+            xdotool key space
+        else
+            xdotool key ${word:i-1:1}
+        fi
+    done
+xdotool key Return
+sleep 0.1
+done
+
+
+#document.getElementsByClassName("TextInput--sizeX0")[0].children[1]ene
+nr

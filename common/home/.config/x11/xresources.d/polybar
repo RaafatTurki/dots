@@ -1,0 +1,8 @@
+! vim: filetype=xdefaults:commentstring=!%s
+
+! Polybar
+polybar.font-0:     FN:size=13
+polybar.font-1:     FN_ICONS:size=13
+polybar.width:      100%
+polybar.height:     24px
+polybar.dpi:		DPI

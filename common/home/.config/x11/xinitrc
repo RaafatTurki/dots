@@ -1,0 +1,34 @@
+#!/bin/sh
+
+exec bspwm
+
+# compiz
+
+# exec firefox
+
+# xrandr --setprovideroutputsource modesetting NVIDIA-0
+# xrandr --auto
+
+# exec i3
+
+# sxhkd &
+
+# exec startplasma-x11
+
+
+# export XDG_SESSION_TYPE=x11
+# export GDK_BACKEND=x11
+# exec gnome-session
+
+# exec dwm
+
+#exec chamfer --config=/usr/share/chamfer/config/config.py --shader-path=/usr/share/chamfer/shaders/
+
+# wingpanel &
+# plank &
+# exec gala
+
+
+# exec dbus-launch --exit-with-session bspwm
+
+# exec /usr/bin/spectrwm

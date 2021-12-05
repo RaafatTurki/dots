@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Tabletop Simulator
+Comment=Play this game on Steam
+Exec=steam steam://rungameid/286160
+Icon=steam_icon_286160
+Terminal=false
+Type=Application
+Categories=Game;

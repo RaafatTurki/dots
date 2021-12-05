@@ -1,0 +1,10 @@
+#!/bin/sh
+
+service_name=$1
+
+systemd_units_folder=/usr/lib/systemd/system
+openrc_units_folder=/etc/init.d
+
+sudo initify $systemd_units_folder/$service_name.service
+mv $systemd_units_folder/$service_name $openrc_units_folder
+sudo chmod +x $openrc_units_folder/$service_name

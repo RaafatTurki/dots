@@ -1,0 +1,58 @@
+# vim: filetype=dosini
+
+lyrics_directory = "~/.config/ncmpcpp/lyrics"
+# ncmpcpp_directory = "~/.config/ncmpcpp"
+# mpd_music_dir = "~/media/music"
+
+follow_now_playing_lyrics = yes
+fetch_lyrics_for_current_song_in_background = yes
+external_editor = nvim
+
+message_delay_time = 1
+startup_screen = media_library
+display_volume_level = no
+ignore_leading_the = yes
+use_console_editor = yes
+connected_message_on_startup = no
+user_interface = alternative
+discard_colors_if_item_is_selected = yes
+autocenter_mode = yes
+centered_cursor = yes
+mouse_support = yes
+colors_enabled = yes
+mpd_crossfade_time = 0
+
+song_window_title_format = ncmpcpp
+ask_before_clearing_playlists = "yes"
+volume_change_step = "10"
+
+playlist_display_mode = columns
+browser_display_mode = columns
+
+media_library_primary_tag = album_artist
+media_library_albums_split_by_date = yes
+
+current_item_prefix = $(white)$b
+current_item_suffix = $/b$(end)
+current_item_inactive_column_prefix = "$(green)"
+current_item_inactive_column_suffix = $(end)
+
+progressbar_look = "─┘ "
+progressbar_color = white
+progressbar_elapsed_color = blue
+
+statusbar_visibility = "no"
+titles_visibility = "no"
+header_visibility = "no"
+
+empty_tag_color = white
+header_window_color = white
+main_window_color =  blue
+alternative_ui_separator_color = green
+
+visualizer_data_source = "/tmp/mpd.fifo"
+visualizer_output_name = "my_fifo"
+visualizer_in_stereo = "yes"
+visualizer_type = "spectrum"
+visualizer_look = "●▮"
+visualizer_color = 41, 83, 119, 155, 185, 215, 209, 203, 197, 161

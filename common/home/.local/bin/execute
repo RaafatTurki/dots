@@ -1,0 +1,42 @@
+#!/bin/sh
+
+# setting default values for args and flags
+LAUNCH_MODE="once"
+BG=true
+
+# parsing flags
+while getopts "c:ork:fse:" FLAG; do
+    case "$FLAG" in
+        c) CMD=$OPTARG;;
+        o) LAUNCH_MODE="once";;
+        r) LAUNCH_MODE="reload";;
+        k) KILL=$OPTARG;;
+        f) BG=false;;
+        e) ENV_VARS=$OPTARG;;
+    esac
+done
+
+# check if a command was given
+if [ -z "$CMD" ]; then echo "no command was provided"; exit; fi
+
+execute_cmd() {
+    ENV_VARS_ARR=($ENV_VARS)
+    if [ $BG ]; then
+        env "${ENV_VARS_ARR[@]}" $CMD &
+    else
+        env "${ENV_VARS_ARR[@]}" $CMD
+    fi
+}
+
+# determine the process name to kill
+PNAME=${KILL:-`echo $CMD | cut -f 1 -d ' '`}
+
+if [ $LAUNCH_MODE == "once" ]; then
+    if [ -z `pgrep $PNAME` ]; then execute_cmd; fi
+elif [ $LAUNCH_MODE == "reload" ]; then
+    PID=`pgrep $PNAME`
+    if [ ! -z $PID ]; then kill $PID; fi
+    execute_cmd
+fi
+
+

@@ -66,11 +66,11 @@ find_project_with_root_identifier() {
 # setting $SELECTION depending on $PROJECT_TYPE
 case $PROJECT_TYPE in
     con)
-        cd $DOTS/common/.config
+        cd $DOTS/common/home/.config
         SELECTION=`find . -type f -printf '%P\n' | fzf_fancy`
         ;;
     bin)
-        cd $DOTS/common/.local/bin/
+        cd $DOTS/common/home/.local/bin/
         SELECTION=`find . -maxdepth 1 -type f -executable -printf '%P\n' | fzf_fancy`
         ;;
     godot)

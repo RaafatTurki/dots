@@ -7,3 +7,5 @@ mkdir -p ~/.config
 mkdir -p ~/.config/ncmpcpp
 mkdir -p ~/.config/transmission
 mkdir -p ~/.config/mpv
+
+mkdir -p ~/.mozilla/firefox/profile_potato

@@ -3,74 +3,32 @@
 
 DOTS_ROOT=`pwd`
 # DOTS_ROOT=$DOTS
-
-MODE='reload'
 MACHINE=`hostnamectl hostname`
-MOD_HOME=true
-MOD_SYSTEM=false
-LOG_LVL=0
 
-while getopts "ridm:Hs" FLAG; do
-    case "$FLAG" in
-        r) MODE='reload';;
-        i) MODE='init';;
-        d) MODE='delete';;
-        m) MACHINE=$OPTARG;;
-        H) MOD_HOME=false;;
-        s) MOD_SYSTEM=true;;
-    esac
-done
-
-print() {
-    echo "$1: $2"
+section() {
+    echo -e "\n$1: $2"
 }
 
-init() {
-    if $MOD_HOME; then
-        print "init" "HOME"
-        $DOTS_ROOT/init_dirs
-        stow --verbose=$LOG_LVL -S -d . -t ~ home
-    fi
+copy_sys_dots() {
+    SYS_DOTS_ROOT=$1
 
-    if $MOD_SYSTEM; then
-        print "init" "SYSTEM"
-    fi
+    for LOCAL_LINE in `find $SYS_DOTS_ROOT`; do
+        LINE=${LOCAL_LINE:${#SYS_DOTS_ROOT}}
+
+        if [ -z $LINE ]; then continue ;fi
+
+        if [ -d $LOCAL_LINE ]; then
+            sudo mkdir -p "$LINE"
+        fi
+
+        if [ -f $LOCAL_LINE ]; then
+            sudo cp "$LOCAL_LINE" "$LINE"
+            echo "$LINE"
+        fi
+    done
 }
 
-delete() {
-    if $MOD_HOME; then
-        print " del" "HOME"
-        stow --verbose=$LOG_LVL -D -d . -t ~ home
-    fi
-
-    if $MOD_SYSTEM; then
-        print " del" "SYSTEM"
-    fi
-}
-
-reload() {
-    delete
-    init
-}
-
-operate_on_pwd() {
-    case $1 in
-        "reload") reload ;;
-        "init") init ;;
-        "delete") delete ;;
-    esac
-}
-
-operate() {
-    cd $DOTS_ROOT/common
-    echo "common"
-    operate_on_pwd $1
-
-    if [ -d "$DOTS_ROOT/machines/$MACHINE" ]; then
-        cd $DOTS_ROOT/machines/$MACHINE
-        echo $MACHINE
-        operate_on_pwd $1
-    fi
-}
-
-operate $MODE
+section "source" "common"
+copy_sys_dots "$DOTS_ROOT/common/system"
+section "source" "$MACHINE"
+copy_sys_dots "$DOTS_ROOT/machines/$MACHINE/system"

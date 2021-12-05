@@ -6,18 +6,14 @@ DOTS_ROOT=`pwd`
 
 MODE='reload'
 MACHINE=`hostnamectl hostname`
-MOD_HOME=true
-MOD_SYSTEM=false
 LOG_LVL=0
 
-while getopts "ridm:Hs" FLAG; do
+while getopts "ridm:" FLAG; do
     case "$FLAG" in
         r) MODE='reload';;
         i) MODE='init';;
         d) MODE='delete';;
         m) MACHINE=$OPTARG;;
-        H) MOD_HOME=false;;
-        s) MOD_SYSTEM=true;;
     esac
 done
 
@@ -26,26 +22,14 @@ print() {
 }
 
 init() {
-    if $MOD_HOME; then
-        print "init" "HOME"
-        $DOTS_ROOT/init_dirs
-        stow --verbose=$LOG_LVL -S -d . -t ~ home
-    fi
-
-    if $MOD_SYSTEM; then
-        print "init" "SYSTEM"
-    fi
+    print "init" "HOME"
+    $DOTS_ROOT/init_dirs
+    stow --verbose=$LOG_LVL -S -d . -t ~ home
 }
 
 delete() {
-    if $MOD_HOME; then
-        print " del" "HOME"
-        stow --verbose=$LOG_LVL -D -d . -t ~ home
-    fi
-
-    if $MOD_SYSTEM; then
-        print " del" "SYSTEM"
-    fi
+    print " del" "HOME"
+    stow --verbose=$LOG_LVL -D -d . -t ~ home
 }
 
 reload() {

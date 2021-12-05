@@ -1,13 +1,14 @@
 #!/usr/bin/bash
 # this script handles all stowing related to the $DOTS_ROOT directory
 
-# DOTS_ROOT=`pwd`
-DOTS_ROOT=$DOTS
+DOTS_ROOT=`pwd`
+# DOTS_ROOT=$DOTS
 
 MODE='reload'
 MACHINE=
 MOD_HOME=true
 MOD_SYSTEM=false
+LOG_LVL=0
 
 while getopts "ridm:Hs" FLAG; do
     case "$FLAG" in
@@ -28,8 +29,7 @@ init() {
     if $MOD_HOME; then
         print "init" "HOME"
         $DOTS_ROOT/init_dirs
-        stow -d . -t ~ home
-        # stow -d . -t ~ home --ignore='.profile'
+        stow --verbose=$LOG_LVL -S -d . -t ~ home
     fi
 
     if $MOD_SYSTEM; then
@@ -40,25 +40,17 @@ init() {
 delete() {
     if $MOD_HOME; then
         print " del" "HOME"
-        stow -D -d . -t ~ home
+        stow --verbose=$LOG_LVL -D -d . -t ~ home
     fi
 
     if $MOD_SYSTEM; then
         print " del" "SYSTEM"
-        # stow -D -d . -t ~ home
     fi
 }
 
 reload() {
-    if $MOD_HOME; then
-        print " rel" "HOME"
-        stow -R -d . -t ~ home
-    fi
-
-    if $MOD_SYSTEM; then
-        print " rel" "SYSTEM"
-        # stow -D -d . -t ~ home
-    fi
+    delete
+    init
 }
 
 operate_on_pwd() {

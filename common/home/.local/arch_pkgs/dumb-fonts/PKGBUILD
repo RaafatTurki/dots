@@ -1,0 +1,12 @@
+# Maintainer: Raafat Turki <raafat.turki@protonmail.com>
+
+pkgname=dumb-fonts-ttf
+pkgver=1.1
+pkgrel=1
+arch=(any)
+pkgdesc='Just so other packages can shutup about random fonts deps'
+
+provides=(
+adobe-source-code-pro-fonts
+cantarell-fonts
+)

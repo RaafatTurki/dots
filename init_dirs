@@ -3,6 +3,11 @@
 mkdir -p ~/.local/share/applications
 mkdir -p ~/.local/bin
 
+mkdir -p ~/.local/arch_pkgs
+mkdir -p ~/.local/arch_pkgs/dumb-fonts
+mkdir -p ~/.local/arch_pkgs/flat-remix-custom-gtk-theme
+mkdir -p ~/.local/arch_pkgs/wine-meta
+
 mkdir -p ~/.config
 mkdir -p ~/.config/ncmpcpp
 mkdir -p ~/.config/transmission

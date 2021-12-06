@@ -1,24 +1,29 @@
 #!/usr/bin/bash
 # this script handles all stowing related to the $DOTS_ROOT directory
 
-DOTS_ROOT=`pwd`
-# DOTS_ROOT=$DOTS
+DOTS_ROOT=$DOTS
 
 MODE='reload'
 MACHINE=`hostnamectl hostname`
 LOG_LVL=0
 
-while getopts "ridm:" FLAG; do
+
+while getopts "ridm:p" FLAG; do
     case "$FLAG" in
         r) MODE='reload';;
         i) MODE='init';;
         d) MODE='delete';;
         m) MACHINE=$OPTARG;;
+        p) DOTS_ROOT=`pwd`;;
     esac
 done
 
 print() {
     echo "$1: $2"
+}
+
+section() {
+    echo -e "\n$1: $2"
 }
 
 init() {
@@ -47,12 +52,12 @@ operate_on_pwd() {
 
 operate() {
     cd $DOTS_ROOT/common
-    echo "common"
+    section "common"
     operate_on_pwd $1
 
     if [ -d "$DOTS_ROOT/machines/$MACHINE" ]; then
         cd $DOTS_ROOT/machines/$MACHINE
-        echo $MACHINE
+        section $MACHINE
         operate_on_pwd $1
     fi
 }

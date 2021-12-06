@@ -22,3 +22,4 @@ there's nothing to it, you put your dots in the right places and the management 
 ### TODO
 - replace `init_dirs` with a smarter implicit solution
 - relocate common to within machines
+- make `home_dots` auto symlink itself into `~/.local/bin`

@@ -1,3 +1,5 @@
+# vim: syntax=python
+
 servers = (
   { address = "irc.dal.net"; chatnet = "DALnet"; port = "6667"; },
   {
@@ -316,9 +318,9 @@ statusbar = {
 };
 settings = {
   core = {
-    real_name = "Unknown";
+    real_name = "Raafat Turki";
     user_name = "potato";
-    nick = "raafaturki";
+    nick = "potato";
   };
   "fe-text" = { actlist_sort = "refnum"; };
 };

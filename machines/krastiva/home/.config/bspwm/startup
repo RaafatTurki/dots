@@ -27,7 +27,9 @@ xset dpms 300 0 0
 setxkbmap -layout us
 
 wmname LG3D
-
+numlockx on
+# redshift -x
+# redshift -O 6000K -b 0.9
 
 # DAEMONIZED PROCESSES
 once 'xsettingsd'
@@ -36,13 +38,15 @@ once 'mpDris2'
 once 'urserver start'
 once 'pcmanfm -d' -e "SHELL=$TERM_SHELL"
 once 'polkit-dumb-agent'
+once 'barriers -f -c .config/barrier/config.conf --disable-crypto'
+once 'sxhkd'
+once 'redshift -r -l 39:35'
+# once "redshift -r -l `lonlat`"
 # replay-sorcery &
 # lf -server &
 
 
 # REFRESHABLE PROCESSES
-reload 'sxhkd'
-reload 'barriers -f -c .config/barrier/config.conf --disable-crypto'
 reload 'unclutter --timeout 3 --jitter 10 --ignore-scrolling'
 reload 'dunst'
 reload 'polybar main'
@@ -50,6 +54,13 @@ reload 'picom --experimental-backends'
 reload 'flashfocus'
 reload 'nm-applet'
 reload 'udiskie -asm nested'
+
+
+# SINGLAS
+pkill -USR1 xst
+# pkill -USR1 redshift
+pkill -USR1 -x sxhkd
+
 
 # pkill replay-sorcery; replay-sorcery &
 # pkill syncthing-gtk; syncthing-gtk -m &

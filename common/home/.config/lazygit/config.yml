@@ -25,3 +25,6 @@ gui:
   showCommandLog: false
   authorColors: # in case you're not happy with the randomly assigned colour
     'Raafat Turki': '#294374'
+# git:
+  # usingGpg: true
+  # overrideGpg: true

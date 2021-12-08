@@ -45,8 +45,8 @@ export PARU_PAGER="`fbin nvim` +Man!"
 # export GIT_PAGER=
 export LESS="-F -X $LESS"
 
-# export TERMINAL=`fbin xst`
-export TERMINAL=`fbin kitty`
+export TERMINAL=`fbin xst`
+# export TERMINAL=`fbin kitty`
 export FM=`fbin pcmanfm`
 export READER=`fbin zathura`
 export BROWSER=`fbin firefox`

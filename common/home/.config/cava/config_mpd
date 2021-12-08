@@ -4,8 +4,10 @@
 framerate = 60
 
 [input]
-method = pulse
-source = auto
+method = fifo
+source = /tmp/mpd.fifo
+sample_rate = 44100
+sample_bits = 16
 
 [color]
 foreground = '#294374'

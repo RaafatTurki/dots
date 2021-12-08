@@ -5,7 +5,7 @@
 # bat (optional)
 
 # setting default values for args and flags
-PROJECT_TYPE='con'
+PROJECT_TYPE='dots'
 # QUERY=""
 QUERIES=()
 OP=${EDITOR:-nvim}
@@ -32,14 +32,15 @@ get_query() {
 }
 
 fzf_fancy() {
-    if [ -z `command -v bat` ]; then
-        PREVIEW="cat {} -n"
-    else
-        PREVIEW="bat --color=always --tabs 2 {} -n"
-    fi
-    PREVIEW_WINDOW="right:70%:nowrap"
+    # if [ -z `command -v bat` ]; then
+    #     PREVIEW="cat {} -n"
+    # else
+    #     PREVIEW="bat --color=always --tabs 2 {} -n"
+    # fi
+    # PREVIEW_WINDOW="right:70%:nowrap"
     QUERY=$(get_query)
-    fzf --preview="$PREVIEW" --preview-window="$PREVIEW_WINDOW" --query ${QUERY:-""} -1 -0 --exact
+    fzf --query ${QUERY:-""} -1 -0 --exact
+    # fzf --preview="$PREVIEW" --preview-window="$PREVIEW_WINDOW" --query ${QUERY:-""} -1 -0 --exact
 }
 
 fzf_simple() {
@@ -63,11 +64,28 @@ find_project_with_root_identifier() {
     echo $PROJECT_PATH
 }
 
+get_all_files_in() {
+    RES=
+    SRC=$1
+    cd $SRC
+    for FILE in `find . -type f -printf '%P\n'`; do
+        RES+="$SRC/$FILE "
+    done
+    echo $RES
+}
+
 # setting $SELECTION depending on $PROJECT_TYPE
 case $PROJECT_TYPE in
-    con)
-        cd $DOTS/common/home/.config
-        SELECTION=`find . -type f -printf '%P\n' | fzf_fancy`
+    dots)
+        # cd $DOTS/common/home/.config
+        # SELECTION=`find . -type f -printf '%P\n' | fzf_fancy`
+        cd $DOTS
+
+        ALL_DOTS=
+        ALL_DOTS+=`get_all_files_in common/home/.config`
+        MACHINE=`hostnamectl hostname`
+        ALL_DOTS+=`get_all_files_in machines/$MACHINE/home/.config`
+        SELECTION=`echo -e $ALL_DOTS | tr ' ' '\n' | fzf_fancy`
         ;;
     bin)
         cd $DOTS/common/home/.local/bin/

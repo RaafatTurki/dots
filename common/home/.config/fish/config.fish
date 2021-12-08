@@ -26,8 +26,8 @@ alias cb="xclip -selection clipboard"
 alias live-tree='watch tree -C'
 alias lsdu='du -ahx -- * | sort -rh | head -10'
 # alias lsdu='du -ahx -- .* | sort -rh | head -10'
-alias once="execute -o -c"
-alias reload="execute -r -c"
+# alias once="execute -o -c"
+# alias reload="execute -r -c"
 alias get-dpi='xdpyinfo | grep -B 2 resolution'
 
 # alias wine-install="aa -S wine-staging && aa -S --needed --asdeps (pacman -Si wine-staging | sed -n '/^Opt/,/^Conf/p' | sed '$d' | sed 's/^Opt.*://g' | sed 's/^\s*//g')"
@@ -40,12 +40,12 @@ alias kssh='kitty +kitten ssh'
 # e aliases
 alias nvimc="e nvim -q"
 # alias nvimc="e nvim -o 'devour neovide' -q"
-alias dotc="e dot -q"
+alias dotc="e dots -q"
 alias binc="e bin -q"
 alias notec="e note -q"
-alias fishc="e con -q config.fish"
-alias profc="nvim ~/.profile"
-alias gitc="e con -q git/config"
+alias fishc="$EDITOR $XDG_CONFIG_HOME/fish/config.fish"
+alias gitc="$EDITOR $XDG_CONFIG_HOME/git/config"
+alias profc="$EDITOR ~/.profile"
 alias gd="e godot -o 'nvimgd init'"
 alias gdnvim="e godot -o 'nvimgd init_nvim'"
 # alias gdgodot="e godot -o 'godot -e'"
@@ -95,6 +95,7 @@ alias xe='Xephyr -br -ac -noreset -screen 1900x1000 :2'
 alias xe-run='DISPLAY=:2'
 alias x11vnc='x11vnc -nevershared -xkb -wait 20 -noxdamage -forever -noxcomposite -rfbauth ~/.config/x11/x11vnc_pass'
 alias x11vnc-set-pass='x11vnc -storepasswd .config/x11/x11vnc_pass'
+alias cava-mpd='cava -p ~/.config/cava/config_mpd'
 
 # python
 alias pip-install-req='pip install -r requirements.txt'

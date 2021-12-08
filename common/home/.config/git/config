@@ -2,7 +2,10 @@
 
 [user]
 	name = Raafat Turki
-	email = raafat.turki@protonmail.com
+	email = raafat.turki@pm.me
+
+[commit]
+	gpgsign = true
 
 [core]
 	autocrlf = input

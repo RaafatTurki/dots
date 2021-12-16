@@ -83,6 +83,7 @@ case $PROJECT_TYPE in
 
         ALL_DOTS=
         ALL_DOTS+=`get_all_files_in common/home`
+        ALL_DOTS+='\n'
         MACHINE=`hostnamectl hostname`
         ALL_DOTS+=`get_all_files_in machines/$MACHINE/home`
         SELECTION=`echo -e $ALL_DOTS | tr ' ' '\n' | fzf_fancy`

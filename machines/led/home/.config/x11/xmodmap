@@ -16,5 +16,5 @@ pointer = 1 2 3 4 5 6 7 8 9 10
 ! 10 = ?
 
 ! keycode 135 = Menu NoSymbol Menu
-keycode  64 = Escape NoSymbol Escape
-keycode   9 = Alt_L Meta_L Alt_L Meta_L
+keycode 108 = Escape NoSymbol Escape
+keycode   9 = Alt_R Meta_R Alt_R Meta_R

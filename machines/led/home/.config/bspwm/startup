@@ -5,6 +5,10 @@ alias once="execute -o -c"
 alias reload="execute -r -c"
 
 # COMMANDS
+# /usr/share/X11/xkb/rules/base.lst
+# setxkbmap -layout us,ara -option 'grp:alt_shift_toggle'
+# setxkbmap -layout us
+
 # xrandr --output DVI-D-0 --mode 1920x1080 --output HDMI-0 --mode 1366x768 --right-of DVI-D-0
 xwallpaper --zoom ~/media/pics/wallpapers/20.png
 xrdb ~/.config/x11/xresources
@@ -22,34 +26,34 @@ xset s 300 300
 # xset s noexpose
 xset dpms 300 0 0
 
-# /usr/share/X11/xkb/rules/base.lst
-# setxkbmap -layout us,ara -option 'grp:alt_shift_toggle'
-setxkbmap -layout us
-
 wmname LG3D
-
+numlockx on
 
 # DAEMONIZED PROCESSES
-once 'xsettingsd'
+# once 'xsettingsd'
 once 'mpd'
-once 'mpDris2'
-once 'urserver start'
+# once 'mpDris2'
+# once 'urserver start'
 once 'pcmanfm -d' -e "SHELL=$TERM_SHELL"
 once 'polkit-dumb-agent'
+once 'barrierc -f --disable-crypto -n led krastiva'
+once 'nm-applet'
+once 'unclutter --timeout 3 --jitter 10 --ignore-scrolling'
+once 'udiskie -asm nested'
+# once 'picom --experimental-backends'
 # replay-sorcery &
 # lf -server &
 
 
 # REFRESHABLE PROCESSES
 reload 'sxhkd'
-reload 'unclutter --timeout 3 --jitter 10 --ignore-scrolling'
 reload 'dunst'
-reload 'polybar main'
-reload 'picom --experimental-backends'
-reload 'flashfocus'
-reload 'nm-applet'
-reload 'udiskie -asm nested'
-reload 'barrierc -f --disable-crypto -n led krastiva'
+reload 'polybar led -r'
+# reload 'flashfocus'
+
+# SIGNALS
+killall -USR1 xst
+killall -USR1 picom
 
 # pkill replay-sorcery; replay-sorcery &
 # pkill syncthing-gtk; syncthing-gtk -m &

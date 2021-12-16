@@ -1,8 +1,7 @@
-
 [Desktop Entry]
 Type=Application
 Name=ScrCpy
-# Icon=lutris_celeste
+Icon=display
 Exec=scrcpy -m 1000
 Type=Application
 Terminal=false

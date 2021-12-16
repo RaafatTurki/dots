@@ -19,6 +19,10 @@ fbin() {
     echo `command -v $1`
 }
 
+append_path() {
+    export PATH=$PATH:$1
+}
+
 # fail safes
 export USER=${USER:-`whoami`}
 export HOME=${HOME:-"/home/$USER"}
@@ -26,8 +30,14 @@ export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-"$HOME/.config"}
 export XDG_CACHE_HOME=${XDG_CACHE_HOME:-"$HOME/.local/cache"}
 export XDG_DATA_HOME=${XDG_DATA_HOME:-"$HOME/.local/share"}
 export XDG_STATE_HOME=${XDG_STATE_HOME:-"$HOME/.local/state/"}
-export PATH=$HOME/.local/bin:$PATH
+append_path $HOME/.local/bin
 export DOTS=~/dots
+
+# android
+# export ANDROID_HOME=$HOME/android
+# append_path $ANDROID_HOME/cmdline-tools/tools/bin
+# append_path $ANDROID_HOME/emulator
+# append_path $ANDROID_HOME/platform-tools
 
 # env
 export SHELL=`fbin bash`
@@ -42,7 +52,7 @@ export MANPAGER="`fbin nvim` +Man!"
 export PARU_PAGER="`fbin nvim` +Man!"
 # export GIT_PAGER="`fbin nvim` +AnsiEsc"
 # export GIT_PAGER=`fbin less`
-# export GIT_PAGER=
+export GIT_PAGER=`fbin less -r`
 export LESS="-F -X $LESS"
 
 export TERMINAL=`fbin xst`

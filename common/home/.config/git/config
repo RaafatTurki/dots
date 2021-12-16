@@ -5,7 +5,7 @@
 	email = raafat.turki@pm.me
 
 [commit]
-	gpgsign = true
+	gpgsign = false
 
 [core]
 	autocrlf = input
@@ -38,4 +38,7 @@
     required = true
 
 # [pull]
-	# rebase = true
+    # rebase = true
+
+[merge]
+    tool = nvimdiff

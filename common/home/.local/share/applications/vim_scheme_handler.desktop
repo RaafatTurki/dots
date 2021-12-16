@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=VimSchemeHandler
+GenericName=Text Editor
+Comment=A vim:// x-scheme handler
+TryExec=vim_scheme_handler
+Exec=vim_scheme_handler %u
+Terminal=false
+Type=Application
+Keywords=Text;editor;
+Icon=vim
+Categories=Utility;TextEditor;
+StartupNotify=false
+MimeType=x-scheme-handler/vim;

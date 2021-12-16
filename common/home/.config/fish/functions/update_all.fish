@@ -2,7 +2,7 @@ set current_stage 1
 set total_stages 6 
 
 function title
-    set_color red
+    set_color green
     echo -e "\n - [$current_stage/$total_stages] $argv[1]"
     set_color normal
     set current_stage (math $current_stage + 1)

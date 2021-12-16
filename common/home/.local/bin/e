@@ -82,9 +82,9 @@ case $PROJECT_TYPE in
         cd $DOTS
 
         ALL_DOTS=
-        ALL_DOTS+=`get_all_files_in common/home/.config`
+        ALL_DOTS+=`get_all_files_in common/home`
         MACHINE=`hostnamectl hostname`
-        ALL_DOTS+=`get_all_files_in machines/$MACHINE/home/.config`
+        ALL_DOTS+=`get_all_files_in machines/$MACHINE/home`
         SELECTION=`echo -e $ALL_DOTS | tr ' ' '\n' | fzf_fancy`
         ;;
     bin)

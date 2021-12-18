@@ -270,20 +270,20 @@ format-discharging = <ramp-capacity> <label-discharging>
 label-discharging = %percentage%%
 
 format-full = <ramp-capacity> <label-full>
-label-full = ""
+label-full = " "
 
-ramp-capacity-0 = ""
-ramp-capacity-1 = ""
-ramp-capacity-2 = ""
-ramp-capacity-3 = ""
-ramp-capacity-4 = ""
+ramp-capacity-0 = "  "
+ramp-capacity-1 = "  "
+ramp-capacity-2 = "  "
+ramp-capacity-3 = "  "
+ramp-capacity-4 = "  "
 ramp-capacity-foreground = ${g.sel}
 
-animation-charging-0 = ""
-animation-charging-1 = ""
-animation-charging-2 = ""
-animation-charging-3 = ""
-animation-charging-4 = ""
+animation-charging-0 = "  "
+animation-charging-1 = "  "
+animation-charging-2 = "  "
+animation-charging-3 = "  "
+animation-charging-4 = "  "
 animation-charging-framerate = 250
 animation-charging-foreground = ${g.sel}
 

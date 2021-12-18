@@ -69,6 +69,7 @@ alias cp='cp -i'
 alias mv='mv -i'
 alias rm='rm -i'
 alias less='less -r'
+alias echo='echo -n'
 
 # XDG compliance aliases
 alias yarn="yarn --use-yarnrc '$XDG_CONFIG_HOME/yarn/config'"

@@ -8,6 +8,14 @@
   "sort_mode": 2,
   "items": [
     {
+      "path": "/home/potato/games/executables/nes/micro_mages.nes",
+      "label": "",
+      "core_path": "/usr/lib/libretro/nestopia_libretro.so",
+      "core_name": "Nintendo - NES / Famicom (Nestopia UE)",
+      "crc32": "",
+      "db_name": ""
+    },
+    {
       "path": "/home/potato/games/executables/nes/tetris.nes",
       "label": "",
       "core_path": "/usr/lib/libretro/nestopia_libretro.so",

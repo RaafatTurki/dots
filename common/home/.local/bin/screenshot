@@ -44,10 +44,14 @@ fi
 
 # Functions
 take_ss() {
+    rm $ss_path
     col_float=`hex2rgb $col_hex`,$opacity
     maim -su --quality 1 -b 2 -c $col_float $ss_path
     # maim -sul --quality 1 -b 2 -c $col_float $ss_path
-	xdg-play screen-capture
+    # xdg-play screen-capture
+    if [ -f $ss_path ]; then
+      echo -e "\a"
+    fi
 }
 
 copy_ss() {

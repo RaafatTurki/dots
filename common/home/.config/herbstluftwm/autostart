@@ -11,7 +11,7 @@ hc emit_hook reload
 
 # remove all existing keybindings
 hc keyunbind --all
-~/.config/herbstluftwm/startup
+# ~/.config/herbstluftwm/startup
 
 # keybindings
 Mod=Mod4

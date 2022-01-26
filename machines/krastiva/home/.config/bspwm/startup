@@ -34,7 +34,6 @@ numlockx on
 # DAEMONIZED PROCESSES
 once 'xsettingsd'
 once 'mpd'
-once 'mpDris2'
 once 'urserver start'
 once 'pcmanfm -d' -e "SHELL=$TERM_SHELL"
 once 'polkit-dumb-agent'
@@ -43,6 +42,9 @@ once 'nm-applet'
 once 'unclutter --timeout 3 --jitter 10 --ignore-scrolling'
 once 'udiskie -asm nested'
 once 'picom --experimental-backends'
+once 'sxhkd'
+# once 'mpDris2'
+# once 'volumeicon'
 # once 'redshift -r -l 39:35'
 # once "redshift -r -l `lonlat`"
 # replay-sorcery &
@@ -50,14 +52,14 @@ once 'picom --experimental-backends'
 
 
 # REFRESHABLE PROCESSES
-reload 'sxhkd'
+reload 'trayer --align right --widthtype request --transparent true --tint 0x000000'
 reload 'dunst'
 reload 'polybar krastiva -r'
 reload 'flashfocus'
 
 # SIGNALS
 killall -USR1 xst
-# killall -USR1 sxhkd
+killall -USR1 sxhkd
 killall -USR1 picom
 # pkill -USR1 redshift
 # killall -SIGUSR1 dunst # pause

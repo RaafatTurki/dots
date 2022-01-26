@@ -3,7 +3,7 @@ set total_stages 6
 
 function title
     set_color green
-    echo -e "\n - [$current_stage/$total_stages] $argv[1]"
+    echo -e "\n - [$current_stage/$total_stages] $argv[1]\n"
     set_color normal
     set current_stage (math $current_stage + 1)
 end
@@ -36,4 +36,8 @@ function update_all
 
     title "Updating Fish Completions"
     fish_update_completions
+
+    title "Rebuilding Font Cache Files"
+    fc-cache -frv
+
 end

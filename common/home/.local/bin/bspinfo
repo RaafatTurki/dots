@@ -1,0 +1,39 @@
+#!/usr/bin/bash
+
+FONT="Dina:pixelsize=15:bold"
+BG=`xgetres col.bg`
+FG=`xgetres col.sel`
+MON=$(bspc query -M -d focused --names)
+TIME=${2:-0.3}
+# TIME=10
+
+PIDS=$(pgrep umess)
+[ ! -z "$PIDS" ] && kill $PIDS
+
+STRING=""
+case $1 in
+  -t|--time)
+    STRING=`date '+%a %d %b %I:%M %p'`
+    ;;
+  -d|--desktop)
+    STRING=`bspc query -D -d focused --names`
+    ;;
+  -b|--battery)
+    STRING=`acpi | perl -ne "/^Battery \d*: ([A-Za-z]{3})[a-z]*, (\d+%), (\d+:\d+):\d+/ && printf \"%s %s | rem %s\", lc \$1, \$2, \$3"`
+    ;;
+  -l|--language)
+    STRING=`setxkbmap -query | perl -ne "/^layout:\s*([A-Za-z]+)$/ && print \$1"`
+    ;;
+  -bl|--backlight)
+    STRING=`brightnessctl | grep -oP "\d+%"`
+    ;;
+  -v|--volume)
+    STRING=`pactl get-sink-volume @DEFAULT_SINK@ pactl | head -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,'`
+    ;;
+  -m|--mute)
+    STRING=`pactl get-sink-mute @DEFAULT_SINK@ toggle`
+    ;;
+esac
+
+# (echo $STRING; sleep $TIME) | umess -b -f $FONT -m $MON -F $FG -B $BG 
+(echo $STRING; sleep $TIME) | umess -t -r -f $FONT -m $MON -F $FG -B $BG 

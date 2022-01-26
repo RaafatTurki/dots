@@ -62,6 +62,7 @@ export READER=`fbin zathura`
 export BROWSER=`fbin firefox`
 export LAUNCHER="`fbin rofi` -show drun"
 export LOCKER=`fbin lock`
+export AUDIO_MIXER=`fbin pavucontrol`
 export MUSIC_CLIENT="$TERMINAL -e `fbin ncmpcpp`"
 export MUSIC_SERVER=`fbin mpd`
 export SCREENSHOT=`fbin screenshot`
@@ -100,7 +101,8 @@ export GOPATH="$XDG_DATA_HOME"/go
 
 # Autostart tbsm on tty 1
 if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
-startx bspwm
+# startx bspwm
+startx xfce
 else
 setfont /usr/share/kbd/consolefonts/ter-v18n.psf.gz
 clear

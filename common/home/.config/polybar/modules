@@ -136,7 +136,7 @@ interface = enp2s0
 accumulate-stats = true
 unknown-as-up = false
 
-format-connected = <label-connected>
+format-connected =↑ <label-connected>
 format-connected-foreground = ${g.sel}
 
 label-connected = %upspeed%
@@ -154,7 +154,7 @@ interface = enp2s0
 accumulate-stats = true
 unknown-as-up = false
 
-format-connected = <label-connected>
+format-connected =↓ <label-connected>
 format-connected-foreground = ${g.sel}
 
 label-connected = %downspeed%

@@ -1,0 +1,103 @@
+header = "./xres.header"
+footer = "./xres.footer"
+
+# defines
+[defs]
+BL    = "#000000"
+WH    = "#ffffff"
+RED   = "#ED9831"
+ERR   = "#DE3F4F"
+BG    = "#000000"
+MG    = "#0A151F"
+FG    = "#294374"
+SEL   = "#FEFFFF"
+FN    = "Dina"
+FS    = 15
+FS_S  = 15
+FS_UI = 15 
+# FN    = "Cozette"
+# FS    = 13 
+# FS_S  = 13 
+# FS_UI = 13
+FN_SYM = "Symbols Nerd Font"
+DPI   = 101
+
+[mods]
+Xft.dpi       = "DPI"
+# Xcursor.size  = 32
+# Xcursor.theme = "pix_black"
+
+[mods.col]
+bl          = "BL"
+wh          = "WH"
+bg          = "BG"
+mg          = "MG"
+fg          = "FG"
+sel         = "SEL"
+
+# colors
+[mods.ALL]
+background  = "#0D1017"
+foreground  = "#F1F7ED"
+
+color0      = "#252550"
+color1      = "#D7263D"
+color2      = "#B0DB43"
+color3      = "#FFAE03"
+color4      = "#0061FE"
+color5      = "#F53385"
+color6      = "#3FA7D6"
+color7      = "#FFFFFF"
+
+color8      = "#353570"
+color9      = "#E7365D"
+color10 		= "#C0EB63"
+color11 		= "#FFBE23"
+color12 		= "#1071FE"
+color13 		= "#F543A5"
+color14 		= "#4FB7F6"
+color15 		= "#FFFFFF"
+
+
+# polybar
+[mods.polybar]
+font-0      = "FN:pixelsize=FS_UI"
+font-1      = "FN_SYM:pixelsize=FS_UI"
+width       = "100%"
+height      = "24px"
+dpi 		    = "DPI"
+
+
+# st
+[mods.st]
+termname                       = "xst-256color"
+borderless                     = 1
+# USR1 signal reloadable
+font 					                 = "FN:pixelsize=FS_S:antialias=true:autohint=true"
+# ! st.font:						FN:pixelsize=FS:antialias=true:autohint=true
+# ! Font2 fallback, each font can be separated by comma ","
+# ! st.font_fallback:               Fira Code Nerd Font Mono:style=Regular:pixelsize=13:antialias=true,Material\\-Design\\-Iconic\\-Font:style=Design-Iconic-Font:pixelsize=13,JoyPixels:pixelsize=13
+# ! st.font_fallback:               Fira Code Nerd Font Mono:style=Regular:pixelsize=13:antialias=true,Material\\-Design\\-Iconic\\-Font:style=Design-Iconic-Font:pixelsize=13,JoyPixels:pixelsize=13
+borderpx                       = 0
+cursorshape                    = 3
+cursorthickness                = 2
+cursorblinkstyle               = 0
+cursorblinkontype              = 0
+disablebold                    = 0
+disableitalics                 = 0
+disableroman                   = 0
+scrollrate                     = 10
+chscale                        = 1.0
+cwscale                        = 1.0
+blinktimeout                   = 100
+bellvolume                     = 5
+boxdraw                        = 1
+boxdraw_bold                   = 1
+boxdraw_braille                = 1
+depth                          = 0
+opacity                        = 255
+disable_alpha_correction       = 0
+undercurl_shape                = 1 
+undercurl_thickness_threshold  = 100
+# ! st.prompt_char:                 λ  !`printf '\033[z'`
+# ! st.shell:                       /usr/bin/fish

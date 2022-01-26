@@ -3,12 +3,12 @@
     # monitor = 0
     follow = mouse
     geometry = "500x40-8+30"
-	indicate_hidden = no
+    indicate_hidden = no
     shrink = yes
     transparency = 0
     notification_height = 0
     separator_height = 0
-	separator_color = frame
+	  separator_color = frame
     padding = 10
     horizontal_padding = 20
     frame_width = 0

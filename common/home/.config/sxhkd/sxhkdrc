@@ -10,7 +10,7 @@ super + e
 	$FM
 
 super + z
-	/home/potato/meh.sh
+  bspinfo -t 1
 
 super + r
 	replay-sorcery save
@@ -32,16 +32,17 @@ Print + {_, shift, ctrl, super}
 	screenshot {clip, save, ocr, decode}
 
 XF86Audio{LowerVolume,RaiseVolume}
-	pactl set-sink-volume @DEFAULT_SINK@ {-,+}10%
+	pactl set-sink-volume @DEFAULT_SINK@ {-,+}10% && bspinfo -v
 KP_{Subtract,Add} + {_,shift}
-	pactl set-sink-volume @DEFAULT_SINK@ {-,+}{10%,1%}
+	pactl set-sink-volume @DEFAULT_SINK@ {-,+}{10%,1%} && bspinfo -v
 XF86AudioMute
-	pactl set-sink-mute @DEFAULT_SINK@ toggle
+	pactl set-sink-mute @DEFAULT_SINK@ toggle && bspinfo -m
 #XF86MonBrightness{Up,Down}
 #	light {-A 2,-U 2}
 
 XF86Tools
-    $MUSIC_CLIENT
+  $AUDIO_MIXER
+  # $MUSIC_CLIENT
 XF86Audio{Stop,Prev,Play,Next}
 	mpc {stop,prev,toggle,next}
 KP_Enter
@@ -90,15 +91,19 @@ super + {Left,Down,Up,Right}
 
 # focus the next/previous desktop in the current monitor
 super + shift + {Left, Right}
-	bspc desktop -f {prev, next}
+	bspc desktop -f {prev, next} && bspinfo -d
 
 # focus the last node/desktop
 super + {Tab, grave}
-	bspc {node, desktop} -f last
+	bspc {node, desktop} -f last && bspinfo -d
 
+# switch between desktops
+super + {1-8}
+  bspc desktop -f '^{1-8}' && bspinfo -d
 
-super + {_, shift +} {1-8}
-	bspc {desktop -f,node -d} '^{1-8}'
+# move window to desktop
+super + shift + {1-8}
+  bspc node -d '^{1-8}'
 
 # focus the parent or 1st node
 super + {a, z}

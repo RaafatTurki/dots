@@ -6,8 +6,8 @@ st.termname:                    xst-256color
 st.borderless:                  1
 
 ! USR1 signal reloadable
-st.font:						FN:size=FS_S:antialias=true:autohint=true
-! st.font:						FN:size=FS:antialias=true:autohint=true
+st.font:						FN:pixelsize=FS_S:antialias=true:autohint=true
+! st.font:						FN:pixelsize=FS:antialias=true:autohint=true
 
 
 ! Font2 fallback, each font can be separated by comma ","
@@ -15,7 +15,7 @@ st.font:						FN:size=FS_S:antialias=true:autohint=true
 ! st.font_fallback:               Fira Code Nerd Font Mono:style=Regular:pixelsize=13:antialias=true,Material\\-Design\\-Iconic\\-Font:style=Design-Iconic-Font:pixelsize=13,JoyPixels:pixelsize=13
 st.borderpx:                    0
 st.cursorshape:                 3
-st.cursorthickness:             1
+st.cursorthickness:             2
 st.cursorblinkstyle:            0
 st.cursorblinkontype:           0
 st.disablebold:                 0

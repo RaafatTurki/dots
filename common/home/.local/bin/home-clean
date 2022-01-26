@@ -25,6 +25,7 @@ GARBAGE=(
 .subversion
 .swt
 .synergy
+.thumbnails
 .urserver
 .viminfo
 .wget-hsts

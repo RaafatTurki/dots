@@ -11,7 +11,7 @@
 	autocrlf = input
 
 [init]
-	defaultBranch = main
+	defaultBranch = master
 
 [advice]
 	addEmptyPathspec = false

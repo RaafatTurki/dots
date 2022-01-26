@@ -42,6 +42,7 @@ class_name "Emacs" && echo "state=tiled"
 class_name "Godot_Engine" && echo "state=floating"
 class_name "Ice" && echo "state=floating"
 class_name "Steam" && echo "state=floating"
+class_name "pentablet" && echo "state=floating"
 class_name "Steam" && window_name "Steam" && echo "state=tiled"
 
 # debug

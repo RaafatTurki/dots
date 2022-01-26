@@ -30,9 +30,15 @@ execute_cmd() {
 
 # determine the process name to kill
 PNAME=${KILL:-`echo $CMD | cut -f 1 -d ' '`}
+PNAME=${PNAME::15}
 
 if [ $LAUNCH_MODE == "once" ]; then
-    if [ -z `pgrep $PNAME` ]; then execute_cmd; fi
+    if [ -z `pgrep $PNAME` ]; then
+      execute_cmd
+    else
+      echo "process already running"
+      exit 1
+    fi
 elif [ $LAUNCH_MODE == "reload" ]; then
     PID=`pgrep $PNAME`
     if [ ! -z $PID ]; then kill $PID; fi

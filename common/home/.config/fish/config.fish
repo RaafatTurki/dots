@@ -85,6 +85,12 @@ alias node_modules_find="find . -name 'node_modules' -type d -prune -print | xar
 alias node_modules_clean="find . -name 'node_modules' -type d -prune -print -exec trash -r '{}' \;"
 alias lib32_find="aa -Qsq | grep lib32 | fzf | xargs pacman -Qi"
 
+# pacman
+alias pkgi='paru -Qeq | fzf | xargs paru -Qi'
+alias pkgia='paru -Qsq | fzf | xargs paru -Qi'
+alias pkgp='paru -Qeq | fzf | xargs paru -Gp'
+alias pkgpa='paru -Qsq | fzf | xargs paru -Gp'
+
 # launchers
 alias get-audio='youtube-dl --extract-audio -f bestaudio'
 alias get-video='youtube-dl -f bestvideo+bestaudio'

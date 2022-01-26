@@ -1,7 +1,8 @@
+smb://krastiva/share krastiva_samba
 file:///home/potato/media/public samba
-file:///home/potato/games/executables/win_64
-file:///home/potato/games
-file:///home/potato/.local/share/multimc
+file:///home/potato/games/executables/win_64 win_64
+file:///home/potato/games games
+file:///home/potato/.local/share/multimc multimc
 file:///home/potato/.local/share/multimc/instances/Disconnected.older/.minecraft disconnected.older
 file:///home/potato/.local/share/multimc/instances/Disconnected.old/.minecraft disconnected.old
 file:///home/potato/.local/share/multimc/instances/Disconnected/.minecraft disconnected

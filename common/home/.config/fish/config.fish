@@ -13,6 +13,8 @@ venv_auto
 alias _="sudo"
 alias __="sudo -E"
 alias aa="paru"
+alias home="cd ~"
+alias dots="cd $DOTS"
 alias nivm="nvim"
 alias env="env | sort"
 alias neo="neofetch"

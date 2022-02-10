@@ -27,15 +27,13 @@ xset s 300 300
 xset dpms 300 0 0
 
 wmname LG3D
-numlockx on
+# numlockx on
 # redshift -x
 # redshift -O 6000K -b 0.9
 
-# DAEMONIZED PROCESSES
+# DAEMONIZED PROCESSES (executed only if not running)
 once 'xsettingsd'
 once 'mpd'
-once 'urserver start'
-once 'pcmanfm -d' -e "SHELL=$TERM_SHELL"
 once 'polkit-dumb-agent'
 once 'barriers -f -c .config/barrier/config.conf --disable-crypto'
 once 'nm-applet'
@@ -43,6 +41,10 @@ once 'unclutter --timeout 3 --jitter 10 --ignore-scrolling'
 once 'udiskie -asm nested'
 once 'picom --experimental-backends'
 once 'sxhkd'
+once 'xss-lock lock'
+once 'transmission-gtk -m'
+# once 'urserver start'
+# once 'pcmanfm -d' -e "SHELL=$TERM_SHELL"
 # once 'mpDris2'
 # once 'volumeicon'
 # once 'redshift -r -l 39:35'
@@ -51,11 +53,11 @@ once 'sxhkd'
 # lf -server &
 
 
-# REFRESHABLE PROCESSES
+# RE-EXECUTED PROCESSES (killed and executed)
 reload 'trayer --align right --widthtype request --transparent true --tint 0x000000'
 reload 'dunst'
-reload 'polybar krastiva -r'
 reload 'flashfocus'
+# reload 'polybar krastiva -r'
 
 # SIGNALS
 killall -USR1 xst
@@ -75,10 +77,5 @@ killall -USR1 picom
 # pkill picom; picom-epic-animations --experimental-backends &
 
 
-
 # TO_READ_ABOUT:
 # ssh-agent
-# polkit
-
-
-

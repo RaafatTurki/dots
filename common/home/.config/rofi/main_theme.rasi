@@ -4,7 +4,7 @@ version: 1.7.0 */
 * {
 	bg:		#000000;
 	mg:		#0A151F;
-    fg:		#294374;
+  fg:		#294374;
 	sel:	#FEFFFF;
 	tr:		#00000000;
 
@@ -21,9 +21,11 @@ window {
     border-color: @mg;
 }
 mode-switcher {}
-button selected {
-    border-color: @fg;
+button {
     text-color: @fg;
+}
+button selected {
+    text-color: @sel;
 }
 inputbar {
     padding: 4px;

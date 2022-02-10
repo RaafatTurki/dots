@@ -1,0 +1,14 @@
+# Maintainer: Raafat Turki <raafat.turki@pm.me>
+
+pkgname=meta-gvfs
+pkgver=0.1
+pkgrel=1
+pkgdesc="meta gvfs"
+arch=('x86_64')
+license=('MIT')
+depends=(
+gvfs
+gvfs-gphoto2
+gvfs-mtp
+gvfs-smb
+)

@@ -1,5 +1,6 @@
 #!/bin/sh
 
+# exec dwm
 exec bspwm
 # exec startxfce4
 # exec leftwm

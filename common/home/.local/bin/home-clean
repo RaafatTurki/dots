@@ -6,6 +6,7 @@ GARBAGE=(
 .anydesk
 .anydesk
 .cache
+.cinnamon
 .degit
 .dotnet
 .eclipse
@@ -35,6 +36,7 @@ GARBAGE=(
 unity.lock
 yarn.lock
 )
+# .parsec
 
 for p in ${GARBAGE[@]}; do
     if [ -e $p ]; then

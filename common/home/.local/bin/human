@@ -1,3 +1,0 @@
-#!/usr/bin/bash
-#deps: man2html browser
-man $1 | man2html -title $1 | browser

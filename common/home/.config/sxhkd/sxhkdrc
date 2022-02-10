@@ -7,7 +7,7 @@ super + d
 	$LAUNCHER
 
 super + e
-	$FM
+	SHELL=fish $FM
 
 super + z
   bspinfo -t 1
@@ -26,10 +26,11 @@ super + Escape
 	# XCOLOR_DISABLE_SHAPE=1 xcolor --format HEX | xclip -selection clipboard
 
 super + l
-	$LOCKER
+  loginctl lock-session $XDG_SESSION_ID
+	# $LOCKER
 
 Print + {_, shift, ctrl, super}
-	screenshot {clip, save, ocr, decode}
+	$SCREENSHOT {clip, save, ocr, decode}
 
 XF86Audio{LowerVolume,RaiseVolume}
 	pactl set-sink-volume @DEFAULT_SINK@ {-,+}10% && bspinfo -v

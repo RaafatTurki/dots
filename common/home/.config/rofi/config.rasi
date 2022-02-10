@@ -4,7 +4,7 @@ vim: filetype=css
 
 configuration {
 /* modi: "drun,window,run,ssh"; */
-modi: "drun,window,run,ssh";
+modi: "drun,ssh,p:rofi-power-menu";
 font: "Terminus (TTF) 12";
 location: 0;
 yoffset: 0;

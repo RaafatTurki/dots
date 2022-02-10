@@ -44,6 +44,10 @@ class_name "Ice" && echo "state=floating"
 class_name "Steam" && echo "state=floating"
 class_name "pentablet" && echo "state=floating"
 class_name "Steam" && window_name "Steam" && echo "state=tiled"
+class_name "xpad" && echo "state=floating"
+# window_name "Open with" && echo "state=tiled"
+# class_name "nemo" && 
+# state=floating rectangle="1000x1000+0+0" center=true
 
 # debug
 window_name "float_me" && echo "state=floating"

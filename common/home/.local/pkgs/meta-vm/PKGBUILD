@@ -1,0 +1,23 @@
+# Maintainer: Raafat Turki <raafat.turki@pm.me>
+
+pkgname=meta-vm
+pkgver=0.1
+pkgrel=1
+pkgdesc="meta libvirt setup"
+arch=('x86_64')
+license=('MIT')
+depends=(
+libvirt
+qemu
+ebtables
+dnsmasq
+edk2-ovmf
+virt-manager
+
+systemd
+)
+
+# sudo systemctl enable --now libvirtd
+# sudo virsh net-start default
+# sudo systemctl restart libvirtd
+# sudo usermod -G libvirt -a $USER

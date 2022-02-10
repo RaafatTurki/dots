@@ -1,6 +1,8 @@
 #!/usr/bin/bash
 
-FONT="Dina:pixelsize=15:bold"
+FS_UI=`xgetres txt.fs_ui`
+FN=`xgetres txt.fn`
+FONT="$FN:pixelsize=$FS_UI:bold"
 BG=`xgetres col.bg`
 FG=`xgetres col.sel`
 MON=$(bspc query -M -d focused --names)

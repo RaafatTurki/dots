@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-exec $TERMINAL $1
+exec env SHELL=$TERM_SHELL $TERMINAL $@
 
 # TERMS=(
 # kitty

@@ -57,15 +57,14 @@ export LESS="-F -X $LESS"
 
 export TERMINAL=`fbin xst`
 # export TERMINAL=`fbin kitty`
-export FM=`fbin pcmanfm`
+export FM=`fbin nemo`
 export READER=`fbin zathura`
 export BROWSER=`fbin firefox`
 export LAUNCHER="`fbin rofi` -show drun"
-export LOCKER=`fbin lock`
 export AUDIO_MIXER=`fbin pavucontrol`
 export MUSIC_CLIENT="$TERMINAL -e `fbin ncmpcpp`"
 export MUSIC_SERVER=`fbin mpd`
-export SCREENSHOT=`fbin screenshot`
+export SCREENSHOT=`fbin scrscn`
 # export SXHKD_SHELL=$SHELL
 export COLOR_PICKER=`fbin color-picker`
 export SYSMON=`fbin btop`

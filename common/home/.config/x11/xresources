@@ -23,15 +23,15 @@
 ! #define FG    #2D445F
 ! #define SEL   #9BB7DC
 
-! #define   FN        Terminus
-! #define   FS        18
-! #define   FS_S      18
-! #define   FS_UI     14
+#define   FN        Terminus
+#define   FS        15
+#define   FS_S      15
+#define   FS_UI     15
 
-#define FN          Dina
-#define FS          15
-#define FS_S        15
-#define FS_UI       15 
+! #define FN          Dina
+! #define FS          15
+! #define FS_S        15
+! #define FS_UI       15 
 
 ! #define FN          Cozette
 ! #define FS          13 

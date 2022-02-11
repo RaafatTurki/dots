@@ -1,51 +1,54 @@
 #!/bin/bash
 
 GARBAGE=(
-.ICEauthority
-.android
-.anydesk
-.anydesk
-.cache
-.cinnamon
-.degit
-.dotnet
-.eclipse
-.flutter
-.gtkrc-2.0
-.java
-.lesshst
-.mono
-.npm
-.nuget
-.pki
-.pnpm-debug.log
-.pulse-cookie
-.stack
-.steampath
-.steampid
-.subversion
-.swt
-.synergy
-.thumbnails
-.urserver
-.viminfo
-.wget-hsts
-.wine
-.yarn
-.yarnrc
-unity.lock
-yarn.lock
+  .ICEauthority
+  .android
+  .anydesk
+  .anydesk
+  .cache
+  .cinnamon
+  .degit
+  .dotnet
+  .eclipse
+  .flutter
+  .gtkrc-2.0
+  .java
+  .lesshst
+  .mono
+  .npm
+  .nuget
+  .pki
+  .pnpm-debug.log
+  .pulse-cookie
+  .stack
+  .steampath
+  .steampid
+  .subversion
+  .swt
+  .synergy
+  .thumbnails
+  .urserver
+  .viminfo
+  .wget-hsts
+  .wine
+  .yarn
+  .yarnrc
+  unity.lock
+  yarn.lock
 )
 # .parsec
 
 for p in ${GARBAGE[@]}; do
-    if [ -e $p ]; then
-        trash -r $p
-        echo "$p"
-    fi
-    if [ -L $p ]; then
-        trash -r $p
-        echo "$p"
-    fi
+  # rm file if exists
+  if [ -e $p ]; then
+    trash -r $p
+    echo "$p"
+  fi
+
+  # rm file if symlink
+  if [ -L $p ]; then
+    trash -r $p
+    echo "$p"
+  fi
 done
 

@@ -32,15 +32,15 @@ get_query() {
 }
 
 fzf_fancy() {
-    # if [ -z `command -v bat` ]; then
-    #     PREVIEW="cat {} -n"
-    # else
-    #     PREVIEW="bat --color=always --tabs 2 {} -n"
-    # fi
-    # PREVIEW_WINDOW="right:70%:nowrap"
+    if [ -z `command -v bat` ]; then
+        PREVIEW="cat {} -n"
+    else
+        PREVIEW="bat --color=always --tabs 2 {} -n"
+    fi
+    PREVIEW_WINDOW="right:70%:nowrap"
     QUERY=$(get_query)
-    fzf --query ${QUERY:-""} -1 -0 --exact
-    # fzf --preview="$PREVIEW" --preview-window="$PREVIEW_WINDOW" --query ${QUERY:-""} -1 -0 --exact
+    # fzf --query ${QUERY:-""} -1 -0 --exact
+    fzf --preview="$PREVIEW" --preview-window="$PREVIEW_WINDOW" --query ${QUERY:-""} -1 -0 --exact
 }
 
 fzf_simple() {

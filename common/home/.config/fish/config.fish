@@ -113,6 +113,9 @@ alias pip-fzf='pip list - | fzf'
 alias pip-self-update='python -m pip install --upgrade pip'
 alias venv='python -m venv'
 
+# android
+alias create-android-debugstore='keytool -keyalg RSA -genkeypair -alias androiddebugkey -keypass android -keystore debug.keystore -storepass android -dname "CN=Android Debug,O=Android,C=US" -validity 9999 -deststoretype pkcs12'
+
 
 # ENV VARS
 #(being set to st-256color in xrdb)

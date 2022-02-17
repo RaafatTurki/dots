@@ -89,7 +89,7 @@ export ICEAUTHORITY=$XDG_CACHE_HOME/ICEauthority
 # export GNUPGHOME=$XDG_DATA_HOME/gnupg
 export CUDA_CACHE_PATH=$XDG_CACHE_HOME/nv
 
-# export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npm/npmrc
+export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npm/npmrc
 export npm_config_prefix=$HOME/.local
 export NODE_REPL_HISTORY=$XDG_CACHE_HOME/node_repl_history
 export NPM_HOME=$XDG_DATA_HOME/npm

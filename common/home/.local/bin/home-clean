@@ -2,8 +2,6 @@
 
 GARBAGE=(
   .ICEauthority
-  .android
-  .anydesk
   .anydesk
   .cache
   .cinnamon
@@ -12,6 +10,7 @@ GARBAGE=(
   .eclipse
   .flutter
   .gtkrc-2.0
+  .icons
   .java
   .lesshst
   .mono
@@ -36,19 +35,20 @@ GARBAGE=(
   unity.lock
   yarn.lock
 )
-# .parsec
 
-for p in ${GARBAGE[@]}; do
+for t in ${GARBAGE[@]}; do
+  target=$HOME/$t
+
   # rm file if exists
-  if [ -e $p ]; then
-    trash -r $p
-    echo "$p"
+  if [ -e $target ]; then
+    trash -r $target
+    echo $t
   fi
 
   # rm file if symlink
-  if [ -L $p ]; then
-    trash -r $p
-    echo "$p"
+  if [ -L $target ]; then
+    trash -r $target
+    echo $t
   fi
 done
 

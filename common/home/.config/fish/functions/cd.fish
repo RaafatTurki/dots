@@ -1,4 +1,4 @@
 function cd
-    builtin cd $argv[1]
+    builtin cd $argv
     venv_auto
 end

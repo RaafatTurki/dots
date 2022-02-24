@@ -10,7 +10,6 @@ GARBAGE=(
   .eclipse
   .flutter
   .gtkrc-2.0
-  .icons
   .java
   .lesshst
   .mono
@@ -35,6 +34,7 @@ GARBAGE=(
   unity.lock
   yarn.lock
 )
+# .icons
 
 for t in ${GARBAGE[@]}; do
   target=$HOME/$t

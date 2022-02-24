@@ -18,8 +18,8 @@
 	statusHints = false
 
 [alias]
-    # glog = log --graph --abbrev-commit --pretty=format:'%Cred%h %Creset%s %C(yellow)%d %Cgreen%cr %C(blue)<%an>%Creset'
-    glog = log --oneline --abbrev-commit --reverse --pretty=format:'%Cred%h %C(green)%cr\t%Creset%s %C(blue) %an%Creset %C(yellow)%d'
+  # glog = log --graph --abbrev-commit --pretty=format:'%Cred%h %Creset%s %C(yellow)%d %Cgreen%cr %C(blue)<%an>%Creset'
+  glog = log --oneline --abbrev-commit --reverse --pretty=format:'%Cred%h %C(green)%cr\t%Creset%s %C(blue) %an%Creset %C(yellow)%d'
 	update = fetch --dry-run
 	st = status -sb
 	last = log -1 HEAD --stat
@@ -27,18 +27,18 @@
 	rv = remote -v
 	d = diff
 	dv = difftool -t vimdiff -y
-    gl = config --global -l
-    cloner = clone --recursive
+  gl = config --global -l
+  cloner = clone --recursive
 	# se = !git rev-list --all | xargs git grep -F
 	# conv-ssh = remote set-url origin git@github.com:RaafatTurki/
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
-    required = true
+  required = true
 
 # [pull]
-    # rebase = true
+#   rebase = true
 
 [merge]
     tool = nvimdiff

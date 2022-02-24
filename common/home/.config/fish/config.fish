@@ -31,6 +31,7 @@ alias lsdu='du -ahx -- * | sort -rh | head -10'
 # alias once="execute -o -c"
 # alias reload="execute -r -c"
 alias get-dpi='xdpyinfo | grep -B 2 resolution'
+alias journal-boot='sudo journalctl -p 3 -b --no-pager'
 
 # alias wine-install="aa -S wine-staging && aa -S --needed --asdeps (pacman -Si wine-staging | sed -n '/^Opt/,/^Conf/p' | sed '$d' | sed 's/^Opt.*://g' | sed 's/^\s*//g')"
 alias get_active_src="pactl list sources | grep -A 3 RUNNING | grep Name | cut -d ' ' -f 2"
@@ -40,12 +41,13 @@ alias benchmark='hyperfine'
 alias kssh='kitty +kitten ssh'
 
 # e aliases
-alias nvimc="e nvim -q"
-# alias nvimc="e nvim -o 'devour neovide' -q"
+alias nvimc="e nvimc -q"
+# alias nvimc="e nvimc -o 'devour neovide' -q"
 alias dotc="e dots -q"
 alias binc="e bin -q"
-alias notec="e note -q"
-alias fishc="$EDITOR $XDG_CONFIG_HOME/fish/config.fish"
+alias notes="e notes -q"
+# alias fishc="$EDITOR $XDG_CONFIG_HOME/fish/config.fish"
+alias fishc="e fishc -q"
 alias gitc="$EDITOR $XDG_CONFIG_HOME/git/config"
 alias profc="$EDITOR ~/.profile"
 alias gd="e godot -o 'nvimgd init'"
@@ -66,12 +68,12 @@ alias fdisk='fdisk --color=auto'
 alias df='df -h'
 alias free='free -h'
 alias tree='tree -C'
-alias watch='watch -c'
 alias cp='cp -i'
 alias mv='mv -i'
 alias rm='rm -i'
 alias less='less -r'
 alias echo='echo -n'
+alias watch='watch -c -w -t -n 0.1'
 
 # XDG compliance aliases
 alias yarn="yarn --use-yarnrc '$XDG_CONFIG_HOME/yarn/config'"
@@ -80,18 +82,16 @@ alias irssi="irssi --config=$XDG_CONFIG_HOME/irssi/config --home=$XDG_DATA_HOME/
 
 # utils
 alias pkgfile-update='sudo pkgfile -u'
-alias pac-unlock='sudo rm /var/lib/pacman/db.lck'
-alias pac-clean='sudo pacman -Rns (pacman -Qtdq)'
-alias pac-sort-mirrors="curl -s 'https://archlinux.org/mirrorlist/?country=TR&country=DE&use_mirror_status=on' | sed -e 's/^#Server/Server/' -e '/^#/d' | rankmirrors -v -n 8 - > /etc/pacman.d/mirrorlist"
 alias node_modules_find="find . -name 'node_modules' -type d -prune -print | xargs du -chs"
 alias node_modules_clean="find . -name 'node_modules' -type d -prune -print -exec trash -r '{}' \;"
 alias lib32_find="aa -Qsq | grep lib32 | fzf | xargs pacman -Qi"
 
 # pacman
-alias pkgi='paru -Qeq | fzf | xargs paru -Qi'
-alias pkgia='paru -Qsq | fzf | xargs paru -Qi'
-alias pkgp='paru -Qeq | fzf | xargs paru -Gp'
-alias pkgpa='paru -Qsq | fzf | xargs paru -Gp'
+alias pac-info='paru -Qsq | fzf | xargs paru -Qi'
+alias pac-pkgbuild='paru -Qsq | fzf | xargs paru -Gp'
+alias pac-unlock='sudo rm /var/lib/pacman/db.lck'
+alias pac-clean='sudo pacman -Rns (pacman -Qtdq)'
+alias pac-sort-mirrors="curl -s 'https://archlinux.org/mirrorlist/?country=TR&country=DE&use_mirror_status=on' | sed -e 's/^#Server/Server/' -e '/^#/d' | rankmirrors -v -n 8 - > /etc/pacman.d/mirrorlist"
 
 # launchers
 alias get-audio='youtube-dl --extract-audio -f bestaudio'

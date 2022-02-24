@@ -43,6 +43,7 @@ export DOTS=~/dots
 export SHELL=`fbin bash`
 # export TERM="xterm-256color"
 # export TERM="xst-256color"
+export AUR_HELPER=`fbin paru`
 export TERM_SHELL=`fbin fish`
 export EDITOR=`fbin nvim`
 export VISUAL=$EDITOR
@@ -100,10 +101,9 @@ export GOPATH="$XDG_DATA_HOME"/go
 
 # Autostart tbsm on tty 1
 if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
-# startx bspwm
-startx xfce
+startx $XINITRC
 else
-setfont /usr/share/kbd/consolefonts/ter-v18n.psf.gz
+# setfont /usr/share/kbd/consolefonts/ter-v18n.psf.gz
 clear
 exec fish
 fi

@@ -37,7 +37,8 @@ fzf_fancy() {
     else
         PREVIEW="bat --color=always --tabs 2 {} -n"
     fi
-    PREVIEW_WINDOW="right:70%:nowrap"
+    # PREVIEW_WINDOW="right:70%:nowrap"
+    PREVIEW_WINDOW="top:70%:nowrap"
     QUERY=$(get_query)
     # fzf --query ${QUERY:-""} -1 -0 --exact
     fzf --preview="$PREVIEW" --preview-window="$PREVIEW_WINDOW" --query ${QUERY:-""} -1 -0 --exact
@@ -97,9 +98,9 @@ case $PROJECT_TYPE in
         SELECTION=$(find_project_with_root_identifier project.godot f)
         if [ ! -z $SELECTION ]; then cd ~/sectors/godot/$SELECTION ;fi
         ;;
-    nvim)
+    nvimc)
         cd $XDG_CONFIG_HOME/nvim/
-        SELECTION=`find . -path ./.git -prune -o -type f -printf '%P\n' | fzf_fancy`
+        SELECTION=`find . -path ./.git -prune -o -path ./doc -prune -o -type f -printf '%P\n' | fzf_fancy`
         ;;
     nvimp)
         cd ~/.local/share/nvim/site/pack/packer/start/
@@ -109,7 +110,11 @@ case $PROJECT_TYPE in
         cd $XDG_CACHE_HOME/nvim
         SELECTION=`find . -printf '%P\n' | fzf_fancy`
         ;;
-    note)
+    fishc)
+        cd $XDG_CONFIG_HOME/fish
+        SELECTION=`find . -printf '%P\n' | fzf_fancy`
+        ;;
+    notes)
         cd ~/desk/notes
         SELECTION=`find . -type f -printf '%P\n' | fzf_fancy`
         ;;

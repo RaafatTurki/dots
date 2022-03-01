@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 # this script handles all stowing related to the $DOTS_ROOT directory
 
-DOTS_ROOT=`pwd`
+DOTS_ROOT=$DOTS
 # DOTS_ROOT=$DOTS
 MACHINE=`hostnamectl hostname`
 

@@ -58,7 +58,7 @@ export LESS="-F -X $LESS"
 
 export TERMINAL=`fbin xst`
 # export TERMINAL=`fbin kitty`
-export FM=`fbin nemo`
+export FM=`fbin spacefm`
 export READER=`fbin zathura`
 export BROWSER=`fbin firefox`
 export LAUNCHER="`fbin rofi` -show drun"

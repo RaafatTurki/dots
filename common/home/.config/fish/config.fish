@@ -84,7 +84,9 @@ alias irssi="irssi --config=$XDG_CONFIG_HOME/irssi/config --home=$XDG_DATA_HOME/
 alias pkgfile-update='sudo pkgfile -u'
 alias node_modules_find="find . -name 'node_modules' -type d -prune -print | xargs du -chs"
 alias node_modules_clean="find . -name 'node_modules' -type d -prune -print -exec trash -r '{}' \;"
-alias lib32_find="aa -Qsq | grep lib32 | fzf | xargs pacman -Qi"
+alias lib32-find="aa -Qsq | grep lib32 | fzf | xargs pacman -Qi"
+alias kernel-params="cat /proc/cmdline"
+alias key="xev | awk -F'[ )]+' '/^KeyPress/ { a[NR+2] } NR in a { printf \"%-3s %s\n\", \$5, \$8 }'"
 
 # pacman
 alias pac-info='paru -Qsq | fzf | xargs paru -Qi'

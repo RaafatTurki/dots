@@ -43,6 +43,7 @@ once 'picom --experimental-backends'
 once 'sxhkd'
 once 'xss-lock lock'
 once 'transmission-gtk -m'
+once 'spacefm -d'
 # once 'urserver start'
 # once 'pcmanfm -d' -e "SHELL=$TERM_SHELL"
 # once 'mpDris2'

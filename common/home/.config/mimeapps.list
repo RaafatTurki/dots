@@ -1,0 +1,10 @@
+[Default Applications]
+application/pdf=org.pwmt.zathura-pdf-mupdf.desktop
+
+text/plain=nvim_xdg.desktop
+text/xml=nvim_xdg.desktop
+application/x-shellscript=nvim_xdg.desktop;
+application/json=nvim_xdg.desktop;
+
+image/png=imv-folder.desktop;
+image/jpeg=imv-folder.desktop;

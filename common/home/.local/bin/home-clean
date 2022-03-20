@@ -3,7 +3,6 @@
 GARBAGE=(
   .ICEauthority
   .anydesk
-  .cache
   .cinnamon
   .degit
   .dotnet
@@ -24,7 +23,6 @@ GARBAGE=(
   .subversion
   .swt
   .synergy
-  .thumbnails
   .urserver
   .viminfo
   .wget-hsts
@@ -34,6 +32,8 @@ GARBAGE=(
   unity.lock
   yarn.lock
 )
+# .cache
+# .thumbnails
 # .icons
 
 for t in ${GARBAGE[@]}; do

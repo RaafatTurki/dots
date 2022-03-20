@@ -31,7 +31,9 @@ alias lsdu='du -ahx -- * | sort -rh | head -10'
 # alias once="execute -o -c"
 # alias reload="execute -r -c"
 alias get-dpi='xdpyinfo | grep -B 2 resolution'
+alias get-mime='xdg-mime query filetype'
 alias journal-boot='sudo journalctl -p 3 -b --no-pager'
+alias ssh-agent-keys='watch ssh-add -l'
 
 # alias wine-install="aa -S wine-staging && aa -S --needed --asdeps (pacman -Si wine-staging | sed -n '/^Opt/,/^Conf/p' | sed '$d' | sed 's/^Opt.*://g' | sed 's/^\s*//g')"
 alias get_active_src="pactl list sources | grep -A 3 RUNNING | grep Name | cut -d ' ' -f 2"
@@ -100,7 +102,7 @@ alias get-audio='youtube-dl --extract-audio -f bestaudio'
 alias get-video='youtube-dl -f bestvideo+bestaudio'
 # alias get-video='youtube-dl -f best '
 alias nv='devour neovide --multiGrid --disowned'
-alias sk='screenkey -s small -p fixed -g 500x80+1420+1000 --opacity .5 --font Terminus --no-systray -t 0.5'
+alias screen_key='screenkey -s small -p fixed -g 500x80+1420+1000 --opacity .5 --font Terminus --no-systray -t 0.5'
 alias lg='lazygit'
 alias xe='Xephyr -br -ac -noreset -screen 1900x1000 :2'
 alias xe-run='DISPLAY=:2'

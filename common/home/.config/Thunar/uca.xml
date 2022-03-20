@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+<action>
+	<icon>utilities-terminal</icon>
+	<name>Open Terminal Here</name>
+	<unique-id>1647797198066260-1</unique-id>
+	<command>term</command>
+	<description>opens a terminal here</description>
+	<patterns>*</patterns>
+	<directories/>
+</action>
+</actions>

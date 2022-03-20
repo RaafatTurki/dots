@@ -43,7 +43,8 @@ once 'picom --experimental-backends'
 once 'sxhkd'
 once 'xss-lock lock'
 once 'transmission-gtk -m'
-once 'spacefm -d'
+once 'thunar --daemon'
+# once 'spacefm -d'
 # once 'urserver start'
 # once 'pcmanfm -d' -e "SHELL=$TERM_SHELL"
 # once 'mpDris2'
@@ -76,7 +77,3 @@ killall -USR1 picom
 
 # pkill picom; picom=~/sectors/c/picom/build/src/picom
 # pkill picom; picom-epic-animations --experimental-backends &
-
-
-# TO_READ_ABOUT:
-# ssh-agent

@@ -19,7 +19,7 @@ super + r
 # 	open_terminal_here
 
 super + KP_Enter
-	$FM trash:/// -n
+	$FM trash:///
 
 super + Escape
 	$COLOR_PICKER

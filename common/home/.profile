@@ -55,10 +55,11 @@ export PARU_PAGER="`fbin nvim` +Man!"
 # export GIT_PAGER=`fbin less`
 export GIT_PAGER=`fbin less -r`
 export LESS="-F -X $LESS"
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 
 export TERMINAL=`fbin xst`
 # export TERMINAL=`fbin kitty`
-export FM=`fbin spacefm`
+export FM=`fbin thunar`
 export READER=`fbin zathura`
 export BROWSER=`fbin firefox`
 export LAUNCHER="`fbin rofi` -show drun"

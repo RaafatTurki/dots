@@ -106,5 +106,5 @@ startx $XINITRC
 else
 # setfont /usr/share/kbd/consolefonts/ter-v18n.psf.gz
 clear
-exec fish
+exec fish -C 'logo'
 fi

@@ -3,6 +3,7 @@
 # General
 set fish_greeting
 # starship init fish | source
+# zoxide init fish | source
 # set python_auto_venv
 
 # Init
@@ -43,20 +44,22 @@ alias benchmark='hyperfine'
 alias kssh='kitty +kitten ssh'
 
 # e aliases
-alias nvimc="e nvimc -q"
+# alias nvimc="e nvimc -q"
+alias nvimp="e nvimp -q"
+alias nvims="e nvims -q"
 # alias nvimc="e nvimc -o 'devour neovide' -q"
-alias dotc="e dots -q"
 alias binc="e bin -q"
 alias notes="e notes -q"
-# alias fishc="$EDITOR $XDG_CONFIG_HOME/fish/config.fish"
 alias fishc="e fishc -q"
-alias gitc="$EDITOR $XDG_CONFIG_HOME/git/config"
-alias profc="$EDITOR ~/.profile"
+
 alias gd="e godot -o 'nvimgd init'"
 alias gdnvim="e godot -o 'nvimgd init_nvim'"
 # alias gdgodot="e godot -o 'godot -e'"
 alias gdgodot="e godot -o 'devour godot -e'"
 alias gdplay="e godot -o godot"
+
+alias gitc="$EDITOR $XDG_CONFIG_HOME/git/config"
+alias profc="$EDITOR ~/.profile"
 
 # alias gtk_inspect='GTK_DEBUG=interactive '
 
@@ -102,7 +105,7 @@ alias get-audio='youtube-dl --extract-audio -f bestaudio'
 alias get-video='youtube-dl -f bestvideo+bestaudio'
 # alias get-video='youtube-dl -f best '
 alias nv='devour neovide --multiGrid --disowned'
-alias screen_key='screenkey -s small -p fixed -g 500x80+1420+1000 --opacity .5 --font Terminus --no-systray -t 0.5'
+# alias screen_key='screenkey -s small -p fixed -g 500x80+1420+1000 --opacity .5 --font Terminus --no-systray -t 0.5'
 alias lg='lazygit'
 alias xe='Xephyr -br -ac -noreset -screen 1900x1000 :2'
 alias xe-run='DISPLAY=:2'

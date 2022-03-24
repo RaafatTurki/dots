@@ -10,6 +10,8 @@ PROJECT_TYPE='dots'
 QUERIES=()
 OP=${EDITOR:-nvim}
 
+SELECTION_NULL_GUARD=true
+
 # start parsing flags from the 2nd arg and onwards if the 1st arg doesn't start with a "-"
 if [ ! ${1:0:1} = '-' ]; then
     OPTIND=2
@@ -75,13 +77,10 @@ get_all_files_in() {
     echo $RES
 }
 
-# setting $SELECTION depending on $PROJECT_TYPE
+# set cwd & $SELECTION depending on $PROJECT_TYPE
 case $PROJECT_TYPE in
     dots)
-        # cd $DOTS/common/home/.config
-        # SELECTION=`find . -type f -printf '%P\n' | fzf_fancy`
         cd $DOTS
-
         ALL_DOTS=
         ALL_DOTS+=`get_all_files_in common/home`
         ALL_DOTS+='\n'
@@ -118,11 +117,26 @@ case $PROJECT_TYPE in
         cd ~/desk/notes
         SELECTION=`find . -type f -printf '%P\n' | fzf_fancy`
         ;;
+    nvims)
+        cd ~/.local/share/nvim/sessions
+        # DIR=`ls | tr -s '_' '/' | tr '+' ':' | fzf_simple`
+        DIR=`ls | sed 's/__/\//g' | sed 's/++/:/g' | fzf_simple`
+        if [ -z $DIR ]; then exit ;fi
+        if [ ! -d $DIR ]; then
+          echo 'not a directory'
+          exit
+        fi
+        cd $DIR
+        SELECTION_NULL_GUARD=false
+        ;;
     *)
         echo "unknown project type '$PROJECT_TYPE'"
         ;;
 esac
 
 # checking a $SELECTION was selected and passes it as an argument to $OP
-if [ -z $SELECTION ]; then exit ;fi
+if [[ $SELECTION_NULL_GUARD = true && -z $SELECTION ]]; then
+  exit
+fi
+
 $OP $SELECTION

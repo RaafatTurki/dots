@@ -24,9 +24,9 @@
 ! #define SEL   #9BB7DC
 
 ! #define   FN        Terminus
-! #define   FS        15
-! #define   FS_S      15
-! #define   FS_UI     15
+! #define   FS        24
+! #define   FS_S      24
+! #define   FS_UI     24
 
 ! #define FN          Dina
 ! #define FS          15

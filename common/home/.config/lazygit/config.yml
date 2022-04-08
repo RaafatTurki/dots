@@ -25,6 +25,11 @@ gui:
   showCommandLog: false
   authorColors: # in case you're not happy with the randomly assigned colour
     'Raafat Turki': '#294374'
-# git:
-  # usingGpg: true
-  # overrideGpg: true
+git:
+  paging:
+    colorArg: always
+    pager: diff-so-fancy
+    # pager: difft
+    # useConfig: true
+    # usingGpg: true
+    # overrideGpg: true

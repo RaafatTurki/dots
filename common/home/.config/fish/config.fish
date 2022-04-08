@@ -11,8 +11,8 @@ venv_auto
 
 
 # ALIASES
-alias _="sudo"
-alias __="sudo -E"
+alias s="sudo"
+alias ss="sudo -E"
 alias aa="paru"
 alias home="cd ~"
 alias dots="cd $DOTS"
@@ -96,7 +96,6 @@ alias key="xev | awk -F'[ )]+' '/^KeyPress/ { a[NR+2] } NR in a { printf \"%-3s 
 # pacman
 alias pac-info='paru -Qsq | fzf | xargs paru -Qi'
 alias pac-pkgbuild='paru -Qsq | fzf | xargs paru -Gp'
-alias pac-unlock='sudo rm /var/lib/pacman/db.lck'
 alias pac-clean='sudo pacman -Rns (pacman -Qtdq)'
 alias pac-sort-mirrors="curl -s 'https://archlinux.org/mirrorlist/?country=TR&country=DE&use_mirror_status=on' | sed -e 's/^#Server/Server/' -e '/^#/d' | rankmirrors -v -n 8 - > /etc/pacman.d/mirrorlist"
 

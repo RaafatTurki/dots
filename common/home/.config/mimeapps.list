@@ -8,3 +8,8 @@ application/json=nvim_xdg.desktop;
 
 image/png=imv-folder.desktop;
 image/jpeg=imv-folder.desktop;
+image/gif=imv-folder.desktop;
+
+image/svg+xml=org.inkscape.Inkscape.desktop;
+
+application/vnd.sqlite3=beekeeper-studio.desktop

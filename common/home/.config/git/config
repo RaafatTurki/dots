@@ -1,44 +1,52 @@
 # vim: cms=#%s
 
 [user]
-	name = Raafat Turki
-	email = raafat.turki@pm.me
+  name = Raafat Turki
+  email = raafat.turki@pm.me
 
 [commit]
-	gpgsign = false
+  gpgsign = false
 
 [core]
-	autocrlf = input
+  autocrlf = input
+  # pager = diff-so-fancy | less --tabs=4 -RFX
+  pager = diff-so-fancy | less --tabs=2 -RFX
+  # pager = diff-so-fancy
+  # pager = diff-so-fancy | less --tabs=4 -RFX
 
 [init]
-	defaultBranch = master
+  defaultBranch = master
 
 [advice]
-	addEmptyPathspec = false
-	statusHints = false
+  addEmptyPathspec = false
+  statusHints = false
 
 [alias]
   # glog = log --graph --abbrev-commit --pretty=format:'%Cred%h %Creset%s %C(yellow)%d %Cgreen%cr %C(blue)<%an>%Creset'
   glog = log --oneline --abbrev-commit --reverse --pretty=format:'%Cred%h %C(green)%cr\t%Creset%s %C(blue) %an%Creset %C(yellow)%d'
-	update = fetch --dry-run
-	st = status -sb
-	last = log -1 HEAD --stat
-	cm = commit -m
-	rv = remote -v
-	d = diff
-	dv = difftool -t vimdiff -y
+  update = fetch --dry-run
+  st = status -sb
+  last = log -1 HEAD --stat
+  cm = commit -m
+  rv = remote -v
+  d = diff
+  dv = difftool -t vimdiff -y
   gl = config --global -l
   cloner = clone --recursive
-	# se = !git rev-list --all | xargs git grep -F
-	# conv-ssh = remote set-url origin git@github.com:RaafatTurki/
+  # se = !git rev-list --all | xargs git grep -F
+  # conv-ssh = remote set-url origin git@github.com:RaafatTurki/
 [filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
   required = true
 
 # [pull]
 #   rebase = true
 
 [merge]
-    tool = nvimdiff
+  tool = nvimdiff
+[interactive]
+  diffFilter = diff-so-fancy --patch
+# [diff]
+# 	external = difft

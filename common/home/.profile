@@ -53,7 +53,7 @@ export MANPAGER="`fbin nvim` +Man!"
 export PARU_PAGER="`fbin nvim` +Man!"
 # export GIT_PAGER="`fbin nvim` +AnsiEsc"
 # export GIT_PAGER=`fbin less`
-export GIT_PAGER=`fbin less -r`
+# export GIT_PAGER=`fbin less -r`
 export LESS="-F -X $LESS"
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 

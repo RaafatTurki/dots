@@ -59,6 +59,7 @@ once 'thunar --daemon'
 reload 'trayer --align right --widthtype request --transparent true --tint 0x000000'
 reload 'dunst'
 reload 'flashfocus'
+reload 'shortsig'
 # reload 'polybar krastiva -r'
 
 # SIGNALS
@@ -77,3 +78,9 @@ killall -USR1 picom
 
 # pkill picom; picom=~/sectors/c/picom/build/src/picom
 # pkill picom; picom-epic-animations --experimental-backends &
+
+
+# TESTING
+# cd sectors/go/shortsig
+# once 'go run shortsig'
+# cd ~

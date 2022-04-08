@@ -1,0 +1,10 @@
+#!/usr/bin/bash
+
+# DEPS: beep
+
+MELODY_NAME=${1:-""}
+
+melodie_dir=~/.local/bin/assets/pcspkr/
+melody=$(find $melodie_dir -maxdepth 1 -type f | fzf -1 -0 -q "$MELODY_NAME")
+
+source $melody

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+Version=1.0
+Type=Application
+NoDisplay=true
+Exec=term -e helix %f
+Name=Helix XDG
+Icon=helix
+Comment=Nvim XDG Opener to force apps that don't implement XDG properly

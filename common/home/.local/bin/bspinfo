@@ -18,7 +18,23 @@ case $1 in
     STRING=`date '+%a %d %b %I:%M %p'`
     ;;
   -d|--desktop)
-    STRING=`bspc query -D -d focused --names`
+    all_desktops=`bspc query -D --names`
+    curr_desktop=`bspc query -D -d focused --names`
+
+    STRING=""
+    for desktop in $all_desktops; do
+      win_count=`bspc query -N -d $desktop -n .window | wc -l`
+      if [[ win_count -eq 0 ]]; then
+        win_count="_"
+      fi
+
+      if [ $desktop == $curr_desktop ]; then
+        STRING+="[$win_count]"
+      else
+        STRING+=" $win_count "
+      fi
+    done
+    echo $STRING
     ;;
   -b|--battery)
     STRING=`acpi | perl -ne "/^Battery \d*: ([A-Za-z]{3})[a-z]*, (\d+%), (\d+:\d+):\d+/ && printf \"%s %s | rem %s\", lc \$1, \$2, \$3"`

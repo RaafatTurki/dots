@@ -26,7 +26,6 @@ alias path="echo $PATH | tr ':' '\n'"
 alias fonts="fc-list | cut -d ':' -f 2,3 | sort | fzf | xclip -selection clipboard"
 alias weather="curl wttr.in"
 alias cb="xclip -selection clipboard"
-alias live-tree='watch tree -C'
 alias lsdu='du -ahx -- * | sort -rh | head -10'
 # alias lsdu='du -ahx -- .* | sort -rh | head -10'
 # alias once="execute -o -c"
@@ -34,7 +33,12 @@ alias lsdu='du -ahx -- * | sort -rh | head -10'
 alias get-dpi='xdpyinfo | grep -B 2 resolution'
 alias get-mime='xdg-mime query filetype'
 alias journal-boot='sudo journalctl -p 3 -b --no-pager'
-alias ssh-agent-keys='watch ssh-add -l'
+alias hx='helix'
+
+# live aliases
+alias live='watch -c -w -t -n 0.1'
+alias live-ssh-agent-keys='watch ssh-add -l'
+# alias live-tree='watch tree -C'
 
 # alias wine-install="aa -S wine-staging && aa -S --needed --asdeps (pacman -Si wine-staging | sed -n '/^Opt/,/^Conf/p' | sed '$d' | sed 's/^Opt.*://g' | sed 's/^\s*//g')"
 alias get_active_src="pactl list sources | grep -A 3 RUNNING | grep Name | cut -d ' ' -f 2"
@@ -46,7 +50,7 @@ alias kssh='kitty +kitten ssh'
 # e aliases
 # alias nvimc="e nvimc -q"
 alias nvimp="e nvimp -q"
-alias nvims="e nvims -q"
+# alias nvims="e nvims -q"
 # alias nvimc="e nvimc -o 'devour neovide' -q"
 alias binc="e bin -q"
 alias notes="e notes -q"
@@ -78,7 +82,6 @@ alias mv='mv -i'
 alias rm='rm -i'
 alias less='less -r'
 alias echo='echo -n'
-alias watch='watch -c -w -t -n 0.1'
 
 # XDG compliance aliases
 alias yarn="yarn --use-yarnrc '$XDG_CONFIG_HOME/yarn/config'"

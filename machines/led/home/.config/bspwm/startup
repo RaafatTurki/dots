@@ -10,6 +10,9 @@ alias reload="execute -r -c"
 # setxkbmap -layout us
 
 # xrandr --output DVI-D-0 --mode 1920x1080 --output HDMI-0 --mode 1366x768 --right-of DVI-D-0
+xrandr --output eDP1  --mode 1366x768 --rotate left
+xinput set-prop "ETPS/2 Elantech Touchpad" --type=float "Coordinate Transformation Matrix" 0 -1 1 1 0 0 0 0 1
+# xinput set-prop "ETPS/2 Elantech Touchpad" --type=float "Coordinate Transformation Matrix" 0 0 0 0 0 0 0 0 0
 xwallpaper --zoom ~/media/pics/wallpapers/20.png
 xrdb ~/.config/x11/xresources
 xmodmap ~/.config/x11/xmodmap
@@ -30,29 +33,32 @@ wmname LG3D
 numlockx on
 
 # DAEMONIZED PROCESSES
-# once 'xsettingsd'
+once 'xsettingsd'
 once 'mpd'
 # once 'mpDris2'
 # once 'urserver start'
-once 'pcmanfm -d' -e "SHELL=$TERM_SHELL"
+# once 'pcmanfm -d' -e "SHELL=$TERM_SHELL"
 once 'polkit-dumb-agent'
 once 'barrierc -f --disable-crypto -n led krastiva'
 once 'nm-applet'
 once 'unclutter --timeout 3 --jitter 10 --ignore-scrolling'
 once 'udiskie -asm nested'
+once 'sxhkd'
+once 'xss-lock lock'
+once 'spacefm -d'
 # once 'picom --experimental-backends'
 # replay-sorcery &
 # lf -server &
 
-
 # REFRESHABLE PROCESSES
-reload 'sxhkd'
+reload 'trayer --align right --widthtype request --transparent true --tint 0x000000'
 reload 'dunst'
-reload 'polybar led -r'
-# reload 'flashfocus'
+reload 'flashfocus'
+# reload 'polybar led -r'
 
 # SIGNALS
 killall -USR1 xst
+killall -USR1 sxhkd
 killall -USR1 picom
 
 # pkill replay-sorcery; replay-sorcery &

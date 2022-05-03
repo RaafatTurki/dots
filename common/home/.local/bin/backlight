@@ -1,7 +1,8 @@
 #!/usr/bin/bash
 
 _get_protocol() {
-  if [[ -e /sys/class/backlight/* ]]; then
+  # if [[ -e /sys/class/backlight/* ]]; then
+  if find /sys/class/backlight -mindepth 1 -maxdepth 1 | read; then
     echo "ACPI"
     STRING=`ddccontrol -r 0x10 dev:/dev/i2c-1 2> /dev/null | tail -n 1 | cut -d ' ' -f 3 | cut -d '/' -f 2`
   else
@@ -15,7 +16,7 @@ change() {
 
   case "$protocol" in
     ACPI)
-      xbacklight -inc} $1
+      xbacklight -inc $1
       ;;
     DDC)
       ddccontrol -r 0x10 -W $1 dev:/dev/i2c-1

@@ -5,9 +5,7 @@
 # Dependencies
 #maim
 #xclip
-#bc
 
-#xdg-sound
 #tesseract
 #tesseract-date-eng
 #zbar
@@ -19,36 +17,26 @@ temp_path=/tmp/screenshot/
 ss_file=screen
 ss_ex=png
 ss_path=$temp_path/$ss_file.$ss_ex
-ss_append=_`date +%s`
+ss_suffix=_`date +%s`
 
-ocr_file=ocr_res
-ocr_ex=txt
-ocr_path=$temp_path/$ocr_file.$ocr_ex
-
-decode_file=decode_res
-decode_ex=txt
-decode_path=$temp_path/$decode_file.$decode_ex
-
-col_xrdb=`xgetres col.sel`
-col_hex='#ff0000'
-opacity=0.1
+# ocr_file=ocr_res
+# ocr_ex=txt
+# ocr_path=$temp_path/$ocr_file.$ocr_ex
+#
+# decode_file=decode_res
+# decode_ex=txt
+# decode_path=$temp_path/$decode_file.$decode_ex
 
 # Pre
 mkdir -p $temp_path
 mkdir -p $ss_save_path
 
-if [ ! -z $col_xrdb ]; then
-    col_hex=$col_xrdb
-fi
-
-
 # Functions
 take_ss() {
     rm $ss_path
-    col_float=`hex2rgb $col_hex`,$opacity
-    maim -su --quality 1 -b 2 -c $col_float $ss_path
-    # maim -sul --quality 1 -b 2 -c $col_float $ss_path
-    # xdg-play screen-capture
+    maim --hidecursor --quality 1 -s --bordersize 9999 --shader block $ss_path
+
+    # beep is screenshot taken
     if [ -f $ss_path ]; then
       echo -e "\a"
     fi
@@ -60,7 +48,7 @@ copy_ss() {
 }
 
 save_ss() {
-    cp $ss_path $ss_save_path/$ss_file$ss_append.$ss_ex
+    cp $ss_path $ss_save_path/$ss_file$ss_suffix.$ss_ex
 }
 
 ocr() {
@@ -90,31 +78,76 @@ clear_temp() {
 }
 
 
-# Args
-case "$1" in
-"clip")
-    take_ss
-    copy_ss
-    ;;
-"save")
-    take_ss
-    copy_ss
-    save_ss
-    clear_temp
-    ;;
-"ocr")
-    take_ss
-    ocr
-    copy_ocr_res
-    ;;
-"decode")
-    take_ss
-    decode
-    copy_decode_res
-    ;;
-*)
-    echo "$1 is an unknown operation"
-    echo
-    echo "screenshot <clip, save, ocr, decode> [hex color]"
-    ;;
-esac
+
+
+clip() {
+  take_ss
+  copy_ss
+  # clear_temp
+}
+
+save() {
+  take_ss
+  copy_ss
+  save_ss
+  clear_temp
+}
+
+qr() {
+  echo "qr here"
+#     take_ss
+#     decode
+#     copy_decode_res
+}
+
+bar() {
+  echo "bar here"
+}
+
+ocr() {
+  echo "ocr here"
+#     take_ss
+#     ocr
+#     copy_ocr_res
+}
+
+
+help() {
+	cat <<-EOF
+Usage: scrscn COMMAND [ARGS...]
+
+Commands:
+
+    cb                ...
+    file              ...
+    qr                ...
+    bar               ...
+    ocr               ...
+EOF
+}
+
+default() {
+  clip
+}
+
+main() {
+  if [ $# -eq 0 ]; then
+    default
+    return 0
+  fi
+
+  cmd="$1"
+  shift
+
+  case "$cmd" in
+    clip|save|help)
+      "$cmd" "$@"
+      ;;
+    *)
+      echo "Unknown command $cmd"
+      help
+      return 2
+  esac
+}
+
+main "$@"

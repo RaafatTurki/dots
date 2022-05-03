@@ -22,7 +22,8 @@ super + KP_Enter
 	$FM trash:///
 
 super + Escape
-	$COLOR_PICKER
+	$SCREENSHOT clip
+	# $COLOR_PICKER
 	# XCOLOR_DISABLE_SHAPE=1 xcolor --format HEX | xclip -selection clipboard
 
 super + l

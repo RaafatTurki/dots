@@ -48,7 +48,7 @@ $XDG_DATA_HOME/mime/application/x-wine-extension*
 for t in ${GARBAGE[@]}; do
   target=$HOME/$t
 
-  echo $t
+  # echo $t
 
   # rm file if exists
   if [ -e $target ]; then

@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# start an ssh agent here
+eval $(ssh-agent)
+
 # exec firefox
 # exec dwm
 exec bspwm

@@ -36,14 +36,14 @@ case $1 in
     done
     echo $STRING
     ;;
-  -b|--battery)
-    STRING=`acpi | perl -ne "/^Battery \d*: ([A-Za-z]{3})[a-z]*, (\d+%), (\d+:\d+):\d+/ && printf \"%s %s | rem %s\", lc \$1, \$2, \$3"`
-    ;;
+  # -ba|--battery)
+  #   STRING=`acpi | perl -ne "/^Battery \d*: ([A-Za-z]{3})[a-z]*, (\d+%), (\d+:\d+):\d+/ && printf \"%s %s | rem %s\", lc \$1, \$2, \$3"`
+  #   ;;
   -l|--language)
     STRING=`setxkbmap -query | perl -ne "/^layout:\s*([A-Za-z]+)$/ && print \$1"`
     ;;
-  -bl|--backlight)
-    STRING=`brightnessctl | grep -oP "\d+%"`
+  -b|--backlight)
+    STRING=`backlight`
     ;;
   -v|--volume)
     STRING=`pactl get-sink-volume @DEFAULT_SINK@ pactl | head -n 1 | sed -e 's,.* \([0-9][0-9]*\)%.*,\1,'`

@@ -1,0 +1,85 @@
+#!/usr/bin/bash
+
+_get_protocol() {
+  if [[ -e /sys/class/backlight/* ]]; then
+    echo "ACPI"
+    STRING=`ddccontrol -r 0x10 dev:/dev/i2c-1 2> /dev/null | tail -n 1 | cut -d ' ' -f 3 | cut -d '/' -f 2`
+  else
+    echo "DDC"
+  fi
+}
+
+change() {
+  protocol=`_get_protocol`
+  # echo "Using $protocol"
+
+  case "$protocol" in
+    ACPI)
+      xbacklight -inc} $1
+      ;;
+    DDC)
+      ddccontrol -r 0x10 -W $1 dev:/dev/i2c-1
+      ;;
+    *)
+      echo "Unknown protocol $protocol"
+      return 2
+  esac
+}
+
+get() {
+  protocol=`_get_protocol`
+  # echo "Using $protocol"
+
+  case "$protocol" in
+    ACPI)
+      xbacklight -get
+      ;;
+    DDC)
+      ddccontrol -r 0x10 dev:/dev/i2c-1 2> /dev/null | tail -n 1 | cut -d ' ' -f 3 | cut -d '/' -f 2
+      ;;
+    *)
+      echo "Unknown protocol $protocol"
+      return 2
+  esac
+}
+
+
+
+
+
+help() {
+	cat <<-EOF
+Usage: ./backlight COMMAND [ARGS...]
+
+Commands:
+
+    change  <-,+>N    change brightness by N percent
+    get               get brightness percentage value (default command)
+EOF
+}
+
+default() {
+  get
+}
+
+main() {
+  if [ $# -eq 0 ]; then
+    default
+    return 0
+  fi
+
+  cmd="$1"
+  shift
+
+  case "$cmd" in
+    change|get|help)
+      "$cmd" "$@"
+      ;;
+    *)
+      echo "Unknown command $cmd"
+      help
+      return 2
+  esac
+}
+
+main "$@"

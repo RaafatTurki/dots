@@ -34,12 +34,15 @@ Print + {_, shift, ctrl, super}
 
 XF86Audio{LowerVolume,RaiseVolume}
 	pactl set-sink-volume @DEFAULT_SINK@ {-,+}10% && bspinfo -v
-KP_{Subtract,Add} + {_,shift}
-	pactl set-sink-volume @DEFAULT_SINK@ {-,+}{10%,1%} && bspinfo -v
+KP_{Subtract,Add}
+	pactl set-sink-volume @DEFAULT_SINK@ {-,+}10% && bspinfo -v
 XF86AudioMute
 	pactl set-sink-mute @DEFAULT_SINK@ toggle && bspinfo -m
-#XF86MonBrightness{Up,Down}
-#	light {-A 2,-U 2}
+
+KP_{Subtract,Add} + shift
+  backlight change {-,+}10 && bspinfo -b
+XF86MonBrightness{Down,Up}
+  backlight change {-,+}10 && bspinfo -b
 
 XF86Tools
   $AUDIO_MIXER
@@ -89,10 +92,14 @@ super + shift + Return
 # focus the node in the given direction
 super + {Left,Down,Up,Right}
 	bspc node -f {west,south,north,east}
+# super + {j,k,i,l}
+# 	bspc node -f {west,south,north,east}
 
 # focus the next/previous desktop in the current monitor
-super + shift + {Left, Right}
-	bspc desktop -f {prev, next} && bspinfo -d
+super + shift + {Left,Right}
+	bspc desktop -f {prev,next} && bspinfo -d
+# super + shift + {j,l}
+# 	bspc desktop -f {prev,next} && bspinfo -d
 
 # focus the last node/desktop
 super + {Tab, grave}
@@ -137,20 +144,26 @@ super + {a, z}
 # Resize Mode (Horizontal)
 super + ctrl + {Left,Right}: {Left,Right}
     bspc node -z {left,right} {-,_}101 0
+# super + ctrl + {j,l}: {j,l}
+#     bspc node -z {left,right} {-,_}101 0
 
 # Resize Mode (Vertical)
 super + ctrl + {Up,Down}: {Up,Down}
     bspc node -z {top,bottom} 0 {-,_}101
+# super + ctrl + {i,k}: {i,k}
+#     bspc node -z {top,bottom} 0 {-,_}101
 
 # Shift Mode
 super + s: {Left,Down,Up,Right}
     bspc node -s {west,south,north,east}
+# super + s: {j,k,i,l}
+#     bspc node -s {west,south,north,east}
 
 # Gaps Mode
-super + g: {Up, Down}
-    { bspc config -d focused window_gap $(( $(bspc config -d focused window_gap) + 5 )), \
-	[ $(bspc config -d focused window_gap) -gt 0 ] && \
-	bspc config -d focused window_gap $(( $(bspc config -d focused window_gap) - 5 )) }
+# super + g: {Up, Down}
+#     { bspc config -d focused window_gap $(( $(bspc config -d focused window_gap) + 5 )), \
+# 	[ $(bspc config -d focused window_gap) -gt 0 ] && \
+# 	bspc config -d focused window_gap $(( $(bspc config -d focused window_gap) - 5 )) }
 
 
 
@@ -164,6 +177,8 @@ super + g: {Up, Down}
 # preselect the direction
 super + alt + {Left,Down,Up,Right}
 	bspc node -p \~{west,south,north,east}
+# super + alt + {j,k,i,l}
+	# bspc node -p \~{west,south,north,east}
 
 # cancel the preselection for the focused desktop
 super + alt + Escape

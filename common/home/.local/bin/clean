@@ -1,0 +1,64 @@
+#!/bin/bash
+
+# home cleaning
+GARBAGE=(
+#home
+~/.ICEauthority
+~/.anydesk
+~/.cinnamon
+~/.degit
+~/.dotnet
+~/.eclipse
+~/.flutter
+~/.gtkrc-2.0
+~/.java
+~/.lesshst
+~/.mono
+~/.npm
+~/.nuget
+~/.pki
+~/.pnpm-debug.log
+~/.pulse-cookie
+~/.stack
+~/.steampath
+~/.steampid
+~/.subversion
+~/.swt
+~/.synergy
+~/.urserver
+~/.viminfo
+~/.wget-hsts
+~/.wine
+~/.yarn
+~/.yarnrc
+~/unity.lock
+~/yarn.lock
+# ~/.cache
+# ~/.thumbnails
+# ~/.icons
+
+# wine
+$XDG_DATA_HOME/applications/wine*
+$XDG_DATA_HOME/mime/packages/x-wine*
+$XDG_DATA_HOME/applications/wine-extension*
+$XDG_DATA_HOME/icons/hicolor/*/*/application-x-wine-extension*
+$XDG_DATA_HOME/mime/application/x-wine-extension*
+)
+
+for t in ${GARBAGE[@]}; do
+  target=$HOME/$t
+
+  echo $t
+
+  # rm file if exists
+  if [ -e $target ]; then
+    trash -r $target
+    echo $t
+  fi
+
+  # rm file if symlink
+  if [ -L $target ]; then
+    trash -r $target
+    echo $t
+  fi
+done

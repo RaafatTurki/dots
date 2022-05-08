@@ -23,11 +23,6 @@
 ! #define FG    #2D445F
 ! #define SEL   #9BB7DC
 
-! #define   FN        Terminus
-! #define   FS        24
-! #define   FS_S      24
-! #define   FS_UI     24
-
 ! #define FN          Dina
 ! #define FS          15
 ! #define FS_S        15
@@ -37,6 +32,16 @@
 #define FS          13 
 #define FS_S        13 
 #define FS_UI       13
+
+! #define   FN        Terminus
+! #define   FS        24
+! #define   FS_S      24
+! #define   FS_UI     24
+
+! #define FN          CozetteVector
+! #define FS          19
+! #define FS_S        19
+! #define FS_UI       19
 
 #define FS_SYM      10
 #define FN_SYM      Symbols Nerd Font

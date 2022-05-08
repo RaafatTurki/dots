@@ -2,22 +2,15 @@
 
 #maim -s | tee >(xclip -selection clipboard -t image/png) ~/$(date +%s).png | curl -F "file=@-" 0x0.st | xclip -selection primary
 
-# Dependencies
-#maim
-#xclip
-
 #tesseract
 #tesseract-date-eng
-#zbar
 
-# Vars
-ss_save_path=$HOME/media/pics/screenshots/
-temp_path=/tmp/screenshot/
+SAVE_PATH_SS="`xdg-user-dir PICTURES`/screenshots/"
+TMP_PNG_PATH=/tmp/scrscn.png
+MAIM_FLAGS="--hidecursor --quality 1 -s --bordersize 9999 --shader block $TMP_PNG_PATH"
+FSWEBCAM_FLAGS="--no-banner $TMP_PNG_PATH"
 
-ss_file=screen
-ss_ex=png
-ss_path=$temp_path/$ss_file.$ss_ex
-ss_suffix=_`date +%s`
+mkdir -p `dirname $TMP_PNG_PATH`
 
 # ocr_file=ocr_res
 # ocr_ex=txt
@@ -27,81 +20,75 @@ ss_suffix=_`date +%s`
 # decode_ex=txt
 # decode_path=$temp_path/$decode_file.$decode_ex
 
-# Pre
-mkdir -p $temp_path
-mkdir -p $ss_save_path
-
-# Functions
-take_ss() {
-    rm $ss_path
-    maim --hidecursor --quality 1 -s --bordersize 9999 --shader block $ss_path
-
-    # beep is screenshot taken
-    if [ -f $ss_path ]; then
-      echo -e "\a"
-    fi
+sound_beep() {
+  echo -e "\a"
 }
 
-copy_ss() {
-    cat $ss_path | xclip -selection clipboard -t image/png
-    cat $ss_path | xclip -t image/png
+# prompt user to take the screenshot
+ss_capture_prompt() {
+  maim $MAIM_FLAGS
+  # beep if screenshot was taken
+  if [ $? -ne 0 ]; then exit 1; fi
+  sound_beep
 }
 
-save_ss() {
-    cp $ss_path $ss_save_path/$ss_file$ss_suffix.$ss_ex
+cam_capture() {
+  fswebcam $FSWEBCAM_FLAGS
+  # beep if screenshot was taken
+  if [ $? -ne 0 ]; then exit 1; fi
+  sound_beep
 }
 
-ocr() {
-    tesseract -l eng $temp_path/screen.png $temp_path/$ocr_file > /dev/null
-#    tesseract -l rus $temp_path/screen.png $temp_path/$ocr_file > /dev/null
-#    tesseract -l ara $temp_path/screen.png $temp_path/$ocr_file > /dev/null
+# copy to clipboard
+ss_clip() {
+  cat $TMP_PNG_PATH | xclip -selection clip -t image/png
+  cat $TMP_PNG_PATH | xclip -t image/png
 }
 
-copy_ocr_res() {
-    head -n -1 $ocr_path | xclip -selection clipboard
-    head -n -1 $ocr_path | xclip
+# save image to $SAVE_PATH_SS
+ss_save() {
+  cp $TMP_PNG_PATH "$SAVE_PATH_SS/ss_`date +%s`.png"
 }
 
-decode() {
-    zbarimg -q --raw $temp_path/screen.png > $decode_path
+# returns any decoded text from the image (barcode, qrcode)
+ss_decode() {
+  echo `zbarimg -q --raw $TMP_PNG_PATH`
 }
 
-copy_decode_res() {
-    cat $decode_path | xclip -selection clipboard
-    cat $decode_path | xclip
-}
+# ocr() {
+#     tesseract -l eng $temp_path/screen.png $temp_path/$ocr_file > /dev/null
+# #    tesseract -l rus $temp_path/screen.png $temp_path/$ocr_file > /dev/null
+# #    tesseract -l ara $temp_path/screen.png $temp_path/$ocr_file > /dev/null
+# }
 
-clear_temp() {
-    rm $ss_path
-#    rm $ocr_path
-#    rm $decode_path
-}
-
-
-
+# copy_ocr_res() {
+#     head -n -1 $ocr_path | xclip -selection clipboard
+#     head -n -1 $ocr_path | xclip
+# }
 
 clip() {
-  take_ss
-  copy_ss
-  # clear_temp
+  ss_capture_prompt
+  ss_clip
 }
 
 save() {
-  take_ss
-  copy_ss
-  save_ss
-  clear_temp
+  ss_capture_prompt
+  ss_clip
+  ss_save
 }
 
-qr() {
-  echo "qr here"
-#     take_ss
-#     decode
-#     copy_decode_res
-}
+decode() {
+  ss_capture_prompt
+  res=`ss_decode`
 
-bar() {
-  echo "bar here"
+  # check if any decodeding result was found
+  if [ -z "$res" ]; then
+    notify-send "scrscn" "No text detected"
+    exit 1
+  fi
+
+  # pass result to clipboard
+  printf %b "$res" | xclip -selection clip
 }
 
 ocr() {
@@ -111,6 +98,19 @@ ocr() {
 #     copy_ocr_res
 }
 
+
+
+dep_check() {
+  cmd=$1
+  opt=${2:-true}
+  msg="Missing dependency '$cmd'"
+
+  type -p "$cmd" &>/dev/null || {
+    notify-send "Scrscn" "$msg"
+    echo "$msg"
+    if $opt ; then exit 2 ; fi
+  }
+}
 
 help() {
 	cat <<-EOF
@@ -133,21 +133,28 @@ default() {
 main() {
   if [ $# -eq 0 ]; then
     default
-    return 0
+    exit 0
   fi
 
   cmd="$1"
   shift
 
   case "$cmd" in
-    clip|save|help)
+    clip|save|decode|help)
       "$cmd" "$@"
       ;;
     *)
       echo "Unknown command $cmd"
       help
-      return 2
+      exit 2
   esac
 }
+
+dep_check maim
+dep_check xclip
+dep_check xdg-user-dir
+dep_check notify-send false
+dep_check zbarimg false
+dep_check fswebcam false
 
 main "$@"

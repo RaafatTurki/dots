@@ -25,6 +25,7 @@ GARBAGE=(
 ~/.subversion
 ~/.swt
 ~/.synergy
+~/.tig_history
 ~/.urserver
 ~/.viminfo
 ~/.wget-hsts
@@ -51,14 +52,14 @@ for t in ${GARBAGE[@]}; do
   # echo $t
 
   # rm file if exists
-  if [ -e $target ]; then
-    trash -r $target
+  if [ -e $t ]; then
+    trash -r $t
     echo $t
   fi
 
   # rm file if symlink
-  if [ -L $target ]; then
-    trash -r $target
+  if [ -L $t ]; then
+    trash -r $t
     echo $t
   fi
 done

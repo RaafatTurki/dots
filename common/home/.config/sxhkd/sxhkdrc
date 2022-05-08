@@ -23,7 +23,9 @@ super + KP_Enter
 
 super + Escape
 	$SCREENSHOT clip
-	# $COLOR_PICKER
+
+super + shift + Escape
+	$COLOR_PICKER
 	# XCOLOR_DISABLE_SHAPE=1 xcolor --format HEX | xclip -selection clipboard
 
 super + l

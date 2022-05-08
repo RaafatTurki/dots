@@ -1,9 +1,10 @@
 [Desktop Entry]
-Encoding=UTF-8
-Version=1.0
 Type=Application
-NoDisplay=true
-Exec=term -e nvim %f
+Categories=Utility;TextEditor;
+Exec=term -e nvim %F
 Name=Nvim XDG
 Icon=nvim
-Comment=Nvim XDG Opener to force apps that don't implement XDG properly
+Comment=Nvim XDG Opener
+
+
+# use the default xdg terminal instead of this whole .desktop file

@@ -16,11 +16,11 @@ PS1='\u \w | '
 
 # finds binaries in $PATH
 fbin() {
-    echo `command -v $1`
+  echo `command -v $1`
 }
 
 append_path() {
-    export PATH=$PATH:$1
+  export PATH=$PATH:$1
 }
 
 # fail safes
@@ -32,6 +32,9 @@ export XDG_DATA_HOME=${XDG_DATA_HOME:-"$HOME/.local/share"}
 export XDG_STATE_HOME=${XDG_STATE_HOME:-"$HOME/.local/state/"}
 append_path $HOME/.local/bin
 export DOTS=~/dots
+# more xdg support
+export XDG_DATA_DIRS=/usr/local/share:/usr/share
+# export XDG_DATA_DIRS=/usr/local/share:/usr/share:~/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share
 
 # android
 # export ANDROID_HOME=$HOME/android
@@ -102,9 +105,9 @@ export GOPATH="$XDG_DATA_HOME"/go
 
 # Autostart tbsm on tty 1
 if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
-startx $XINITRC
+  startx $XINITRC
 else
-# setfont /usr/share/kbd/consolefonts/ter-v18n.psf.gz
-clear
-exec fish -C 'logo'
+  # setfont /usr/share/kbd/consolefonts/ter-v18n.psf.gz
+  clear
+  exec fish -C 'logo'
 fi

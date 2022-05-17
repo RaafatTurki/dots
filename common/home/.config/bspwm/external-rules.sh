@@ -34,6 +34,7 @@ instance_name "chromium" && window_role "pop-up" && echo "state=floating center=
 
 window_name "win0" && class_name_starts_with "jetbrains" && echo "state=floating"
 window_name "Welcome to IntelliJ IDEA" && echo "state=floating"
+window_name "Welcome to Brave" && echo "state=floating"
 
 window_role "pop-up" && echo "state=floating center=on"
 

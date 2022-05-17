@@ -3,6 +3,8 @@
 # start an ssh agent here
 eval $(ssh-agent)
 
+dbus-update-activation-environment --systemd DBUS_SESSION_BUS_ADDRESS DISPLAY XAUTHORITY
+
 # exec firefox
 # exec dwm
 exec bspwm

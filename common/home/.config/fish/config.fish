@@ -1,5 +1,7 @@
 # avim: syntax=sh
 
+if status is-interactive
+
 # General
 set fish_greeting
 # starship init fish | source
@@ -179,3 +181,5 @@ alias create-android-debugstore='keytool -keyalg RSA -genkeypair -alias androidd
 # if [[ ! ${DISPLAY} && ${XDG_VTNR} == 1 ]]; then
 #   exec tbsm
 # fi
+
+end

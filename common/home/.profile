@@ -23,6 +23,10 @@ append_path() {
   export PATH=$PATH:$1
 }
 
+prepend_path() {
+  export PATH=$1:$PATH
+}
+
 # fail safes
 export USER=${USER:-`whoami`}
 export HOME=${HOME:-"/home/$USER"}
@@ -30,7 +34,8 @@ export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-"$HOME/.config"}
 export XDG_CACHE_HOME=${XDG_CACHE_HOME:-"$HOME/.local/cache"}
 export XDG_DATA_HOME=${XDG_DATA_HOME:-"$HOME/.local/share"}
 export XDG_STATE_HOME=${XDG_STATE_HOME:-"$HOME/.local/state/"}
-append_path $HOME/.local/bin
+# append_path $HOME/.local/bin
+prepend_path $HOME/.local/bin
 export DOTS=~/dots
 # more xdg support
 export XDG_DATA_DIRS=/usr/local/share:/usr/share
@@ -62,7 +67,7 @@ export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 
 export TERMINAL=`fbin xst`
 # export TERMINAL=`fbin kitty`
-export FM=`fbin thunar`
+export FM=`fbin pcmanfm`
 export READER=`fbin zathura`
 export BROWSER=`fbin firefox`
 export LAUNCHER="`fbin rofi` -show drun"
@@ -80,6 +85,9 @@ export SYSMON=`fbin btop`
 export QT_QPA_PLATFORMTHEME=gtk2
 # export TDESKTOP_I_KNOW_ABOUT_GTK_INCOMPATIBILITY=1
 # export TDESKTOP_DISABLE_DESKTOP_FILE_GENERATION=1
+
+# java
+export _JAVA_AWT_WM_NONREPARENTING=1
 
 # unclutter home
 export HISTSIZE=0

@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/usr/bin/bash
 
 #maim -s | tee >(xclip -selection clipboard -t image/png) ~/$(date +%s).png | curl -F "file=@-" 0x0.st | xclip -selection primary
 

@@ -50,21 +50,21 @@ fzf_simple() {
   fzf --query ${QUERY:-""} -1 -0 --exact
 }
 
-# find_project_with_root_identifier() {
-#     ROOT_IDENT=$1
-#     ROOT_IDENT_TYPE=$2
-#     PROJECT_PATH=""
-#     while :; do
-#         QUERY=$(get_query)
-#         QUERY_INDEX=$(($QUERY_INDEX+1))
-#         SELECTION=`find . -type $ROOT_IDENT_TYPE -name $ROOT_IDENT | cut -d / -f 2 | uniq | fzf --query ${QUERY:-''} -1 -0`
-#         if [ -z $SELECTION ]; then exit ;fi
-#         cd $SELECTION
-#         PROJECT_PATH="$PROJECT_PATH/$SELECTION"
-#         if [ -$ROOT_IDENT_TYPE $ROOT_IDENT ]; then break ;fi
-#     done
-#     echo $PROJECT_PATH
-# }
+find_project_with_root_identifier() {
+    ROOT_IDENT=$1
+    ROOT_IDENT_TYPE=$2
+    PROJECT_PATH=""
+    while :; do
+        QUERY=$(get_query)
+        QUERY_INDEX=$(($QUERY_INDEX+1))
+        SELECTION=`find . -type $ROOT_IDENT_TYPE -name $ROOT_IDENT | cut -d / -f 2 | uniq | fzf --query ${QUERY:-''} -1 -0`
+        if [ -z $SELECTION ]; then exit ;fi
+        cd $SELECTION
+        PROJECT_PATH="$PROJECT_PATH/$SELECTION"
+        if [ -$ROOT_IDENT_TYPE $ROOT_IDENT ]; then break ;fi
+    done
+    echo $PROJECT_PATH
+}
 
 all_files_in_dir() {
   RES=
@@ -125,6 +125,20 @@ case $PROJECT_TYPE in
     assert_not_null $SELECTION
     $EDITOR $SELECTION
     ;;
+  wines)
+    cd ~/games/executables/windows
+    SELECTION=`find .\
+      -name *.exe -type f\
+      -not -name UnityCrashHandler64.exe\
+      -not -name CaptiveAppEntry.exe\
+      -printf '%P\n' | fzf_simple`
+
+    assert_not_null $SELECTION
+    cd "`dirname "$SELECTION"`"
+    EXE=`basename "$SELECTION"`
+    bottles -b main -e "./$EXE"
+    ;;
+
   # godot)
     #     cd ~/sectors/godot/
     #     SELECTION=$(find_project_with_root_identifier project.godot f)

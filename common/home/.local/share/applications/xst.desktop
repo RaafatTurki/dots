@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=XST
+GenericName=Terminal emulator
+Comment=X Simple Terminal
+TryExec=xst
+Exec=env SHELL=fish xst
+Icon=terminal
+Categories=System;TerminalEmulator;

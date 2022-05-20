@@ -15,6 +15,7 @@ if status is-interactive
   # ALIASES
   alias s="sudo"
   alias ss="sudo -E"
+  alias x="chmod +x"
   alias aa="paru"
   alias home="cd ~"
   alias dots="cd $DOTS"
@@ -35,7 +36,7 @@ if status is-interactive
   alias get-dpi='xdpyinfo | grep -B 2 resolution'
   alias get-mime='xdg-mime query filetype'
   alias journal-boot='sudo journalctl -p 3 -b --no-pager'
-  alias hx='helix'
+  # alias hx='helix'
 
   # live aliases
   alias live='watch -c -w -t -n 0.1'
@@ -53,6 +54,8 @@ if status is-interactive
   alias nvimp="e nvimp -q"
   alias nvims="e nvims -q"
   alias notes="e notes -q"
+  alias bins="e bin -q"
+  alias wines="e wines -q"
 
   alias nvimc="e nvims -q nvimc"
   alias fishc="e nvims -q fishc"
@@ -181,3 +184,8 @@ if status is-interactive
   # fi
 
 end
+
+# pnpm
+set -gx PNPM_HOME "/home/potato/.local/share/pnpm"
+set -gx PATH "$PNPM_HOME" $PATH
+# pnpm end

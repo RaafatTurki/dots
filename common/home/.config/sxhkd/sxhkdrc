@@ -72,6 +72,9 @@ super + w
 super + shift + Return
     bspwm-scratch-term toggle
 
+super + shift + {Up,Down}
+  scratchpad {hide,show}
+
 # send the newest marked node to the newest preselected node
 #super + y
 #	bspc node newest.marked.local -n newest.!automatic.local
@@ -117,8 +120,8 @@ super + shift + {1-8}
   bspc node -d '^{1-8}'
 
 # focus the parent or 1st node
-super + {a, z}
-	bspc node -f @{parent,first}
+# super + shift + {Up,Down}
+#   bspc node -f @{parent,first}
 
 # focus or send to the given desktop
 #super + {_, shift +} {1-9,0}

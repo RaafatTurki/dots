@@ -33,7 +33,7 @@ if status is-interactive
   # alias lsdu='du -ahx -- .* | sort -rh | head -10'
   # alias once="execute -o -c"
   # alias reload="execute -r -c"
-  alias get-dpi='xdpyinfo | grep -B 2 resolution'
+  alias get-display-size='xdpyinfo | grep -B 2 resolution'
   alias get-mime='xdg-mime query filetype'
   alias journal-boot='sudo journalctl -p 3 -b --no-pager'
   # alias hx='helix'
@@ -53,6 +53,8 @@ if status is-interactive
   # e aliases
   alias nvimp="e nvimp -q"
   alias nvims="e nvims -q"
+  complete -f -c nvims -a (find "$XDG_DATA_HOME/nvim/sessions/" -printf '%P ')
+
   alias notes="e notes -q"
   alias bins="e bin -q"
   alias wines="e wines -q"
@@ -85,6 +87,7 @@ if status is-interactive
   alias rm='rm -i'
   alias less='less -r'
   alias echo='echo -n'
+  alias rg='rg --hidden'
 
   # XDG compliance aliases
   alias yarn="yarn --use-yarnrc '$XDG_CONFIG_HOME/yarn/config'"

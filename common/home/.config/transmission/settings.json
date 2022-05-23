@@ -16,7 +16,7 @@
     "details-window-height": 542,
     "details-window-width": 803,
     "dht-enabled": true,
-    "download-dir": "/home/potato/down",
+    "download-dir": "/home/potato/down/torrent",
     "download-queue-enabled": true,
     "download-queue-size": 5,
     "encryption": 1,

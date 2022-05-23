@@ -32,7 +32,6 @@ wmname LG3D
 # redshift -O 6000K -b 0.9
 
 # DAEMONIZED PROCESSES (executed only if not running)
-once 'xsettingsd'
 once 'mpd'
 once 'polkit-dumb-agent'
 once 'barriers -f -c .config/barrier/config.conf --disable-crypto'
@@ -44,11 +43,12 @@ once 'picom --experimental-backends'
 once 'sxhkd'
 once 'xss-lock lock'
 once 'transmission-gtk -m'
-# once 'thunar --daemon'
+once 'thunar --daemon'
 # once 'spacefm -d'
-# once 'urserver start'
 # once 'pcmanfm -d' -e "SHELL=$TERM_SHELL"
-once 'pcmanfm -d'
+# once 'pcmanfm -d'
+
+# once 'urserver start'
 # once 'mpDris2'
 # once 'volumeicon'
 # once 'redshift -r -l 39:35'
@@ -58,6 +58,7 @@ once 'pcmanfm -d'
 
 
 # RE-EXECUTED PROCESSES (killed and executed)
+reload 'xsettingsd'
 reload 'trayer --align right --widthtype request --transparent true --tint 0x000000'
 reload 'dunst'
 reload 'flashfocus'

@@ -7,6 +7,7 @@
 	<command>term</command>
 	<description>opens a terminal here</description>
 	<patterns>*</patterns>
+	<startup-notify/>
 	<directories/>
 </action>
 </actions>

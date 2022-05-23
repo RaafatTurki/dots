@@ -36,6 +36,7 @@ export XDG_DATA_HOME=${XDG_DATA_HOME:-"$HOME/.local/share"}
 export XDG_STATE_HOME=${XDG_STATE_HOME:-"$HOME/.local/state/"}
 # append_path $HOME/.local/bin
 prepend_path $HOME/.local/bin
+append_path $HOME/.local/share/cargo/bin/
 export DOTS=~/dots
 # more xdg support
 export XDG_DATA_DIRS=/usr/local/share:/usr/share
@@ -67,7 +68,7 @@ export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 
 export TERMINAL=`fbin xst`
 # export TERMINAL=`fbin kitty`
-export FM=`fbin pcmanfm`
+export FM=`fbin thunar`
 export READER=`fbin zathura`
 export BROWSER=`fbin firefox`
 export LAUNCHER="`fbin rofi` -show drun"
@@ -90,9 +91,10 @@ export QT_QPA_PLATFORMTHEME=gtk2
 export _JAVA_AWT_WM_NONREPARENTING=1
 
 # unclutter home
-export HISTSIZE=0
-export LESSHISTFILE=-
-export XAUTHORITY=/tmp/Xauthority
+export HISTFILE="$XDG_DATA_HOME/bash_history"
+export LESSHISTFILE="$XDG_DATA_HOME/lesshst"
+export INPUTRC="$XDG_CONFIG_HOME/readline/inputrc"
+# export XAUTHORITY=/tmp/Xauthority
 export GTK_RC_FILES=$XDG_CONFIG_HOME/gtk-1.0/gtkrc
 export GTK2_RC_FILES=$XDG_CONFIG_HOME/gtk-2.0/gtkrc
 export STARSHIP_CACHE=$XDG_CACHE_HOME/starship

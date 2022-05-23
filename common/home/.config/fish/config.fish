@@ -9,7 +9,7 @@ if status is-interactive
   # set python_auto_venv
 
   # Init
-  venv_auto
+  # venv_auto
 
 
   # ALIASES
@@ -130,59 +130,24 @@ if status is-interactive
   alias create-android-debugstore='keytool -keyalg RSA -genkeypair -alias androiddebugkey -keypass android -keystore debug.keystore -storepass android -dname "CN=Android Debug,O=Android,C=US" -validity 9999 -deststoretype pkcs12'
 
 
-  # ENV VARS
-  #(being set to st-256color in xrdb)
-
-  #alias mirr-score="sudo reflector --latest 50 --number 20 --sort score --save /etc/pacman.d/mirrorlist"
-  #alias mirr-delay="sudo reflector --latest 50 --number 20 --sort delay --save /etc/pacman.d/mirrorlist"
-  #alias mirr-age="sudo reflector --latest 50 --number 20 --sort age --save /etc/pacman.d/mirrorlist"
-  #alias mirr-="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist"
-
-  # conversion, ls/exa
-  #alias ls="exa --color=always --group-directories-first"
-  #alias la="exa -a --color=always --group-directories-first"
-  #alias ll="exa -l --color=always --group-directories-first"
-  #alias lt="exa -T --color=always --group-directories-first"
-
-  #alias npm-ls="npm list -g --depth=0"
-  #alias json="prettier $0 | bat -l json"
-
-  #alias gpg-check="gpg2 --keyserver-options auto-key-retrieve --verify" # verify signature for isos
-  #alias gpg-retrieve="gpg2 --keyserver-options auto-key-retrieve --receive-keys" # receive the key of a developer
-  #alias config="/usr/bin/git --git-dir=$HOME/dotfiles --work-tree=$HOME" # bare git repo alias for dotfiles
-
-  # process
-  #alias ps-mem='ps auxf | sort -nr -k 4'
-  #alias ps-mem10='ps auxf | sort -nr -k 4 | head -10'
-  #alias pscpu='ps auxf | sort -nr -k 3'
-  #alias pscpu10='ps auxf | sort -nr -k 3 | head -10'
-
-  #set GTK2_RC_FILES $HOME/.config/gtk-2.0/gtkrc-2.0
-
-  # -=-=-=- ENV VARS -=-=-=-
-  # set LIBVA_DRIVER_NAME vdpau
-  # set _JAVA_OPTIONS "-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel -Dswing.crossplatformlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel -Djava.util.prefs.userRoot=$XDG_CONFIG_HOME/java"
-  # set QT_QPA_PLATFORMTHEME qt5ct
-  # set QT_QPA_PLATFORMTHEME gtk2
-  # set XDG_CURRENT_DESKTOP gnome
-  # set PASTEL_COLOR_MODE 24bit
-
-  #no need when using gtk mushroom
-  # set GTK_CSD=0
-  # set LD_PRELOAD=/usr/lib/libgtk3-nocsd.so.0
 
 
-  # -=-=-=- Ascii Greeter -=-=-=-
-  # Arch tulizu ascii art
-  # tulizu list arch-lettering-condensed show
-  # Auto start tbsm after login on VT 1 and 2
-  # [[ $XDG_VTNR -le 2 ]] && tbsm
 
-  # Auto start tbsm only on tty1
-  # if [[ ! ${DISPLAY} && ${XDG_VTNR} == 1 ]]; then
-  #   exec tbsm
-  # fi
 
+
+
+
+
+
+
+
+
+  # relocate into actual scrscn sourcecode
+  complete -c scrscn -f
+  complete -c scrscn -a 'clip' -d 'Take a screenshot and save it into clipboard'
+  complete -c scrscn -a 'save' -d 'Take a screenshot and save into ~/Pictures/screenshots'
+  complete -c scrscn -a 'decode' -d 'Take a screenshot and save its decoded content into clipboard (qrcodes and barcodes)'
+  complete -c scrscn -a 'help' -d 'Print a short help text and exit'
 end
 
 # pnpm

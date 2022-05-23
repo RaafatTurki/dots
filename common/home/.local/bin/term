@@ -1,23 +1,99 @@
 #!/usr/bin/bash
 
-exec env SHELL=$TERM_SHELL $TERMINAL $@
+launch() {
+  exec env SHELL=$TERM_SHELL $TERMINAL $@
+}
 
-# TERMS=(
+zoom() {
+  case "$TERM" in
+    st-256color|xst-256color)
+      zoom_st "$@"
+      ;;
+    *)
+      echo "\$TERM $TERM not supported"
+      exit 2
+  esac
+}
+
+zoom_st() {
+  dep_check xdotool
+
+  FACTOR=${1:-1}
+  KEYCODE_ZOOM=112
+
+  if [[ ${FACTOR:0:1} == '-' ]]; then
+    FACTOR="${FACTOR:1}"
+    KEYCODE_ZOOM=117
+  else
+    KEYCODE_ZOOM=112
+  fi
+
+  XDOTOOL_ARGS="getactivewindow keydown ctrl keydown shift "
+  for i in `seq 1 $FACTOR`; do
+    XDOTOOL_ARGS+="key $KEYCODE_ZOOM "
+    # echo $i $KEYCODE_ZOOM
+  done
+  XDOTOOL_ARGS+="keyup ctrl keyup shift"
+
+  xdotool $XDOTOOL_ARGS
+}
+
 # kitty
-# xst
 # st
 # termite
 # xfce-terminal
 # gnome-terminal
 # urxvt
 # xterm
-# )
-# 
-# for t in ${TERMS[@]}; do
-#     if [ `command -v $t` ]; then
-#         export SHELL=$TERM_SHELL
-#         exec $t
-#     fi
-# done
-# 
-# echo "none of the listed terminals was found on this system!"
+
+
+dep_check() {
+  cmd=$1
+  opt=${2:-true}
+  msg="Missing dependency '$cmd'"
+
+  type -p "$cmd" &>/dev/null || {
+    notify-send "Scrscn" "$msg"
+    echo "$msg"
+    if $opt ; then exit 2 ; fi
+  }
+}
+
+help() {
+	cat <<-EOF
+Usage: scrscn COMMAND [ARGS...]
+
+Commands:
+
+    help              Print this help text.
+EOF
+}
+
+default() {
+  launch
+}
+
+main() {
+  if [ $# -eq 0 ]; then
+    default
+    exit 0
+  fi
+
+  cmd="$1"
+  shift
+
+  case "$cmd" in
+    zoom|help)
+      "$cmd" "$@"
+      ;;
+    *)
+      echo "Unknown command $cmd"
+      help
+      exit 2
+  esac
+}
+
+# dep_check bash
+# dep_check xst false
+
+main "$@"

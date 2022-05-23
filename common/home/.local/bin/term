@@ -92,6 +92,8 @@ Usage: scrscn COMMAND [ARGS...]
 
 Commands:
 
+    launch            Launches $TERMINAL with it's SHELL set to $TERM_SHELL, all args are passed (default).
+    zoom [-]<X>       Changes terminal font size by X amount of of steps, "term zoom -5" decreases font size by 10 steps.
     help              Print this help text.
 EOF
 }
@@ -110,7 +112,7 @@ main() {
   shift
 
   case "$cmd" in
-    zoom|help)
+    launch|zoom|help)
       "$cmd" "$@"
       ;;
     *)

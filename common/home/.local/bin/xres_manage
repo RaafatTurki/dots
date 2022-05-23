@@ -1,0 +1,91 @@
+#!/usr/bin/bash
+
+XRES_DEF=${XRES_DEF:-"$XDG_CONFIG_HOME/x11/xresources.defs"}
+XRES_INC=${XRES_INC:-"$XDG_CONFIG_HOME/x11/xresources.d"}
+XRES_OUT=${XRES_OUT:-"$XDG_DATA_HOME/xresources"}
+
+compile() {
+  # defines
+  DEFINES=`$XRES_DEF`
+ 
+  # includes
+  cd $XRES_INC
+  INCLUDES=
+  INCLUDE_FILES=`find . -type f -printf '%p\n' | sort`
+  
+  for file_name in $INCLUDE_FILES; do
+    INCLUDES+="#include \"`readlink -f $file_name`\"\n"
+  done
+  
+  # print
+  echo -e "! vim: filetype=xdefaults:commentstring=!%s\n"
+  echo -e $DEFINES
+  echo -e $INCLUDES
+}
+
+gen() {
+  compile > "$XRES_OUT"
+}
+
+load() {
+  dep_check xrdb
+  xrdb "$XRES_OUT"
+}
+
+
+
+dep_check() {
+  cmd=$1
+  opt=${2:-true}
+  msg="Missing dependency '$cmd'"
+
+  type -p "$cmd" &>/dev/null || {
+    notify-send "Scrscn" "$msg"
+    echo "$msg"
+    if $opt ; then exit 2 ; fi
+  }
+}
+
+help() {
+	cat <<-EOF
+Usage: xres_manage COMMAND [ARGS...]
+
+Commands:
+
+    compile             ... (default).
+    help              Print this help text.
+
+Env Vars
+    \$XRES_INC         Path containing Xresources include files
+    \$XRES_OUT         Path containing Xresources output file
+
+EOF
+}
+
+default() {
+  compile
+}
+
+main() {
+  if [ $# -eq 0 ]; then
+    default
+    exit 0
+  fi
+
+  cmd="$1"
+  shift
+
+  case "$cmd" in
+    compile|gen|load|gen_load|help)
+      "$cmd" "$@"
+      ;;
+    *)
+      echo "Unknown command $cmd"
+      help
+      exit 2
+  esac
+}
+
+dep_check xrdb false
+
+main "$@"

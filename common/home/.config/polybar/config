@@ -5,12 +5,12 @@ include-file = ~/.config/polybar/modules
 
 [g]
 tr_ = #00000000
-bl_ = ${xrdb:col.bl}
-wh_ = ${xrdb:col.wh}
-bg_ = ${xrdb:col.bg}
-mg_ = ${xrdb:col.mg}
-fg_ = ${xrdb:col.fg}
-sel = ${xrdb:col.sel}
+bl_ = ${xrdb:g.bl}
+wh_ = ${xrdb:g.wh}
+bg_ = ${xrdb:g.bg}
+mg_ = ${xrdb:g.mg}
+fg_ = ${xrdb:g.fg}
+sel = ${xrdb:g.sel}
 
 #[global/wm]
 #margin-top = 0

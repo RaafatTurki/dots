@@ -14,16 +14,9 @@
 
 *.color8:           #353570
 *.color9:           #E7365D
-*.color10:		    #C0EB63
-*.color11:		    #FFBE23
-*.color12:		    #1071FE
-*.color13:		    #F543A5
-*.color14:		    #4FB7F6
-*.color15:		    #FFFFFF
-! colors -- this is the base16-twilight colorscheme.
-! *.color16:      #cda869
-! *.color17:      #9b703f
-! *.color18:      #323537
-! *.color19:      #464b50
-! *.color20:      #838184
-! *.color21:      #c3c3c3
+*.color10:		      #C0EB63
+*.color11:		      #FFBE23
+*.color12:		      #1071FE
+*.color13:		      #F543A5
+*.color14:		      #4FB7F6
+*.color15:		      #FFFFFF

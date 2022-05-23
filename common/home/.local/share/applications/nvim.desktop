@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 Categories=Utility;TextEditor;
-Exec=term -e nvim %F
+Exec=term launch -e nvim %F
 Name=Nvim
 Icon=nvim
 Comment=Nvim for non interactive shells

@@ -7,7 +7,7 @@ export XSECURELOCK_AUTH_CURSOR_BLINK=1
 export XSECURELOCK_AUTH_SOUNDS=1
 export XSECURELOCK_AUTH_TIMEOUT=60
 export XSECURELOCK_BLANK_TIMEOUT=120
-export XSECURELOCK_FONT="`xgetres txt.fn`:pixelsize=`xgetres txt.fs`"
+export XSECURELOCK_FONT="`xgetres g.fn_tui`:pixelsize=`xgetres g.fs_tui`"
 
 xsecurelock
 

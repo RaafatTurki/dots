@@ -11,7 +11,8 @@ alias reload="execute -r -c"
 
 # xrandr --output DVI-D-0 --mode 1920x1080 --output HDMI-0 --mode 1366x768 --right-of DVI-D-0
 xwallpaper --zoom ~/media/pics/wallpapers/12.png
-xrdb ~/.config/x11/xresources
+xres_manage gen
+xres_manage load
 xmodmap ~/.config/x11/xmodmap
 
 xsetroot -cursor_name left_ptr

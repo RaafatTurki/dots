@@ -1,0 +1,37 @@
+#!/usr/bin/bash
+
+# DEPS: xdpyinfo
+
+DEFINES=
+
+def() {
+  KEY=$1
+  shift
+  VAL="${!KEY:-$@}"
+
+  DEFINES+="#define $KEY $VAL\n"
+  DEFINES+="g.${KEY,,}: $VAL\n"
+}
+
+
+def BL         "#000000"
+def WH         "#ffffff"
+def RED        "#ED9831"
+def ERR        "#DE3F4F"
+def BG         "#000000"
+def MG         "#0A151F"
+def FG         "#294374"
+def SEL        "#FEFFFF"
+
+def FN_TUI      Cozette
+def FS_TUI      13
+
+def FN_GUI      Terminus
+def FS_GUI      15
+
+def FN_SYM      Symbols Nerd Font
+def FS_SYM      10
+
+def DPI         `xdpyinfo | grep resolution | cut -d 'x' -f 2 | cut -d ' ' -f 1`
+
+echo $DEFINES

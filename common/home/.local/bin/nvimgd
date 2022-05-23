@@ -29,6 +29,7 @@ case $MODE in
 
         # NVIM_LISTEN_ADDRESS=$SOCKET nvr --nostart --remote-tab $FILE --remote-send "${LINE}G${COL}|"
         NVIM_LISTEN_ADDRESS=$SOCKET nvr --nostart --remote-tab $FILE
+        # NVIM_LISTEN_ADDRESS=$SOCKET nvim --remote --nostart --remote-tab $FILE
         # notify-send "remoted $SOCKET"
         ;;
     *)

@@ -1,10 +1,8 @@
 #!/usr/bin/bash
 
-FS_UI=`xgetres txt.fs_ui`
-FN=`xgetres txt.fn`
-FONT="$FN:pixelsize=$FS_UI:bold"
-BG=`xgetres col.bg`
-FG=`xgetres col.sel`
+FONT="`xgetres g.fn_tui`:pixelsize=`xgetres g.fs_tui`:bold"
+BG=`xgetres g.bg`
+FG=`xgetres g.sel`
 MON=$(bspc query -M -d focused --names)
 TIME=${2:-0.3}
 # TIME=10

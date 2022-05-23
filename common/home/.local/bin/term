@@ -1,6 +1,7 @@
 #!/usr/bin/bash
 
 launch() {
+  TERM_SHELL=${TERM_SHELL:-bash}
   exec env SHELL=$TERM_SHELL $TERMINAL $@
 }
 
@@ -88,13 +89,17 @@ dep_check() {
 
 help() {
 	cat <<-EOF
-Usage: scrscn COMMAND [ARGS...]
+Usage: term COMMAND [ARGS...]
 
 Commands:
 
     launch            Launches $TERMINAL with it's SHELL set to $TERM_SHELL, all args are passed (default).
     zoom [-]<X>       Changes terminal font size by X amount of of steps, "term zoom -5" decreases font size by 10 steps.
     help              Print this help text.
+
+Env Vars
+    $TERMINAL         Terminal program name (must be on $PATH)
+    $TERM_SHELL       Shell to use within the $TERMINAL (default is bash)
 EOF
 }
 

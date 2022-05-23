@@ -7,15 +7,18 @@ launch() {
 zoom() {
   case "$TERM" in
     st-256color|xst-256color)
-      zoom_st "$@"
+      zoom_c_s_pgup_pgdown "$@"
+      ;;
+    xterm-kitty)
+      zoom_c_plus_underscore "$@"
       ;;
     *)
-      echo "\$TERM $TERM not supported"
-      exit 2
+      echo "\$TERM $TERM unrecognized, trying default zoom method"
+      zoom_c_plus_underscore "$@"
   esac
 }
 
-zoom_st() {
+zoom_c_s_pgup_pgdown() {
   dep_check xdotool
 
   FACTOR=${1:-1}
@@ -37,6 +40,30 @@ zoom_st() {
 
   xdotool $XDOTOOL_ARGS
 }
+
+zoom_c_plus_underscore() {
+  dep_check xdotool
+
+  FACTOR=${1:-1}
+  KEYCODE_ZOOM=112
+
+  if [[ ${FACTOR:0:1} == '-' ]]; then
+    FACTOR="${FACTOR:1}"
+    KEYCODE_ZOOM=20
+  else
+    KEYCODE_ZOOM=21
+  fi
+
+  XDOTOOL_ARGS="getactivewindow keydown ctrl keydown shift "
+  for i in `seq 1 $FACTOR`; do
+    XDOTOOL_ARGS+="key $KEYCODE_ZOOM "
+    # echo $i $KEYCODE_ZOOM
+  done
+  XDOTOOL_ARGS+="keyup ctrl keyup shift"
+
+  xdotool $XDOTOOL_ARGS
+}
+
 
 # kitty
 # st

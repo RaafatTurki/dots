@@ -1,7 +1,12 @@
 # General
 
 super + Return
-	SHELL=$TERM_SHELL $TERMINAL
+  term launch
+
+super + shift + {Prior,Next}
+  TERM=xst-256color term zoom {1,-1}
+  # TERM=xst-256color term zoom 1
+	# SHELL=$TERM_SHELL $TERMINAL
 
 super + d
 	$LAUNCHER

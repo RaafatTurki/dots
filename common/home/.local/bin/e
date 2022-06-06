@@ -136,7 +136,8 @@ case $PROJECT_TYPE in
     assert_not_null $SELECTION
     cd "`dirname "$SELECTION"`"
     EXE=`basename "$SELECTION"`
-    bottles -b main -e "./$EXE"
+    # bottles -b main -e "./$EXE"
+    bottles-cli run -b main -e "./$EXE"
     ;;
 
   # godot)

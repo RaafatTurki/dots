@@ -8,6 +8,9 @@ if status is-interactive
   # zoxide init fish | source
   # set python_auto_venv
 
+  # fish_vi_key_bindings
+  # fish_default_key_bindings
+
   # Init
   # venv_auto
 

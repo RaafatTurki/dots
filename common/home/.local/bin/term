@@ -7,7 +7,10 @@ launch() {
 
 zoom() {
   case "$TERM" in
-    st-256color|xst-256color)
+    xst-256color)
+      zoom_xst_xres_manage "$@"
+      ;;
+    st-256color)
       zoom_c_s_pgup_pgdown "$@"
       ;;
     xterm-kitty)
@@ -17,6 +20,22 @@ zoom() {
       echo "\$TERM $TERM unrecognized, trying default zoom method"
       zoom_c_plus_underscore "$@"
   esac
+}
+
+zoom_xst_xres_manage() {
+  dep_check xdotool
+  dep_check xres_manage
+
+  FACTOR=${1:-1}
+
+  if [[ ${FACTOR:0:1} == '-' ]]; then
+    FACTOR="${FACTOR:1}"
+    kill -USR1 $(xdotool getwindowfocus getwindowpid)
+  else
+    xrdb <(FN_TUI=Terminus FS_TUI=20 xres_manage compile)
+    kill -USR1 $(xdotool getwindowfocus getwindowpid)
+    xres_manage load
+  fi
 }
 
 zoom_c_s_pgup_pgdown() {

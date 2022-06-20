@@ -82,7 +82,6 @@ if status is-interactive
   alias diff='diff --color=auto'
   alias ip='ip --color=auto'
   alias fdisk='fdisk --color=auto'
-  alias df='df -h'
   alias free='free -h'
   alias tree='tree -C'
   alias cp='cp -i'
@@ -100,7 +99,7 @@ if status is-interactive
   # utils
   alias pkgfile-update='sudo pkgfile -u'
   alias node_modules_find="find . -name 'node_modules' -type d -prune -print | xargs du -chs"
-  alias node_modules_clean="find . -name 'node_modules' -type d -prune -print -exec trash -r '{}' \;"
+  # alias node_modules_clean="find . -name 'node_modules' -type d -prune -print -exec trash -r '{}' \;"
   alias lib32-find="aa -Qsq | grep lib32 | fzf | xargs pacman -Qi"
   alias kernel-params="cat /proc/cmdline"
   alias key="xev | awk -F'[ )]+' '/^KeyPress/ { a[NR+2] } NR in a { printf \"%-3s %s\n\", \$5, \$8 }'"
@@ -154,6 +153,25 @@ if status is-interactive
   complete -c scrscn -a 'save' -d 'Take a screenshot and save into ~/Pictures/screenshots'
   complete -c scrscn -a 'decode' -d 'Take a screenshot and save its decoded content into clipboard (qrcodes and barcodes)'
   complete -c scrscn -a 'help' -d 'Print a short help text and exit'
+end
+
+
+if test (command -v lsd)
+  alias ls='lsd'
+else if test (command -v exa)
+  alias ls='exa'
+end
+
+if test (command -v fd)
+  alias find='fd'
+end
+
+if test (command -v gping)
+  alias ping='gping'
+end
+
+if test (command -v duf)
+  alias df='duf'
 end
 
 # pnpm

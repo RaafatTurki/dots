@@ -16,6 +16,12 @@ function fish_prompt
   set -l pwd (prompt_pwd)
   set -l curr_path "$blue$pwd "
 
+  # ssh info
+  if [ (_is_ssh) ]
+    set -l ssh_hostname (echo $hostname)
+    set ssh_info (printf "%sSSH -> %s%s: " $red $yellow $ssh_hostname)
+  end
+
   # git branch
   if [ (_git_branch_name) ]
     set -l git_branch (_git_branch_name)
@@ -33,16 +39,21 @@ function fish_prompt
     set exit_code "$red$last_status "
   end
 
-  echo -n -s $curr_path $git_info $exit_code
+  echo -n -s $ssh_info $curr_path $git_info $exit_code
 end
 
 
-# returns git branch name if pwd is git dir, nothing if not
+# returns git branch name if pwd is git dir, nothing otherwise
 function _git_branch_name
   echo (command git symbolic-ref HEAD 2>/dev/null | sed -e 's|^refs/heads/||')
 end
 
-# returns something if pwd is dirty git, nothing if not
+# returns something if pwd is dirty git, nothing otherwise
 function _is_git_dirty
   echo (command git status -s --ignore-submodules=dirty 2>/dev/null)
+end
+
+# returns $SSH_TTY if SSH, false otherwise
+function _is_ssh
+  echo $SSH_TTY
 end

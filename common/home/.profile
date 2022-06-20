@@ -35,8 +35,10 @@ export XDG_CACHE_HOME=${XDG_CACHE_HOME:-"$HOME/.local/cache"}
 export XDG_DATA_HOME=${XDG_DATA_HOME:-"$HOME/.local/share"}
 export XDG_STATE_HOME=${XDG_STATE_HOME:-"$HOME/.local/state/"}
 # append_path $HOME/.local/bin
-prepend_path $HOME/.local/bin
+prepend_path $HOME/.local/bin_drop_ins/
+prepend_path $HOME/.local/bin/
 append_path $HOME/.local/share/cargo/bin/
+append_path $HOME/.local/share/go/bin/
 export DOTS=~/dots
 # more xdg support
 export XDG_DATA_DIRS=/usr/local/share:/usr/share
@@ -65,6 +67,8 @@ export PARU_PAGER="`fbin nvim` +Man!"
 # export GIT_PAGER=`fbin less -r`
 export LESS="-F -X $LESS"
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+export USERSHARES_DIR="/var/lib/samba/usershares"
+export USERSHARES_GROUP="sambashare"
 
 export TERMINAL=`fbin xst`
 # export TERMINAL=`fbin kitty`
@@ -94,7 +98,7 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 export HISTFILE="$XDG_DATA_HOME/bash_history"
 export LESSHISTFILE="$XDG_DATA_HOME/lesshst"
 export INPUTRC="$XDG_CONFIG_HOME/readline/inputrc"
-# export XAUTHORITY=/tmp/Xauthority
+export XAUTHORITY="$XDG_RUNTIME_DIR"/Xauthority
 export GTK_RC_FILES=$XDG_CONFIG_HOME/gtk-1.0/gtkrc
 export GTK2_RC_FILES=$XDG_CONFIG_HOME/gtk-2.0/gtkrc
 export STARSHIP_CACHE=$XDG_CACHE_HOME/starship

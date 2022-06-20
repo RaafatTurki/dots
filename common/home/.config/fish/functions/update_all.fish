@@ -24,6 +24,9 @@ function update_all
     title "Updating AUR Packages (paru)"
     paru --gendb  # make paru aware of all -git packages upstream updates if not installed by it
     paru -Su --disable-download-timeout
+  else if test (command -v aura)
+    title "Updating AUR Packages (aura)"
+    sudo aura -Akuax
   else if test (command -v yay)
     title "Updating AUR Packages (yay)"
     yay -Su --disable-download-timeout

@@ -10,4 +10,13 @@
 	<startup-notify/>
 	<directories/>
 </action>
+<action>
+	<icon>udiskie-mount</icon>
+	<name>Mount ISO</name>
+	<unique-id>1654998312029870-1</unique-id>
+	<command>mount.iso %f</command>
+	<description>mounts an iso image</description>
+	<patterns>*.iso;*.ISO</patterns>
+	<other-files/>
+</action>
 </actions>

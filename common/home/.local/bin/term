@@ -2,7 +2,7 @@
 
 launch() {
   TERM_SHELL=${TERM_SHELL:-bash}
-  exec env SHELL=$TERM_SHELL $TERMINAL $@
+  exec env SHELL=$TERM_SHELL $TERMINAL "$@"
 }
 
 zoom() {

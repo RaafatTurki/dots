@@ -16,6 +16,7 @@ GARBAGE=(
 ~/.mono
 ~/.npm
 ~/.nuget
+~/.omnisharp
 ~/.pki
 ~/.pnpm-debug.log
 ~/.pnpm-store
@@ -54,13 +55,13 @@ for t in ${GARBAGE[@]}; do
 
   # rm file if exists
   if [ -e $t ]; then
-    trash -r $t
+    gio trash $t
     echo $t
   fi
 
   # rm file if symlink
   if [ -L $t ]; then
-    trash -r $t
+    gio trash $t
     echo $t
   fi
 done

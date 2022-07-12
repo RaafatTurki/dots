@@ -9,7 +9,10 @@ super + shift + {Prior,Next}
 	# SHELL=$TERM_SHELL $TERMINAL
 
 super + d
-	$LAUNCHER
+  rofi -show drun
+  # jgmenu_run 2>/$HOME/log.2.txt
+  # jgmenu
+	# $LAUNCHER
 
 super + e
 	$FM
@@ -113,8 +116,11 @@ super + shift + {Left,Right}
 # 	bspc desktop -f {prev,next} && bspinfo -d
 
 # focus the last node/desktop
-super + {Tab, grave}
-	bspc {node, desktop} -f last && bspinfo -d
+super + Tab
+	bspc node -f last && bspinfo -d
+
+super + grave
+  skippy-xd --toggle-window-picker
 
 # switch between desktops
 super + {1-8}
@@ -203,3 +209,6 @@ super + alt + Escape
 #super + ctrl + space
 #	bspc node -p cancel
 
+
+# toggle showing and hiding all windows in current dekstop
+# bspc query -N -n .local.window | xargs -I ID bspc node ID -g hidden

@@ -1,3 +1,29 @@
 #! /bin/sh
 
-xcolor -S 4 -P 100 -s
+# DEPS: gpick, imagemagick (WIP)
+
+color=$(gpick -pso --no-newline)
+# image=/tmp/${color}.png
+image=/tmp/color-picker-preview.png
+
+main() {
+	if [[ "$color" ]]; then
+        	# copy color code to clipboard
+		echo $color | tr -d "\n" | xclip -selection clipboard
+		# generate preview
+		# convert -size 48x48 xc:"$color" ${image}
+		# notify about it
+    # dunstify -u low --replace=69 -i ${image} "$color, copied to clipboard."
+		# notify-send -u low -a "Color Picker" -r 69 -i ${image} "$color, copied to clipboard."
+		notify-send -u low "Picked $color"
+	fi
+}
+
+# Run the script
+main
+
+
+
+
+# DEPS: xcolor, xclip
+# xcolor -S 4 -P 100 | xclip -selection clipboard

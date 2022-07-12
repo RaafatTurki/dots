@@ -3,6 +3,7 @@
 # home cleaning
 GARBAGE=(
 ~/.ICEauthority
+~/.android
 ~/.anydesk
 ~/.aspnet
 ~/.cinnamon
@@ -11,6 +12,8 @@ GARBAGE=(
 ~/.eclipse
 ~/.flutter
 ~/.gtkrc-2.0
+~/.gnupg
+~/.icons
 ~/.java
 ~/.lesshst
 ~/.mono

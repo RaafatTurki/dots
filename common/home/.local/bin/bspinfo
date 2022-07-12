@@ -4,7 +4,7 @@ FONT="`xgetres g.fn_tui`:pixelsize=`xgetres g.fs_tui`:bold"
 BG=`xgetres g.bg`
 FG=`xgetres g.sel`
 MON=$(bspc query -M -d focused --names)
-TIME=${2:-0.3}
+TIME=${2:-0.5}
 # TIME=10
 
 PIDS=$(pgrep umess)
@@ -13,7 +13,7 @@ PIDS=$(pgrep umess)
 STRING=""
 case $1 in
   -t|--time)
-    STRING=`date '+%a %d %b %I:%M %p'`
+    STRING=`date '+%a %d %b %I:%M:%S %p'`
     ;;
   -d|--desktop)
     all_desktops=`bspc query -D --names`
@@ -51,5 +51,8 @@ case $1 in
     ;;
 esac
 
+(echo $STRING; sleep $TIME) | umess -t -f $FONT -m $MON -F $FG -B $BG 
 # (echo $STRING; sleep $TIME) | umess -b -f $FONT -m $MON -F $FG -B $BG 
-(echo $STRING; sleep $TIME) | umess -t -r -f $FONT -m $MON -F $FG -B $BG 
+# (echo $STRING; sleep $TIME) | umess -t -r -f $FONT -m $MON -F $FG -B $BG 
+# notify-send -r 1000 -t 300 -p "$STRING"
+# notify-send -r 9999 -t 1000 "$STRING"

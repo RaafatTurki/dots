@@ -1,6 +1,6 @@
 ! vim: filetype=xdefaults:commentstring=!%s
 
-*.background:       #0D1017
+*.background:       #0D0E15
 *.foreground:       #F1F7ED
 
 *.color0:           #252550

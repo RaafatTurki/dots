@@ -16,7 +16,7 @@ time: 200
 simple: false
 
 # Number of animation frames in a flash.
-ntimepoints: 6
+ntimepoints: 5
 
 # Set this to false if you don't want windows to flash on focus.
 flash-on-focus: true

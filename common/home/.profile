@@ -31,10 +31,10 @@ prepend_path() {
 export USER=${USER:-`whoami`}
 export HOME=${HOME:-"/home/$USER"}
 export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-"$HOME/.config"}
-export XDG_CACHE_HOME=${XDG_CACHE_HOME:-"$HOME/.local/cache"}
+export XDG_CACHE_HOME=${XDG_CACHE_HOME:-"$HOME/.cache"}
 export XDG_DATA_HOME=${XDG_DATA_HOME:-"$HOME/.local/share"}
 export XDG_STATE_HOME=${XDG_STATE_HOME:-"$HOME/.local/state/"}
-# append_path $HOME/.local/bin
+append_path $HOME/.local/bin
 prepend_path $HOME/.local/bin_drop_ins/
 prepend_path $HOME/.local/bin/
 append_path $HOME/.local/share/cargo/bin/
@@ -45,7 +45,6 @@ export XDG_DATA_DIRS=/usr/local/share:/usr/share
 # export XDG_DATA_DIRS=/usr/local/share:/usr/share:~/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share
 
 # android
-# export ANDROID_HOME=$HOME/android
 # append_path $ANDROID_HOME/cmdline-tools/tools/bin
 # append_path $ANDROID_HOME/emulator
 # append_path $ANDROID_HOME/platform-tools
@@ -75,7 +74,8 @@ export TERMINAL=`fbin xst`
 export FM=`fbin thunar`
 export READER=`fbin zathura`
 export BROWSER=`fbin firefox`
-export LAUNCHER="`fbin rofi` -show drun"
+# export LAUNCHER="`fbin rofi` -show drun"
+export LAUNCHER="`fbin jgmenu_run`"
 export AUDIO_MIXER=`fbin pavucontrol`
 export MUSIC_CLIENT="$TERMINAL -e `fbin ncmpcpp`"
 export MUSIC_SERVER=`fbin mpd`
@@ -105,7 +105,7 @@ export STARSHIP_CACHE=$XDG_CACHE_HOME/starship
 export PARALLEL_HOME=$XDG_CONFIG_HOME/parallel
 export XINITRC=$XDG_CONFIG_HOME/x11/xinitrc
 export ICEAUTHORITY=$XDG_CACHE_HOME/ICEauthority
-# export GNUPGHOME=$XDG_DATA_HOME/gnupg
+export GNUPGHOME=$XDG_DATA_HOME/gnupg
 export CUDA_CACHE_PATH=$XDG_CACHE_HOME/nv
 
 export NPM_CONFIG_USERCONFIG=$XDG_CONFIG_HOME/npm/npmrc
@@ -114,7 +114,8 @@ export NODE_REPL_HISTORY=$XDG_CACHE_HOME/node_repl_history
 export NPM_HOME=$XDG_DATA_HOME/npm
 export RUSTUP_HOME=$XDG_DATA_HOME/rustup
 export CARGO_HOME=$XDG_DATA_HOME/cargo
-export GOPATH="$XDG_DATA_HOME"/go
+export GOPATH=$XDG_DATA_HOME/go
+export ANDROID_HOME=$XDG_DATA_HOME/android
 # export RUST_SRC_PATH=$RUSTUP_HOME/toolchains/nightly-$(uname -m)-unknown-linux-gnu/lib/rustlib/src/rust/src
 
 # Autostart tbsm on tty 1

@@ -33,6 +33,7 @@ if status is-interactive
   alias weather="curl wttr.in"
   alias cb="xclip -selection clipboard"
   alias lsdu='du -ahx -- * | sort -rh | head -10'
+  alias lsusers="cat /etc/passwd | cut -d : -f 1"
   # alias lsdu='du -ahx -- .* | sort -rh | head -10'
   # alias once="execute -o -c"
   # alias reload="execute -r -c"
@@ -42,7 +43,10 @@ if status is-interactive
   # alias hx='helix'
 
   # live aliases
-  alias live='watch -c -w -t -n 0.1'
+  # alias live="watch -w -x fish -ic"
+  # alias live="watch -w -x fish -ic"
+  # alias live="watch -c"
+  # alias live='watch -c -w -t -n 1'
   alias live-ssh-agent-keys='watch ssh-add -l'
   # alias live-tree='watch tree -C'
 
@@ -56,7 +60,6 @@ if status is-interactive
   # e aliases
   alias nvimp="e nvimp -q"
   alias nvims="e nvims -q"
-  complete -f -c nvims -a (find "$XDG_DATA_HOME/nvim/sessions/" -printf '%P ')
 
   alias notes="e notes -q"
   alias bins="e bin -q"
@@ -93,21 +96,21 @@ if status is-interactive
 
   # XDG compliance aliases
   alias yarn="yarn --use-yarnrc '$XDG_CONFIG_HOME/yarn/config'"
-  alias wget="wget --hsts-file=$XDG_CACHE_HOME/wget-hsts"
+  alias wget='wget --hsts-file="$XDG_DATA_HOME/wget-hsts"'
   alias irssi="irssi --config=$XDG_CONFIG_HOME/irssi/config --home=$XDG_DATA_HOME/irssi"
 
   # utils
   alias pkgfile-update='sudo pkgfile -u'
   alias node_modules_find="find . -name 'node_modules' -type d -prune -print | xargs du -chs"
-  # alias node_modules_clean="find . -name 'node_modules' -type d -prune -print -exec trash -r '{}' \;"
+  alias node_modules_clean="find . -name 'node_modules' -type d -prune -print -exec gio trash '{}' \;"
   alias lib32-find="aa -Qsq | grep lib32 | fzf | xargs pacman -Qi"
   alias kernel-params="cat /proc/cmdline"
   alias key="xev | awk -F'[ )]+' '/^KeyPress/ { a[NR+2] } NR in a { printf \"%-3s %s\n\", \$5, \$8 }'"
 
   # pacman
-  alias pac-info='paru -Qsq | fzf | xargs paru -Qi'
-  alias pac-files='paru -Qsq | fzf | xargs paru -Ql'
-  alias pac-pkgbuild='paru -Qsq | fzf | xargs paru -Gp'
+  # alias pac-info='paru -Qsq | fzf | xargs paru -Qi'
+  # alias pac-files='paru -Qsq | fzf | xargs paru -Ql'
+  # alias pac-pkgbuild='paru -Qsq | fzf | xargs paru -Gp'
   alias pac-clean='sudo pacman -Rns (pacman -Qtdq)'
   alias pac-sort-mirrors="curl -s 'https://archlinux.org/mirrorlist/?country=TR&country=DE&use_mirror_status=on' | sed -e 's/^#Server/Server/' -e '/^#/d' | rankmirrors -v -n 8 - > /etc/pacman.d/mirrorlist"
 
@@ -132,7 +135,7 @@ if status is-interactive
   alias venv='python -m venv'
 
   # android
-  alias create-android-debugstore='keytool -keyalg RSA -genkeypair -alias androiddebugkey -keypass android -keystore debug.keystore -storepass android -dname "CN=Android Debug,O=Android,C=US" -validity 9999 -deststoretype pkcs12'
+  # alias create-android-debugstore='keytool -keyalg RSA -genkeypair -alias androiddebugkey -keypass android -keystore debug.keystore -storepass android -dname "CN=Android Debug,O=Android,C=US" -validity 9999 -deststoretype pkcs12'
 
 
 
@@ -144,8 +147,8 @@ if status is-interactive
 
 
 
-
-
+  # relocate elsewhere
+  complete -f -c nvims -a (find "$XDG_DATA_HOME/nvim_data/sessions/" -printf '%P ')
 
   # relocate into actual scrscn sourcecode
   complete -c scrscn -f
@@ -162,9 +165,9 @@ else if test (command -v exa)
   alias ls='exa'
 end
 
-if test (command -v fd)
-  alias find='fd'
-end
+# if test (command -v fd)
+#   alias find='fd'
+# end
 
 if test (command -v gping)
   alias ping='gping'

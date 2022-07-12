@@ -37,6 +37,11 @@ function update_all
     sudo pkgfile -u
   end
 
+  if test (sudo bootctl is-installed)
+    title "Updating SystemD Boot"
+    sudo bootctl update
+  end
+
   title "Updating Fish Completions"
   fish_update_completions
 

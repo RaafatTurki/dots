@@ -102,10 +102,15 @@ case $PROJECT_TYPE in
     $EDITOR $SELECTION
     ;;
   nvims)
-    cd $XDG_DATA_HOME/nvim/sessions
-    SELECTION=`find . -path ./.git -prune -o -path ./doc -prune -o -type f -printf '%P\n' | fzf_simple`
-    assert_not_null $SELECTION
-    nvim -c "SessionLoad $SELECTION"
+    SESSIONS_DIR=$XDG_DATA_HOME/nvim_data/sessions
+    if [ ! -d $SESSIONS_DIR ]; then
+      echo "$SESSIONS_DIR is not a directory"
+    else
+      cd $SESSIONS_DIR
+      SELECTION=`find . -path ./.git -prune -o -path ./doc -prune -o -type f -not -name "*.json" -printf '%P\n' | fzf_simple`
+      assert_not_null $SELECTION
+      nvim -c "SessionLoadCLI $SELECTION"
+    fi
     ;;
   nvimc)
     cd $XDG_CONFIG_HOME/nvim

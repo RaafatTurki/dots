@@ -1,0 +1,20 @@
+set linenumbers
+set indicator
+set positionlog
+set mouse
+set minibar
+set autoindent
+set nonewlines
+set tabsize 2
+set tabstospaces
+#set nohelp
+
+set titlecolor cyan
+set numbercolor black
+set minicolor white
+set functioncolor black
+set keycolor blue
+set scrollercolor black
+
+#include "/usr/share/nano-syntax-highlighting/*.nanorc"
+include "/usr/share/nano/*.nanorc"

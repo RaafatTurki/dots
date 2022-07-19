@@ -77,6 +77,7 @@ export BROWSER=`fbin firefox`
 # export LAUNCHER="`fbin rofi` -show drun"
 export LAUNCHER="`fbin jgmenu_run`"
 export AUDIO_MIXER=`fbin pavucontrol`
+export AUDIO_PLAYER=`fbin pragha`
 export MUSIC_CLIENT="$TERMINAL -e `fbin ncmpcpp`"
 export MUSIC_SERVER=`fbin mpd`
 export SCREENSHOT=`fbin scrscn`
@@ -117,6 +118,15 @@ export CARGO_HOME=$XDG_DATA_HOME/cargo
 export GOPATH=$XDG_DATA_HOME/go
 export ANDROID_HOME=$XDG_DATA_HOME/android
 # export RUST_SRC_PATH=$RUSTUP_HOME/toolchains/nightly-$(uname -m)-unknown-linux-gnu/lib/rustlib/src/rust/src
+
+
+# activate gtk3 no csd if available
+GTK3_NO_CSD_SO=/usr/lib/libgtk3-nocsd.so.0
+if [ -e $GTK3_NO_CSD_SO ]; then
+  export GTK_CSD=0
+  export LD_PRELOAD=$GTK3_NO_CSD_SO
+fi
+
 
 # Autostart tbsm on tty 1
 if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then

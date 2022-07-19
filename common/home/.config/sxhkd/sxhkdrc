@@ -56,12 +56,13 @@ XF86MonBrightness{Down,Up}
   backlight change {-,+}10 && bspinfo -b
 
 XF86Tools
-  $AUDIO_MIXER
+  $AUDIO_PLAYER -x
+  # $AUDIO_MIXER
   # $MUSIC_CLIENT
-XF86Audio{Stop,Prev,Play,Next}
-	mpc {stop,prev,toggle,next}
-KP_Enter
-	mpc toggle
+# XF86Audio{Stop,Prev,Play,Next}
+# 	mpc {stop,prev,toggle,next}
+# KP_Enter
+# 	mpc toggle
 
 
 # BSPWM

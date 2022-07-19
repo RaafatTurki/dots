@@ -19,6 +19,7 @@ if status is-interactive
   alias s="sudo"
   alias ss="sudo -E"
   alias x="chmod +x"
+  alias win="bottles-cli run -b main -e"
   alias aa="paru"
   alias home="cd ~"
   alias dots="cd $DOTS"
@@ -32,7 +33,7 @@ if status is-interactive
   alias fonts="fc-list | cut -d ':' -f 2,3 | sort | fzf | xclip -selection clipboard"
   alias weather="curl wttr.in"
   alias cb="xclip -selection clipboard"
-  alias lsdu='du -ahx -- * | sort -rh | head -10'
+  alias lsdu='ls | xargs -I{} du -sh {} | sort -h'
   alias lsusers="cat /etc/passwd | cut -d : -f 1"
   # alias lsdu='du -ahx -- .* | sort -rh | head -10'
   # alias once="execute -o -c"
@@ -147,10 +148,11 @@ if status is-interactive
 
 
 
-  # relocate elsewhere
-  complete -f -c nvims -a (find "$XDG_DATA_HOME/nvim_data/sessions/" -printf '%P ')
 
-  # relocate into actual scrscn sourcecode
+  # completions that shouldn't be here
+  complete -f -c nvims -a (find "$XDG_DATA_HOME/nvim_data/sessions/" -printf '%P ')
+  # complete -f -c win -a (find . -name *.exe -type f -printf '%P\n')
+
   complete -c scrscn -f
   complete -c scrscn -a 'clip' -d 'Take a screenshot and save it into clipboard'
   complete -c scrscn -a 'save' -d 'Take a screenshot and save into ~/Pictures/screenshots'

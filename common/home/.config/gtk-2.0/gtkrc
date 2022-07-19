@@ -3,7 +3,7 @@
 
 include "/home/potato/.gtkrc-2.0.mine"
 gtk-theme-name="Skeuos-Blue-Dark"
-gtk-icon-theme-name="Papirus-Dark"
+gtk-icon-theme-name="Crule-dark"
 gtk-font-name="Terminus 10"
 gtk-cursor-theme-size=0
 gtk-toolbar-style=GTK_TOOLBAR_BOTH_HORIZ

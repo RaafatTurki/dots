@@ -1,6 +1,7 @@
 [options]
 # font = Material Design Icons 10
-font = Terminus 10
+# font = Terminus 13
+font = Cozette 10
 # font = Iosevka Term 11
 
 allow_bold = true
@@ -15,39 +16,25 @@ cursor_shape = underline
 
 
 [colors]
-foreground      = #ABAECF
-foreground_bold = #FFFFFF
-cursor          = #ABAECF
-background      = #06050b
+background        = #0D0E15
+foreground        = #F1F7ED
+foreground_bold   = #FFFFFF
+cursor            = #ABAECF
 
-# black
-color0  = #0c0e14
-color8  = #33324d
+color0            = #252550
+color1            = #D7263D
+color2            = #B0DB43
+color3            = #FFAE03
+color4            = #0061FE
+color5            = #F53385
+color6            = #3FA7D6
+color7            = #FFFFFF
 
-# red
-color1  = #fa2955
-color9  = #fa2955
-
-# green
-color2  = #5affdc
-color10 = #5affdc
-
-# yellow
-color3  = #ed83c9
-color11 = #ed83c9
-
-# blue
-color4  = #874fda
-color12 = #874fda
-
-# magenta
-color5  = #ff2690
-color13 = #ff2690
-
-# cyan
-color6  = #54d3ff
-color14 = #54d3ff
-
-# white
-color7  = #fbfffe
-color15 = #fbfffe
+color8            = #353570
+color9            = #E7365D
+color10           =	#C0EB63
+color11           =	#FFBE23
+color12           =	#1071FE
+color13           =	#F543A5
+color14           =	#4FB7F6
+color15           =	#FFFFFF

@@ -50,3 +50,5 @@
   diffFilter = diff-so-fancy --patch
 # [diff]
 # 	external = difft
+[push]
+	autoSetupRemote = true

@@ -3,6 +3,9 @@
 *.background:       #0D0E15
 *.foreground:       #F1F7ED
 
+*.bg:               #0D0E15
+*.fg:               #F1F7ED
+
 *.color0:           #252550
 *.color1:           #D7263D
 *.color2:           #B0DB43

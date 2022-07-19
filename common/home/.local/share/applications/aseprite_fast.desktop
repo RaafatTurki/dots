@@ -2,7 +2,7 @@
 Name=Aseprite Fast
 Comment=Play this game on Steam
 Exec=aseprite_handler %u
-Icon=steam_icon_431730
+Icon=lutris_aseprite
 Terminal=false
 Type=Application
 Categories=Graphics;

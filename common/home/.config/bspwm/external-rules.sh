@@ -48,6 +48,7 @@ class_name "pentablet" && echo "state=floating"
 class_name "Steam" && window_name "Steam" && echo "state=tiled"
 class_name "xpad" && echo "state=floating"
 class_name "Toplevel" && echo "state=floating"
+class_name "fontforge" && echo "state=floating"
 
 # class_name "firefox" && echo "layer=below"
 # window_name "panel" && echo "layer=above"

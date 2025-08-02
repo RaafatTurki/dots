@@ -1,0 +1,21 @@
+port = 3003
+
+[routines.poweroff]
+linux = "systemctl poweroff"
+
+[routines.reboot]
+linux = "systemctl reboot"
+
+[routines.sleep]
+linux = "systemctl suspend"
+
+[routines.lock]
+linux = "loginctl lock-session $XDG_SESSION_ID"
+
+[routines.tdrm]
+linux = "cd ~/telegram_client && python ./main.py 1"
+
+[routines.ls]
+linux = "ls"
+darwin = "ls"
+windows = "dir"

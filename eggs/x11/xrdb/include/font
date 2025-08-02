@@ -1,0 +1,28 @@
+! vim: filetype=xdefaults:commentstring=!%s
+
+! #define FONT_NAME FiraCode Nerd Font Mono
+
+! #define FONT_NAME BlexMono Nerd Font Mono
+
+! #define FONT_NAME CaskaydiaCove Nerd Font Mono
+! #define FONT_NAME CaskaydiaCove NFM
+
+! #define FONT_NAME MonaspiceNe NFM
+! #define FONT_NAME MonaspiceAr NFM
+! #define FONT_NAME MonaspiceXe NFM
+! #define FONT_NAME MonaspiceRn NFM
+! #define FONT_NAME MonaspiceKr NFM
+
+#define FONT_NAME CommitMono Nerd Font Mono
+! #define FONT_NAME Terminus
+! #define FONT_NAME Cozette
+! #define FONT_NAME Spleen
+! #define FONT_NAME curie
+
+#define FONT_SIZE 12
+#define FONT_SIZE_POINTS 14
+
+*.font: FONT_NAME:size=FONT_SIZE
+*.font_name: FONT_NAME
+*.font_size: FONT_SIZE
+*.font_size_points: FONT_SIZE_POINTS

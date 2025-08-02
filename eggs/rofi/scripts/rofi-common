@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+# Rofi script-mode entry generator.
+#
+# Usage:
+#   entry "display text"
+#   entry "display text" "value"
+#   entry "display text" "value" "info"
+#
+# Fields are separated by US (0x1f).
+# The display field is followed by NUL (0x00).
+entry() {
+  local first=1
+  local arg
+
+  for arg in "$@"; do
+    if (( first )); then
+      printf '%s\0' "$arg"
+      first=0
+    else
+      printf '%s\037' "$arg"
+    fi
+  done
+
+  printf '\n'
+}
+
+# #!/usr/bin/env bash
+#
+# # rofi entry generator
+# entry() {
+#   local str=""
+#   local i=0
+#
+#   for arg in "$@"; do
+#     ((i++))
+#
+#     if [[ $i -eq 1 ]]; then
+#       str="$arg"
+#       str+="\0" # nullbyte after first arg
+#     elif [[ $i -eq $# ]]; then
+#       str+="$arg"
+#       str+="\n" # newline after last arg
+#     else
+#       str+="$arg"
+#       str+="\x1f" # unit separator as a delimiters
+#     fi
+#   done
+#   echo -en "$str"
+# }

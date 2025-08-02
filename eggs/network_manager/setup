@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+PROFILES_DIR=/home/potato/files/secret/nm_profiles/
+NM_CONN_DIR=/etc/NetworkManager/system-connections/
+NM_DISP_DIR=/etc/NetworkManager/dispatcher.d/
+CERT_DIR=/home/potato/.local/share/networkmanagement/certificates/nm-openvpn
+
+function extract_ovpn_block() {
+  local tag="$1"
+  local src="$2"
+  local dest="$3"
+
+  awk "found && /<\\/$tag>/{exit} /<$tag>/{found=1; next} found {print}" "$src" > "$dest"
+}
+
+
+# install custom dispatcher
+sudo cp ./dispatcher $NM_DISP_DIR
+sudo chown root:root "$NM_DISP_DIR/dispatcher"
+
+# loop over profiles and copy them to networkmanager
+shopt -s nullglob
+for profile_path in "$PROFILES_DIR"/*.nmconnection; do
+  PROFILE=$(basename "$profile_path" .nmconnection)
+  sudo cp $PROFILES_DIR/$PROFILE.nmconnection $NM_CONN_DIR
+  sudo chown root:root "$NM_CONN_DIR/$PROFILE.nmconnection"
+  sudo chmod 600 "$NM_CONN_DIR/$PROFILE.nmconnection"
+done
+shopt -u nullglob
+
+# extract inline OpenVPN certs/keys to files referenced by nmconnection
+mkdir -p "$CERT_DIR"
+chmod 700 "$(dirname "$CERT_DIR")" "$CERT_DIR"
+shopt -s nullglob
+for ovpn_path in "$PROFILES_DIR"/*.ovpn; do
+  PROFILE=$(basename "$ovpn_path" .ovpn)
+
+  extract_ovpn_block ca "$ovpn_path" "$CERT_DIR/$PROFILE-ca.pem"
+  extract_ovpn_block cert "$ovpn_path" "$CERT_DIR/$PROFILE-cert.pem"
+  extract_ovpn_block key "$ovpn_path" "$CERT_DIR/$PROFILE-key.pem"
+  extract_ovpn_block "tls-crypt" "$ovpn_path" "$CERT_DIR/$PROFILE-tls-crypt.pem"
+
+  chmod 600 \
+    "$CERT_DIR/$PROFILE-ca.pem" \
+    "$CERT_DIR/$PROFILE-cert.pem" \
+    "$CERT_DIR/$PROFILE-key.pem" \
+    "$CERT_DIR/$PROFILE-tls-crypt.pem"
+done
+shopt -u nullglob
+
+
+# reload nm
+sudo systemctl restart NetworkManager

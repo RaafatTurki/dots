@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+run_timeout() {
+  local cmd="$1"
+  shift
+
+  command -v timeout >/dev/null 2>&1 || return 0
+  command -v "$cmd" >/dev/null 2>&1 || return 0
+  timeout 1 "$cmd" "$@"
+}
+
+play_htop() {
+  run_timeout htop
+}
+
+play_btop() {
+  run_timeout btop
+}
+
+play_dennis() {
+  command -v dennis >/dev/null 2>&1 || return 0
+  dennis
+  sleep 1
+}
+
+play_cbonsai() {
+  run_timeout cbonsai -l
+}
+
+play_rmatrix() {
+  run_timeout rmatrix
+}
+
+play_cava() {
+  run_timeout cava
+}
+
+play_catnip() {
+  run_timeout catnip
+}
+
+# use a while loop that runs the above functions randomly
+
+while true; do
+
+  # generate a random number between 1 and 7
+  random_number=$((1 + RANDOM % 7))
+
+  clear
+
+  # run the function that corresponds to the random number
+  case $random_number in
+    1)
+      play_htop
+      ;;
+    2)
+      play_btop
+      ;;
+    3)
+      play_dennis
+      ;;
+    4)
+      play_cbonsai
+      ;;
+    5)
+      play_rmatrix
+      ;;
+    6)
+      play_cava
+      ;;
+    7)
+      play_catnip
+      ;;
+  esac
+
+  # sleep for 1 second
+  # sleep 1
+done

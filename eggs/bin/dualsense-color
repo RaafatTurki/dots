@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# notify-send "$DS_DEV"
+
+case "$DS_DEV" in
+  "14:3a:9a:e8:1d:de")
+    dualsensectl -d "$DS_DEV" lightbar 0 255 0 255
+    echo "Setting $DS_DEV lightbar to green"
+    ;;
+  "50:ee:32:18:e6:9f")
+    dualsensectl -d "$DS_DEV" lightbar 0 0 255 255
+    echo "Setting $DS_DEV lightbar to blue"
+    ;;
+esac

@@ -1,0 +1,44 @@
+#!/bin/env bash
+
+set -euo pipefail
+
+BOLD=$'\033[1m'; RED=$'\033[31m'; BLUE=$'\033[34m'; GREEN=$'\033[32m'; YELLOW=$'\033[33m'; RESET=$'\033[0m'
+step() { echo "${BOLD}${BLUE}==>${RESET} ${BOLD}$*${RESET}"; }
+ok()   { echo "  ${GREEN}✓${RESET} $*"; }
+skip() { echo "  ${YELLOW}·${RESET} $*"; }
+err()  { echo "  ${RED}✗${RESET} $*"; }
+
+clone() {
+  [ -d "$2/.git" ] && { skip "$2 already cloned"; return; }
+  mkdir -p "$(dirname "$2")"
+  git clone "$1" "$2" && ok "cloned $2" || { err "failed to clone $1"; exit 1; }
+}
+
+step "syncing yolk eggs"
+if out=$(yolk sync 2>&1); then
+  [ -n "$out" ] && { echo "$out"; ok "synced"; } || skip "nothing to sync"
+else
+  err "yolk sync failed"; echo "$out"; exit 1
+fi
+
+
+step "cloning venom"
+venom_dir="$HOME/.config/nvim"
+had_venom=$([ -d "$venom_dir/.git" ] && echo yes || echo no)
+clone git@github.com:RaafatTurki/venom.git "$HOME/.config/nvim"
+if [ "$had_venom" = no ]; then
+  step "installing st"
+  (cd "$venom_dir" && ./config install) && ok "st installed" || { err "st install failed"; exit 1; }
+fi
+
+
+step "cloning st"
+st_dir="$HOME/.config/st"
+had_st=$([ -d "$st_dir/.git" ] && echo yes || echo no)
+clone git@github.com:RaafatTurki/st.git "$st_dir"
+if [ "$had_st" = no ]; then
+  step "installing st"
+  (cd "$st_dir" && ./config install) && ok "st installed" || { err "st install failed"; exit 1; }
+fi
+
+echo "${BOLD}${GREEN}setup complete${RESET}"

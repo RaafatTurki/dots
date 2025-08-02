@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+find_editor() {
+  local candidate
+
+  if [[ -n "${EDITOR:-}" ]] && command -v -- "${EDITOR}" >/dev/null 2>&1; then
+    echo "${EDITOR}"
+    return 0
+  fi
+
+  for candidate in nvim vim vi; do
+    if command -v -- "${candidate}" >/dev/null 2>&1; then
+      echo "${candidate}"
+      return 0
+    fi
+  done
+
+  return 1
+}
+
+editor="$(find_editor || true)"
+if [[ -z "${editor}" ]]; then
+  echo "No suitable editor found (tried \$EDITOR, nvim, vim, vi)." >&2
+  exit 1
+fi
+exec st -e "$editor" "${1//vim:/}"

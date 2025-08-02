@@ -1,0 +1,7 @@
+! vim: ft=xdefaults:cms=!%s
+
+#include "font"
+#include "x"
+#include "colors"
+#include "st"
+#include "slock"

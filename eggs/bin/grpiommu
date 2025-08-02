@@ -1,0 +1,30 @@
+#!/bin/bash
+
+for group in `find /sys/kernel/iommu_groups/* -maxdepth 0 -type d | sort -V`; do
+  for device in ${group}/devices/*; do
+
+    # Device info
+    info=$(lspci -nns ${device##*/})
+    group=${group##*/}
+    echo "Group ${group} - ${info}" | grep -z --color=always -e '[0-9a-zA-Z][0-9a-zA-Z]:[0-9a-zA-Z][0-9a-zA-Z]\.[0-9a-zA-Z]'
+
+    # Print additional USB details
+    for usb in ${device}/usb*; do
+      if [ -d "${usb}" ] && [[ ! "${usb}" =~ "/usbmon" ]]; then
+        lsusb -s "$(cat ${usb}/busnum):" | while read line; do
+          echo "Group ${group} - ${info%% *} USB ${line}" | grep -z --color=always -e '[0-9a-zA-Z][0-9a-zA-Z]:[0-9a-zA-Z][0-9a-zA-Z]\.[0-9a-zA-Z]'
+        done
+      fi
+    done
+
+  done
+done
+
+# shopt -s nullglob
+# for g in /sys/kernel/iommu_groups/*; do
+#     echo "IOMMU Group ${g##*/}:"
+#     for d in $g/devices/*; do
+#         echo -e "- $(lspci -nns ${d##*/})"
+#     done;
+# 		echo
+# done;

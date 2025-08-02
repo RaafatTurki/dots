@@ -1,0 +1,99 @@
+#!/usr/bin/bash
+
+# SPEED=15
+# SIZE=1500x500+210+0
+# CLASS=${1:-DROPTERM}
+# TMUX_SESSION=${2:-DROPTERM}
+#
+# launch() {
+#   # st -c scratchterm &
+# }
+
+
+hide() {
+  id=$(bspc query -N -n "focused");
+  if [ -n "$id" ];then
+    xprop -id $id -f _SCRATCH 32ii -set _SCRATCH $(date +%s,%N);
+    bspc node -t "floating";
+    xdotool windowunmap $id;
+  fi
+}
+
+show() {
+  i=$(bspc query -N -n "focused.floating")
+
+  if [ -n "$i" ]; then
+    xprop -id $i -f _SCRATCH 32ii -set _SCRATCH $(date +%s,%N);
+    xdotool windowunmap $i;
+  else
+    i=$(for w in $(xwininfo -root -children | grep -o "^\s*0x[0-9a-f]\+"); do
+          t=$(xprop -id $w _SCRATCH | grep ' = \(.*\)');
+          if [ -n "$t" ]; then
+            echo $t $w;
+          fi
+        done | sort -n | head -n1 | cut -d ' ' -f 5)
+
+    if [ -n "$i" ]; then
+      xprop -id $i -remove _SCRATCH;
+      bspc rule -a \* state=floating center=on --one-shot;
+      xdotool windowmap $i;
+      bspc node -f $i;
+    fi
+  fi
+}
+
+
+dep_check() {
+  cmd=$1
+  opt=${2:-true}
+  msg="Missing dependency '$cmd'"
+
+  type -p "$cmd" &>/dev/null || {
+    notify-send "Scrscn" "$msg"
+    echo "$msg"
+    if $opt ; then exit 2 ; fi
+  }
+}
+
+help() {
+	cat <<-EOF
+Usage: scrscn COMMAND [ARGS...]
+
+Commands:
+
+    show              ...
+    hide              ...
+EOF
+}
+
+default() {
+  show
+}
+
+main() {
+  if [ $# -eq 0 ]; then
+    default
+    exit 0
+  fi
+
+  cmd="$1"
+  shift
+
+  case "$cmd" in
+    show|hide|help)
+      "$cmd" "$@"
+      ;;
+    *)
+      echo "Unknown command $cmd"
+      help
+      exit 2
+  esac
+}
+
+dep_check xdotool
+dep_check xwininfo
+dep_check xprop
+dep_check notify-send false
+dep_check bspc false
+
+main "$@"

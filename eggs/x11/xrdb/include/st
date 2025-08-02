@@ -1,0 +1,46 @@
+! vim: filetype=xdefaults:commentstring=!%s
+
+!! St
+! st.termname:                    st-256color
+! st.termname:                      st-256color
+! st.borderless:                    1
+
+! USR1 signal reloadable
+! st.font:						              FN_TUI:pixelsize=FS_TUI:antialias=true:autohint=true
+! st.font:						                FN_TUI:size=FS_TUI
+! st.font:						              FN_GUI:pixelsize=FS_GUI:antialias=false:autohint=true
+! st.font2:						              Noto Color Emoji:pixelsize=FS_TUI:antialias=false:autohint=true
+! st.font:						              Fira Code:pixelsize=FS_TUI
+
+! st.font:						              FN_TUI:pixelsize=FS_TUI
+! st.font:						              FN_TUI:size=FS_TUI:antialias=true:autohint=true
+! st.font:						            FN:pixelsize=FS:antialias=true:autohint=true
+
+! Font2 fallback, each font can be separated by comma ","
+! st.font_fallback:               Fira Code Nerd Font Mono:style=Regular:pixelsize=13:antialias=true,Material\\-Design\\-Iconic\\-Font:style=Design-Iconic-Font:pixelsize=13,JoyPixels:pixelsize=13
+! st.font_fallback:               Fira Code Nerd Font Mono:style=Regular:pixelsize=13:antialias=true,Material\\-Design\\-Iconic\\-Font:style=Design-Iconic-Font:pixelsize=13,JoyPixels:pixelsize=13
+! st.borderpx:                      0
+! st.cursorshape:                   3
+! st.cursorthickness:               2
+! st.cursorblinkstyle:              3
+! st.cursorblinkontype:             0
+! st.disablebold:                   0
+! st.disableitalics:                0
+! st.disableroman:                  0
+! st.scrollrate:                    10
+! st.chscale:                       1.0
+! st.cwscale:                       1.0
+! st.blinktimeout:                  100
+! st.bellvolume:                    5
+! st.boxdraw:                       1
+! st.boxdraw_bold:                  1
+! st.boxdraw_braille:               1
+! st.depth:                         0
+! st.opacity:                       255
+! st.disable_alpha_correction:      0
+! st.undercurl_shape:               1 
+! st.undercurl_thickness_threshold: 100
+! st.xurl_selector:                 xurls | eval dmenu $(dmenu_options) | xargs -r $BROWSER
+! st.prompt_char:                 λ  !`printf '\033[z'`
+! st.shell:                       /usr/bin/fish
+! st.shell:                       fish

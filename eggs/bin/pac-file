@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+pacman_cmd="$AUR_HELPER"
+
+pkg=$(eval "$pacman_cmd -Qsq" | fzf -q $1)
+files=$(paru -Ql "$pkg" | cut -d ' ' -f 2)
+file=$(printf "%s\n" "$files" | fzf)
+
+echo "$file"

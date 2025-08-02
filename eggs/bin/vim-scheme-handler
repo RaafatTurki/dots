@@ -1,0 +1,5 @@
+#!/usr/bin/bash
+
+# TODO: fallback through $EDITOR, nvim, vim, vi .. etc
+
+exec st -e $EDITOR "${1//vim:/}"

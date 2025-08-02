@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+<action>
+	<icon>utilities-terminal</icon>
+	<name>Open Terminal Here</name>
+	<submenu></submenu>
+	<unique-id>1647797198066260-1</unique-id>
+	<command>term</command>
+	<description>opens a terminal here</description>
+	<range></range>
+	<patterns>*</patterns>
+	<startup-notify/>
+	<directories/>
+</action>
+<action>
+	<icon>tools-media-optical-burn-image</icon>
+	<name>Mount ISO</name>
+	<submenu></submenu>
+	<unique-id>1654998312029870-1</unique-id>
+	<command>mount.iso %f</command>
+	<description>mounts an iso image</description>
+	<range></range>
+	<patterns>*.iso;*.ISO</patterns>
+	<other-files/>
+</action>
+<action>
+	<icon>folder-saved-search</icon>
+	<name>Search files in folder</name>
+	<submenu></submenu>
+	<unique-id>1702498318196855-1</unique-id>
+	<command>catfish %f</command>
+	<description></description>
+	<range>*</range>
+	<patterns>*</patterns>
+	<directories/>
+</action>
+</actions>

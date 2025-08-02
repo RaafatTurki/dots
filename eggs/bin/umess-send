@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+sleep_duration=$1
+shift
+message=$@
+
+font=$(xgetres umess.font_name)
+bg=$(xgetres umess.background)
+fg=$(xgetres umess.foreground)
+
+lock_file="/tmp/umess-show.lock"
+
+kill_existing_instance() {
+  local pid=$(cat "$lock_file")
+  kill "$pid"
+  pkill umess
+}
+
+# check if the lock file exists
+if [ -f "$lock_file" ]; then
+  kill_existing_instance
+fi
+
+# kill any umess process
+pids=$(pgrep umess)
+[ ! -z "$pids" ] && kill $pids
+
+# create the lock file with the current PID
+echo "$$" > "$lock_file"
+(echo $message; sleep $sleep_duration) | umess -bl -f "$font:size=25" -F "$fg" -B "#000000"
+
+# remove the lock file when the script is done
+rm "$lock_file"

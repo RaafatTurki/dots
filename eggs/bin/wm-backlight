@@ -1,0 +1,98 @@
+#!/usr/bin/bash
+
+DDC_DEV=dev:/dev/i2c-1
+
+get_protocol() {
+  # if [[ -e /sys/class/backlight/* ]]; then
+  if find /sys/class/backlight -mindepth 1 -maxdepth 1 | read; then
+    echo "ACPI"
+  else
+    echo "DDC"
+  fi
+}
+
+change() {
+  protocol=`get_protocol`
+  # echo "Using $protocol"
+
+  case "$protocol" in
+    ACPI)
+      # xbacklight -inc $1
+      brightnessctl s $1
+      ;;
+    DDC)
+      ddccontrol -r 0x10 -W $1 $DDC_DEV
+      ;;
+    *)
+      echo "Unknown protocol $protocol"
+      return 2
+  esac
+}
+
+get() {
+  protocol=`get_protocol`
+  # echo "Using $protocol"
+
+  case "$protocol" in
+    ACPI)
+      xbacklight -get
+      ;;
+    DDC)
+      ddccontrol -r 0x10 $DDC_DEV 2> /dev/null | tail -n 1 | cut -d ' ' -f 3 | cut -d '/' -f 2
+      ;;
+    *)
+      echo "Unknown protocol $protocol"
+      return 2
+  esac
+}
+
+get_manual() {
+  curr_file="/sys/class/backlight/intel_backlight/brightness"
+  max_file="/sys/class/backlight/intel_backlight/max_brightness"
+
+  curr_val=$(cat "$curr_file")
+  max_val=$(cat "$max_file")
+
+  curr_percentile=$(echo "scale=3; ($curr_val/$max_val) * 100" | bc)
+  curr_percentile=$(printf "%.0f" "$curr_percentile")
+
+  echo $curr_percentile
+}
+
+
+help() {
+	cat <<-EOF
+Usage: backlight COMMAND [ARGS...]
+
+Commands:
+
+    change  <-,+>N    change brightness by N percent
+    get               get brightness percentage value (default command)
+EOF
+}
+
+default() {
+  get
+}
+
+main() {
+  if [ $# -eq 0 ]; then
+    default
+    return 0
+  fi
+
+  cmd="$1"
+  shift
+
+  case "$cmd" in
+    change|get|help)
+      "$cmd" "$@"
+      ;;
+    *)
+      echo "Unknown command $cmd"
+      help
+      return 2
+  esac
+}
+
+main "$@"

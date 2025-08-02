@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# bc
+
+hexinput=`echo $1 | tr '[:lower:]' '[:upper:]'`  # uppercase-ing
+
+case $hexinput in
+\#*) hexinput=`echo $hexinput | cut -c2-7` ;;
+*);;
+esac
+
+r_hex=`echo $hexinput | cut -c1-2`
+g_hex=`echo $hexinput | cut -c3-4`
+b_hex=`echo $hexinput | cut -c5-7`
+
+r=`echo "ibase=16; $r_hex" | bc`
+g=`echo "ibase=16; $g_hex" | bc`
+b=`echo "ibase=16; $b_hex" | bc`
+
+r_float=`echo "scale=2; $r/255" | bc`
+g_float=`echo "scale=2; $g/255" | bc`
+b_float=`echo "scale=2; $b/255" | bc`
+
+
+echo $r_float,$g_float,$b_float
+exit 0

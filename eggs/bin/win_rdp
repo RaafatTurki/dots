@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# devour xfreerdp /u:Dell /v:11.111.6.12 /p:potato /sound /compression-level:2 /bpp:8 /size:1920x1080 /smart-sizing:2560x1440
+# devour xfreerdp /u:Dell /v:11.111.6.12 /p:potato /sound /compression-level:2 /bpp:8 /size:2560x1440
+devour xfreerdp /u:Dell /v:11.111.6.12 /p:potato /sound /compression-level:2 /bpp:8 /size:1920x1080
+
+

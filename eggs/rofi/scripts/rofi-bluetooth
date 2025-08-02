@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+cwd="$(dirname "$0")"
+source "$cwd/rofi-common"
+
+# prop <key> <addr>: print the value of one `bluetoothctl info` field
+prop() {
+  bluetoothctl info "$2" | awk -F ': ' -v k="$1" '$1 ~ "^[ \t]*" k "$" {print $2; exit}'
+}
+
+list_devices() {
+  local ADDR NAME ICON STATUS
+  for ADDR in $(bluetoothctl devices | awk '{print $2}'); do
+    NAME=$(prop Name "$ADDR")
+    ICON=$(prop Icon "$ADDR")
+
+    if [ "$(prop Blocked "$ADDR")" = "yes" ]; then
+      STATUS="×"
+    elif [ "$(prop Connected "$ADDR")" = "yes" ]; then
+      STATUS="─"
+    else
+      STATUS=" "
+    fi
+
+    entry "$STATUS $NAME" icon "$ICON-symbolic" info "$ADDR"
+  done
+}
+
+toggle_device() {
+  local ADDR=$1 action=connect
+  [ "$(prop Connected "$ADDR")" = "yes" ] && action=disconnect
+  bluetoothctl "$action" "$ADDR" 1>&2 2>/dev/null &
+}
+
+if [ -n "$1" ]; then
+  toggle_device "$ROFI_INFO"
+else
+  list_devices
+fi

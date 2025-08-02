@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+SYS_MMAP=/etc/X11/xinit/.Xmodmap
+USER_MMAP=$XDG_CONFIG_HOME/x11/xmodmap/xmodmap
+
+# xterm &
+
+if [ -f "$SYS_MMAP" ]; then
+  xmodmap $SYS_MMAP
+fi
+
+if [ -f "$USER_MMAP" ]; then
+  xmodmap "$USER_MMAP"
+fi
+
+if [ -f "$USER_MMAP.$(hostnamectl hostname)" ]; then
+  xmodmap "$USER_MMAP.$(hostnamectl hostname)"
+fi

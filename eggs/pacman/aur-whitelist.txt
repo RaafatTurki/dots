@@ -1,0 +1,3 @@
+cromite-bin ec3bbcd3c631
+claude-desktop a9fbe98930a9
+vesktop-bin 772fcc0e21b8

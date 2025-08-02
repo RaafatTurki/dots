@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+port=6379
+db_index=0
+
+usage() {
+  echo "usage: redisplay [-p PORT] [DB]" >&2
+}
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -p|--port)
+      if [[ -z "${2:-}" ]]; then
+        usage
+        exit 2
+      fi
+      port="$2"
+      shift 2
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *)
+      db_index="$1"
+      shift
+      ;;
+  esac
+done
+
+if ! command -v redis-cli &> /dev/null; then
+  echo "Error: redis-cli command not found. Please install it."
+  exit 1
+fi
+
+# loop through keys using SCAN
+for key in $(redis-cli -p "$port" --scan -n "$db_index"); do
+  # data type
+  type=$(redis-cli -p "$port" type "$key")
+
+  # get value based on data type
+  case "$type" in
+    string)
+      value=$(redis-cli -p "$port" get "$key")
+      ;;
+    hash)
+      value=$(redis-cli -p "$port" hgetall "$key" | tr '\n' ' ')  # Combine hash fields into space-separated string
+      ;;
+    set)
+      value=$(redis-cli -p "$port" smembers "$key" | tr '\n' ' ')  # Combine set members into space-separated string
+      ;;
+    list)
+      value=$(redis-cli -p "$port" lrange "$key" 0 -1 | tr '\n' ' ')  # Combine list elements into space-separated string
+      ;;
+    zset)
+      value=$(redis-cli -p "$port" zrange "$key" 0 -1 withscores | tr '\n' ' ')  # Combine sorted set elements with scores into space-separated string
+      ;;
+    *)
+      echo "Warning: Unknown data type for key '$key'"
+      continue
+      ;;
+  esac
+
+  # display
+  # echo "> $key $type: $value"
+  printf "%30s %10s %10s\n" $key $value $type
+done

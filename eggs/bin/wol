@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# DEPS: wakeonlan fzf
+
+XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-"$HOME/.config"}
+WOL_FILE="$XDG_CONFIG_HOME/wol/targets.wol"
+BROADCAST=true
+
+if [ ! -f "$WOL_FILE" ]; then
+    echo 'config file missing, aborting!'
+    exit
+fi
+
+parse_wol_file() {
+    FILE=$1
+
+    while read -r line; do
+        # ignoring empty and comment lines
+        if [ "${line::1}" == '#' ] || [ "$line" = '' ]; then continue; fi
+
+        # parsing and generating wakeonlan commands
+        while read -r mac ip port; do
+
+            label=$ip
+            port=${port:-9}
+            ip=${ip:-'255.255.255.255'}
+            if $BROADCAST; then ip='255.255.255.255';fi
+
+            printf "%s | -i %s -p %s %s\n" $label $ip $port $mac
+
+        done < <(echo $line)
+
+    done < "$FILE"
+}
+
+LINES=$(parse_wol_file "$WOL_FILE")
+LINES=$(echo "$LINES" | column -t | sort -u)
+
+SELECTED=$(echo "$LINES" | column -t | uniq | fzf) || exit 0
+
+ARGS=$(echo "$SELECTED" | cut -d '|' -f 2)
+CMD="wakeonlan $ARGS"
+
+echo $CMD
+$CMD

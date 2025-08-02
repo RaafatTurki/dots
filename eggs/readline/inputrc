@@ -1,0 +1,79 @@
+# Prettyfi 
+# set colored-stats On
+# set colored-completion-prefix On
+
+# Completion settings
+# set show-all-if-ambiguous on
+# set completion-ignore-case on
+# set completion-display-width 0
+# set completion-query-items 1000
+
+# ^C no longer shows on C-c keypress
+# set echo-control-characters off
+
+# Command history search
+# "\e[A": history-search-backward
+# "\e[B": history-search-forward
+
+# Move foreward/backward by word
+# "\e[1;5D": backward-word
+# "\e[1;5C": forward-word
+
+
+# Bash Keybindings
+# "\C-f":"cd /home/jake/.config/"
+# "\C-b":"cd ..\n"
+# "\C-h":"cd ~\n"
+# "\C-w":"webserver\n"
+# "\es": "\C-asudo \C-e"
+# "\C-x":"sourceb\n clear\n"
+
+# TAB: menu-complete
+# TAB: menu-complete
+
+
+
+
+# vi mode
+# set editing-mode vi
+# set show-mode-in-prompt on
+#
+# $if term=linux
+# 	set vi-ins-mode-string \1\e[?0c\2
+# 	set vi-cmd-mode-string \1\e[?8c\2
+# $else
+# 	set vi-ins-mode-string \1\e[6 q\2
+# 	set vi-cmd-mode-string \1\e[2 q\2
+# $endif
+
+
+# set vi-ins-mode-string \1\e[6 q\2
+# set vi-cmd-mode-string \1\e[4 q\2
+
+# Ibeam       \1\e[6 q\2
+# Underscore  \1\e[4 q\2
+# Block       \1\e[2 q\2
+
+# showing all completion options
+# set show-all-if-unmodified on
+# set show-all-if-ambiguous on
+
+# colored auto completion
+# Color files by types
+# Note that this may cause completion text blink in some terminals (e.g. xterm).
+# set colored-stats on
+# Append char to indicate type
+# set visible-stats on
+# Mark symlinked directories
+# set mark-symlinked-directories on
+# Color the common prefix
+# set colored-completion-prefix on
+# Color the common prefix in menu-complete
+# set menu-complete-display-prefix on
+
+# hide C-c showing as ^C
+# set echo-control-characters off
+
+# smart history navigation
+# "\e[A": history-search-backward
+# "\e[B": history-search-forward

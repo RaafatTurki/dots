@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+<action>
+	<icon>utilities-terminal</icon>
+	<name>Open Terminal Here</name>
+	<submenu></submenu>
+	<unique-id>1758757573682493-1</unique-id>
+	<command>term</command>
+	<description>Example for a custom action</description>
+	<range></range>
+	<patterns>*</patterns>
+	<startup-notify/>
+	<directories/>
+</action>
+<action>
+	<icon>xfce4-clipman-plugin</icon>
+	<name>Thunar Paste Here</name>
+	<submenu></submenu>
+	<unique-id>1785697798967318-1</unique-id>
+	<command>thunar-paste-here</command>
+	<description></description>
+	<range>*</range>
+	<patterns>*</patterns>
+	<directories/>
+</action>
+</actions>

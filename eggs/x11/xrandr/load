@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+USER_XRANDR=$XDG_CONFIG_HOME/x11/xrandr/xrandr
+
+# xrandr has no default system config
+
+if [ -f "$USER_XRANDR" ]; then
+  chmod +x $USER_XRANDR
+  $USER_XRANDR
+fi
+
+if [ -f "$USER_XRANDR.$(hostnamectl hostname)" ]; then
+  chmod +x $USER_XRANDR.$(hostnamectl hostname)
+  $USER_XRANDR.$(hostnamectl hostname)
+fi

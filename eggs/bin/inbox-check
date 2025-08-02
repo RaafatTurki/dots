@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# usage:
+# inbox-check [--print]   # prints lists to stdout instead of notifying
+
+set -u
+shopt -s nullglob
+
+shopt -s dotglob
+inbox=("$HOME"/inbox/*)
+shopt -u dotglob
+inbox=("${inbox[@]##*/}")
+
+loose=()
+for f in "$HOME"/*; do
+  case ${f##*/} in
+    archive | art | code | docs | inbox | media | notes | immich | ai) ;;
+    *) loose+=("${f##*/}") ;;
+  esac
+done
+
+list() { echo "$1 ($(($# - 1))):"; shift; (($#)) && printf '  %s\n' "$@"; }
+
+if [[ ${1-} == --print ]]; then
+  list 'inbox' "${inbox[@]}"
+  list 'loose in ~' "${loose[@]}"
+  exit 0
+fi
+
+((${#inbox[@]} + ${#loose[@]})) || exit 0
+msg="${#inbox[@]} item(s) in ~/inbox"
+((${#loose[@]})) && msg+=", ${#loose[@]} loose in ~: ${loose[*]:0:5}"
+notify-send -a inbox-check "Sort ~/inbox (≈10 min)" "$msg"

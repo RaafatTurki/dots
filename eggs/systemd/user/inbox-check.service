@@ -1,0 +1,6 @@
+[Unit]
+Description=Remind me to sort ~/inbox and loose files in ~
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/inbox-check

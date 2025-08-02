@@ -1,0 +1,102 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+launch() {
+  local TERM_EMUS=()
+
+  if [[ -n ${TERMINAL:-} ]]; then
+    TERM_EMUS+=("$(basename "$TERMINAL")")
+  fi
+
+  TERM_EMUS+=(
+    x-terminal-emulator
+    urxvt
+    rxvt
+    terminology
+    qterminal
+    Eterm
+    aterm
+    uxterm
+    xterm
+    roxterm
+    xfce4-terminal
+    mate-terminal
+    lxterminal
+    konsole
+    alacritty
+    kitty
+  )
+
+  for TERM_EMU in "${TERM_EMUS[@]}"; do
+    if command -v "$TERM_EMU" >/dev/null 2>&1; then
+      if [[ "$TERM_EMU" == "$(basename "$0")" ]]; then
+        echo "\$TERMINAL is set to \"$TERMINAL\" which is a terminal finder script, please set \$TERMINAL to something else"
+        continue
+      else
+        TERMINAL_SHELL=${TERMINAL_SHELL:-sh}
+        exec env SHELL="$TERMINAL_SHELL" "$TERM_EMU" "$@"
+      fi
+    fi
+  done
+}
+
+dep_check() {
+  cmd=$1
+  opt=${2:-true}
+  msg="Missing dependency '$cmd'"
+
+  type -p "$cmd" &>/dev/null || {
+    notify-send "Scrscn" "$msg"
+      echo "$msg"
+      if $opt ; then exit 2 ; fi
+  }
+}
+
+help() {
+  cat <<-EOF
+  Usage: term COMMAND [ARGS...]
+
+  Commands:
+
+  launch            Launches $TERMINAL with it's SHELL set to $TERM_SHELL, all args are passed (default).
+  help              Print this help text.
+
+  Env Vars
+  $TERMINAL         Terminal program name (must be on $PATH)
+  $TERM_SHELL       Shell to use within the $TERMINAL (default is bash)
+EOF
+}
+
+default() {
+  launch
+}
+
+main() {
+  if [ $# -eq 0 ]; then
+    default
+    exit 0
+  fi
+
+  if [[ "$1" == "-e" ]]; then
+    shift
+    launch -e "$@"
+    exit 0
+  fi
+
+  cmd="$1"
+  shift
+
+  case "$cmd" in
+    launch|help)
+      "$cmd" "$@"
+      ;;
+    *)
+      echo "Unknown command $cmd"
+      help
+      exit 2
+      ;;
+  esac
+}
+
+main "$@"

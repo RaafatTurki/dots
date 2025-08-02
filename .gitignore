@@ -1,0 +1,6 @@
+/.git
+/.deployed_cache
+/.yolk_git
+
+# Quickshell replaces these with symlinks into /run for qmlls
+.qmlls.ini

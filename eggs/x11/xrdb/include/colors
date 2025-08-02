@@ -1,0 +1,57 @@
+! vim: filetype=xdefaults:commentstring=!%s
+
+
+! standard terminal colors
+! #define BG                #07080F
+#define BG                #080808
+#define FG                #F1F7ED
+! mg
+! #define COLOR0            #252550
+#define COLOR0            #292929
+#define COLOR8            #353570
+#define COLOR1            #D7263D
+! err
+#define COLOR9            #E7365D
+#define COLOR10           #C0EB63
+! ok
+#define COLOR2            #B0DB43
+#define COLOR3            #FFAE03
+! warn
+#define COLOR11           #FFBE23
+#define COLOR4            #0061FE
+! info
+#define COLOR12           #1071FE
+#define COLOR5            #F53385
+#define COLOR13           #F543A5
+#define COLOR6            #3FA7D6
+#define COLOR14           #4FB7F6
+#define COLOR7            #E0E0E0
+! sel
+#define COLOR15           #FFFFFF
+
+
+! standard terminal colors
+*.background:       BG
+*.foreground:       FG
+! mg
+*.color0:           COLOR0
+*.color8:           COLOR8
+*.color1:           COLOR1
+! err
+*.color9:           COLOR9
+*.color2:           COLOR2
+! ok
+*.color10:          COLOR10
+*.color3:           COLOR3
+! warn
+*.color11:          COLOR11
+*.color4:           COLOR4
+! info
+*.color12:          COLOR12
+*.color5:           COLOR5
+*.color13:          COLOR13
+*.color6:           COLOR6
+*.color14:          COLOR14
+*.color7:           COLOR7
+! sel
+*.color15:          COLOR15

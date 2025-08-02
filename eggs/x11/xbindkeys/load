@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+USER_XBK=$XDG_CONFIG_HOME/x11/xbindkeys/xbindkeysrc
+
+if [ -f "$USER_XBK" ]; then
+  xbindkeys -f "$USER_XBK"
+fi
+
+if [ -f "$USER_XBK.$(hostnamectl hostname)" ]; then
+  xbindkeys -f "$USER_XBK.$(hostnamectl hostname)"
+fi

@@ -1,0 +1,21 @@
+#! /bin/sh
+
+# export XSECURELOCK_AUTH_FOREGROUND_COLOR=$(xgetres xsecurelock.foreground)
+# export XSECURELOCK_AUTH_WARNING_COLOR=$(xgetres xsecurelock.color11)
+# export XSECURELOCK_AUTH_CURSOR_BLINK=1
+# export XSECURELOCK_AUTH_SOUNDS=1
+# export XSECURELOCK_AUTH_TIMEOUT=10
+# export XSECURELOCK_BLANK_TIMEOUT=20
+# export XSECURELOCK_FONT="$(xgetres xsecurelock.font)"
+
+# xsecurelock
+
+# export XSECURELOCK_PASSWORD_PROMPT=asterisks
+# export XSECURELOCK_AUTH_BACKGROUND_COLOR=#0A151F
+# export XSECURELOCK_SHOW_DATETIME=1
+# export XSECURELOCK_BLANK_DPMS_STATE=standby
+# export XSECURELOCK_BLANK_DPMS_STATE=suspend
+
+
+slock
+# slock -m "$(misfortune)"

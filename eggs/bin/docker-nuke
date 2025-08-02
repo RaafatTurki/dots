@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+if ! command -v docker >/dev/null 2>&1; then
+  echo "docker not found"
+  exit 1
+fi
+
+if ! docker info >/dev/null 2>&1; then
+  echo "docker daemon not available"
+  exit 1
+fi
+
+
+stop_containers() {
+  docker ps -aq | xargs -r docker stop
+}
+
+rm_containers() {
+  docker ps -aq | xargs -r docker rm
+}
+
+rm_images() {
+  docker images -aq | xargs -r docker rmi
+}
+
+rm_volumes() {
+  docker volume prune -af
+}
+
+
+
+# check if there are any containers
+if [ $(docker ps -aq | wc -l) -gt 0 ]; then
+  stop_containers
+  rm_containers
+fi
+
+# check if there are any images
+# if [ $(docker images -aq | wc -l) -gt 0 ]; then
+#   rm_images
+# fi
+
+rm_volumes

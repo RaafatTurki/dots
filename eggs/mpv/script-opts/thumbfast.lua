@@ -1,0 +1,2 @@
+network=no
+hwdec=yes

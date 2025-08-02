@@ -1,0 +1,11 @@
+! vim: filetype=xdefaults:commentstring=!%s
+
+
+slock.locked: BG
+slock.input: COLOR0
+slock.failed: COLOR1
+slock.capslock: COLOR8
+
+! slock.message: "hi friend"
+slock.font_name: 6x13
+slock.text_color: FG

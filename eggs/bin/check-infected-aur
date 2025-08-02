@@ -1,0 +1,147 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# BLOCKLIST_FILE="/etc/pacman.d/aur-blocklist.txt"
+BLOCKLIST_DIR="$HOME/.config/pacman"
+BLOCKLIST_FILE="aur-blocklist.txt"
+BLOCKLIST="$BLOCKLIST_DIR/$BLOCKLIST_FILE"
+TMP_DIR=$(mktemp -d -t aur-sec-XXXXXX)
+trap 'rm -rf "$TMP_DIR"' EXIT
+
+RED='\033[1;31m'
+GREEN='\033[1;32m'
+YELLOW='\033[1;33m'
+CYAN='\033[1;36m'
+BOLD='\033[1m'
+RESET='\033[0m'
+
+log_step() { printf "\n%b==>%b %b%s%b\n" "$CYAN" "$RESET" "$BOLD" "$1" "$RESET"; }
+alert()    { printf "%b[BLOCKED/MALICIOUS]%b %s\n" "$RED" "$RESET" "$1"; }
+ok()       { printf "%b[OK]%b %s\n" "$GREEN" "$RESET" "$1"; }
+warn()     { printf "%b[WARNING]%b %s\n" "$YELLOW" "$RESET" "$1" >&2; }
+
+help() {
+  cat << 'EOF'
+check-infected-aur - Live AUR Malware Scanner & Transaction Guard
+
+Usage:
+  check-infected-aur [OPTIONS] [PACKAGES...]
+
+Options:
+  --sync                Sync the local threat blocklist (/etc/pacman.d/aur-blocklist.txt)
+                        with the upstream Arch Linux incident tracker.
+  --check-args <PKGS>   Check provided package names against the blocklist and
+                        abort if any match (used by aur-guard / shell interceptors).
+  -h, --help            Display this help menu and exit.
+
+Default Behavior (No Flags):
+  When executed without flags (e.g. inside an update script), it:
+    1. Syncs the live blocklist from the Arch incident tracker.
+    2. Scans all currently installed foreign/AUR packages ('pacman -Qqm').
+
+Exit Codes:
+  0 - Success / Clean (No threats detected)
+  1 - Network / Fetch failure
+  2 - Threats detected in installed packages
+  3 - Intercepted blocked package during installation attempt
+EOF
+  exit 0
+}
+
+sync_blocklist() {
+  log_step "Updating local AUR malware blocklist from Arch Incident Tracker..."
+  local raw_dump="$TMP_DIR/incident_doc.md"
+  local clean_list="$TMP_DIR/clean_list.txt"
+  local incident_url="https://md.archlinux.org/s/SxbqukK6IA/download"
+
+  # download raw Markdown document
+  if ! curl -fsSL -A "Mozilla/5.0" --connect-timeout 8 --max-time 20 "$incident_url" -o "$raw_dump"; then
+    warn "Download failed from $incident_url. Keeping existing blocklist."
+    return 1
+  fi
+
+  # extract valid package tokens (lowercase alphanumeric + standard Arch delimiters)
+  tr -s '[:space:]' '\n' < "$raw_dump" | \
+    tr -d '`"'\''(),' | \
+    grep -E '^[a-z0-9][a-z0-9@._+-]{1,50}$' | \
+    grep -vE '^(bash|curl|pacman|paru|yay|sha256sum|md5sum|http|https|git|tar|zip|gz|aur|arch|linux|the|and|for|from|with|this|that|are|not|bin|pkg|all|any)$' | \
+    sort -u > "$clean_list" || true
+
+  # Save to system-wide blocklist
+  if [[ -s "$clean_list" ]]; then
+    mkdir -p "$(dirname "$BLOCKLIST_DIR")"
+    cp "$clean_list" "$BLOCKLIST"
+    printf "Successfully loaded %d confirmed malicious package names into %s\n" "$(wc -l < "$BLOCKLIST")" "$BLOCKLIST"
+  else
+    warn "Failed to parse names. Keeping existing blocklist."
+  fi
+}
+
+check_pkgs() {
+  local targets=("$@")
+
+  if [[ ! -f "$BLOCKLIST" ]]; then
+    sync_blocklist
+  fi
+
+  local blocked_found=0
+  for target in "${targets[@]}"; do
+
+    # strip options and version constraints (e.g., "-S", "--noconfirm", "pkg>=1.0")
+    local clean_target="${target%%[<>=]*}"
+    [[ "$clean_target" =~ ^- ]] && continue
+
+    if grep -Fxq "$clean_target" "$BLOCKLIST" 2>/dev/null; then
+      alert "INSTALLATION INTERCEPTED: '$clean_target' is a known compromised package!"
+      blocked_found=1
+    fi
+  done
+
+  if [[ "$blocked_found" -eq 1 ]]; then
+    printf "%bAborting transaction for system security.%b\n" "$RED" "$RESET"
+    exit 3
+  fi
+}
+
+audit_installed() {
+  log_step "Scanning installed foreign (AUR) packages..."
+  local installed="$TMP_DIR/installed.txt"
+  pacman -Qqm | sort -u > "$installed" || true
+
+  if [[ -f "$BLOCKLIST" ]]; then
+    mapfile -t hits < <(comm -12 "$installed" "$BLOCKLIST")
+    if (( ${#hits[@]} > 0 )); then
+      alert "Found installed packages matching blocklist:"
+      for hit in "${hits[@]}"; do
+        printf "    %b- %s%b\n" "$RED" "$hit" "$RESET"
+      done
+      exit 2
+    else
+      ok "No installed packages match the threat blocklist."
+    fi
+  else
+    warn "Blocklist not found. Run with --sync first."
+  fi
+}
+
+case "${1:-}" in
+  -h|--help)
+    help
+    ;;
+  --sync)
+    sync_blocklist
+    ;;
+  --audit)
+    audit_installed
+    ;;
+  --check-args)
+    sync_blocklist
+    shift
+    check_pkgs "$@"
+    ;;
+  *)
+    sync_blocklist
+    audit_installed
+    ;;
+esac

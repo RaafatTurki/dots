@@ -1,0 +1,11 @@
+! vim: ft=xmodmap
+
+keycode 108 = Menu NoSymbol Menu
+
+! mohammed baqer mode
+! keycode 22 = backslash
+! keycode 51 = BackSpace
+
+! anti-mohammed baqer mode
+! keycode 51 = backslash
+! keycode 22 = BackSpace

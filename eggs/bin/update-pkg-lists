@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# fallback in case this script is ran from a different user
+# e.g. root in pacman hooks
+XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-/home/potato/.config}
+
+PKGS_LIST_DIR="$XDG_CONFIG_HOME/pacman/pkg_lists"
+PKGS_LIST_FILE="$PKGS_LIST_DIR/$(hostname)"
+
+mkdir -p $PKGS_LIST_DIR
+pacman -Qsq > $PKGS_LIST_FILE
+# echo "Package list written to $PKGS_LIST_FILE"

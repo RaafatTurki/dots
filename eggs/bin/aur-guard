@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# require at least the helper name
+if (( $# < 1 )); then
+  return 1
+fi
+
+HELPER="$1"
+shift
+
+# if invoked with no extra arguments (e.g. just `paru`), pass straight through
+if (( $# == 0 )); then
+  command "$HELPER"
+  exit $?
+fi
+
+IS_INSTALLED=1
+
+# check for read-only, removal, or full-system upgrade operations
+for arg in "$@"; do
+  case "$arg" in
+    -Q*|-R*|-D*|-F*|-U*|-Si|-Ss|-Sc|-Scc|-Syu*|-Syyu*|-Su*|-h|--help|-V|--version)
+      IS_INSTALLED=0
+      break
+      ;;
+  esac
+done
+
+# implicit install
+if (( IS_INSTALLED == 1 )); then
+  if command -v check-infected-aur >/dev/null 2>&1; then
+    check-infected-aur --check-args "$@" || exit $?
+  fi
+fi
+
+command "$HELPER" "$@"

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+notify-send "$SRANDRD_OUTPUT" "$SRANDRD_EVENT"
+
+case "${SRANDRD_OUTPUT} ${SRANDRD_EVENT}" in
+  "HDMI-1-0 connected") mon-switcher -m 2k;;
+  "HDMI-1-0 disconnected") mon-switcher -m laptop;;
+esac
+
+
+# pkill lazybar
+# lazybar top &

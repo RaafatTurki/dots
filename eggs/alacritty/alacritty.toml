@@ -1,0 +1,63 @@
+
+[colors.bright]
+black = "#353570"
+blue = "#1071FE"
+cyan = "#4FB7F6"
+green = "#C0EB63"
+magenta = "#F543A5"
+red = "#E7365D"
+white = "#FFFFFF"
+yellow = "#FFBE23"
+
+[colors.normal]
+black = "#252550"
+blue = "#0061FE"
+cyan = "#3FA7D6"
+green = "#B0DB43"
+magenta = "#F53385"
+red = "#D7263D"
+white = "#FFFFFF"
+yellow = "#FFAE03"
+
+[colors.primary]
+background = "#090910"
+foreground = "#F1F7ED"
+
+[cursor.style]
+shape = "Underline"
+
+[env]
+TERM = "alacritty"
+
+[font]
+size = 12
+
+[font.bold]
+style = "Bold"
+
+[font.bold_italic]
+style = "Bold Italic"
+
+[font.italic]
+style = "Italic"
+
+[font.normal]
+family = "CommitMono Nerd Font Mono"
+style = "Regular"
+
+[[keyboard.bindings]]
+action = "SpawnNewInstance"
+key = "Return"
+mods = "Control|Shift"
+
+[selection]
+save_to_clipboard = false
+semantic_escape_chars = ",│`|:\"' ()[]{}<>\t"
+
+[general]
+live_config_reload = true
+
+[terminal]
+
+[terminal.shell]
+program = "/bin/fish"

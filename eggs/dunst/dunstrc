@@ -1,0 +1,90 @@
+[global]
+
+# Display
+origin = bottom-left
+offset = 10x10
+scale = 1
+notification_limit = 0
+
+# Geometry
+width = 300
+height = 100
+gap_size = 2
+padding = 10
+horizontal_padding = 10
+text_icon_padding = 4
+frame_width = 1
+corner_radius = 2
+
+# Progress Bar
+progress_bar = false
+
+# Behavior
+indicate_hidden = yes
+# sort = yes
+timeout = 3
+stack_duplicates = false
+hide_duplicate_count = false
+transparency = 10
+
+# Text
+font = "CommitMono Nerd Font 10"
+line_height = 2
+markup = full
+format = "%s %n %b"
+alignment = left
+vertical_alignment = center
+show_age_threshold = -1
+ellipsize = end
+ignore_newline = no
+show_indicators = no
+
+# Icons
+enable_recursive_icon_lookup = true
+icon_theme = Reversal-dark
+icon_path = /usr/share/icons/Reversal/
+icon_position = left
+min_icon_size = 24
+max_icon_size = 24
+
+# History
+sticky_history = yes
+history_length = 50
+
+# Apps
+dmenu = /usr/bin/dmenu -p dunst:
+browser = /usr/bin/xdg-open
+always_run_script = true
+title = Dunst
+class = Dunst
+ignore_dbusclose = false
+
+# Mouse
+mouse_left_click = close_current
+mouse_middle_click = close_all
+mouse_right_click = do_action
+
+
+
+frame_color = "#272A34"
+
+[base16_low]
+msg_urgency = low
+background = "#000000"
+foreground = "#ffffff"
+
+[base16_normal]
+msg_urgency = normal
+background = "#000000"
+foreground = "#ffffff"
+
+[base16_critical]
+msg_urgency = critical
+background = "#000000"
+foreground = "#ffffff"
+
+
+[play_sound]
+summary = "*"
+script = "~/.config/dunst/sound.sh"
+

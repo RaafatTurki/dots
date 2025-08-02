@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+# rofi entry generator
+entry() {
+  local str=""
+  local i=0
+
+  for arg in "$@"; do
+    ((i++))
+
+    if [[ $i -eq 1 ]]; then
+      str="$arg"
+      str+="\0" # nullbyte after first arg
+    elif [[ $i -eq $# ]]; then
+      str+="$arg"
+      str+="\n" # newline after last arg
+    else
+      str+="$arg"
+      str+="\x1f" # unit separator as a delimiters
+    fi
+  done
+  echo -en "$str"
+}

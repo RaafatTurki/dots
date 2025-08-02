@@ -1,0 +1,157 @@
+#!/usr/bin/bash
+
+title='sshot'
+
+cache_path="/tmp/sshot"
+save_path="$HOME/"
+notify=false
+beep=false
+slop=false
+file=false
+clip=false
+decode=false
+ocr=false
+xdg=false
+
+usage() {
+  echo "Usage: $title [OPTIONS] [FILE_PATH]"
+  echo "Options:"
+  echo "  -h, --help              Display this help message"
+  echo "  -n, --notify            Enable notifications"
+  echo "  -b, --beep              Enable beep"
+  echo "  -s, --slop              Enable slop selection"
+  echo "  -f, --file              Save image into save-path"
+  echo "  -c, --clip              Put image into clipboard"
+  echo "  -d, --decode            Enable barcode & qrcode decoding"
+  echo "  -o, --ocr               Enable optical character recognition"
+  echo "  -x, --xdg               Enable XDG support"
+  echo "  --save-path [PATH]      Set image save path"
+}
+
+# default flags
+if [ $# -eq 0 ]; then
+  file=true
+  xdg=true
+fi
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    -n|--notify)
+      notify=true
+      shift
+      ;;
+    -b|--beep)
+      beep=true
+      shift
+      ;;
+    -s|--slop)
+      slop=true
+      shift
+      ;;
+    -f|--file)
+      file=true
+      shift
+      ;;
+    -c|--clip)
+      clip=true
+      shift
+      ;;
+    -d|--decode)
+      decode=true
+      shift
+      ;;
+    -o|--ocr)
+      ocr=true
+      shift
+      ;;
+    -x|--xdg)
+      xdg=true
+      shift
+      ;;
+    --save-path)
+      save_path="$2"
+      shift 2
+      ;;
+    *)
+      echo "Error: Unrecognized option '$1'"
+      usage
+      exit 1
+      ;;
+  esac
+done
+
+dep_check() {
+  dep=$1
+  type -p "$dep" &>/dev/null || {
+    echo "missing dependency '$dep'"
+    return 3
+  }
+}
+
+# set xdg-user-dir based save_path
+dep_check xdg-user-dir
+if [ $? -eq 0 ] && $xdg; then
+  save_path="$(xdg-user-dir PICTURES)/sshot"
+fi
+
+# attempt to take screenshot
+if $slop; then
+  maim --hidecursor --quality 1 --bordersize 1 -c 1,1,1,1 $cache_path -s -k
+else
+  maim --hidecursor --quality 1 --bordersize 1 -c 1,1,1,1 $cache_path
+fi
+
+# failed to take screenshot
+if [ $? -ne 0 ]; then exit 2; fi
+
+# TODO play gtk audio thingy
+if $beep; then
+  echo -e "\a"
+fi
+
+if $file; then
+  cp $cache_path "$save_path/$(date +%s).png"
+fi
+
+if $clip; then
+  cat $cache_path | nohup xclip -selection clip -t image/png
+  cat $cache_path | nohup xclip -t image/png
+fi
+
+decode_data=
+if $decode; then
+  decode_data=$(zbarimg -q --raw $cache_path 2>/dev/null)
+  # if [ -n "$decode_data" ]; then
+  #   echo "no decode data found"
+  # fi
+  if $clip; then
+    echo "$decode_data" | nohup xclip -selection clip
+    echo "$decode_data" | nohup xclip
+  fi
+fi
+
+ocr_data=
+if $ocr; then
+  ocr_data=$(tesseract -l eng $cache_path stdout 2>/dev/null)
+  if [ $? -eq 4 ]; then
+    echo "no ocr data found"
+  fi
+  if $clip; then
+    echo "$ocr_data" | nohup xclip -selection clip
+    echo "$ocr_data" | nohup xclip
+  fi
+fi
+
+if $notify; then
+  magick ${cache_path} -resize 48x48 ${cache_path}
+  notify-send -i ${cache_path} "$title" "OCR: $ocr_data\nDEC: $decode_data"
+fi
+
+# STATUS CODES
+# 1 failed to parse args
+# 2 failed to take screenshot
+# 3 missing dependency

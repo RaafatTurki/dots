@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+
+play_htop() {
+  timeout 1 htop
+}
+
+play_btop() {
+  timeout 1 btop
+}
+
+play_dennis() {
+  dennis
+  sleep 1
+}
+
+play_cbonsai() {
+  timeout 1 cbonsai -l
+}
+
+play_rmatrix() {
+  timeout 1 rmatrix
+}
+
+play_cava() {
+  timeout 1 cava
+}
+
+play_catnip() {
+  timeout 1 catnip
+}
+
+# use a while loop that runs the above functions randomly
+
+while true; do
+
+  # generate a random number between 1 and 7
+  random_number=$((1 + RANDOM % 7))
+
+  clear
+
+  # run the function that corresponds to the random number
+  case $random_number in
+    1)
+      play_htop
+      ;;
+    2)
+      play_btop
+      ;;
+    3)
+      play_dennis
+      ;;
+    4)
+      play_cbonsai
+      ;;
+    5)
+      play_rmatrix
+      ;;
+    6)
+      play_cava
+      ;;
+    7)
+      play_catnip
+      ;;
+  esac
+
+  # sleep for 1 second
+  # sleep 1
+done

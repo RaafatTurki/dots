@@ -1,0 +1,89 @@
+#!/bin/bash
+
+current_stage=1
+
+
+
+title() {
+  local BG='\033[0;44m'
+  local RESET='\033[0m'
+
+  # set_color green
+  echo -e "\n$BG#$current_stage $1$RESET\n"
+  # set_color normal
+  current_stage=$((current_stage + 1))
+}
+
+# title " - Fetching New Mirror List"
+# fetch new mirrors
+
+title "Refreshing Package Databases"
+sudo pacman -Syy
+
+# title "Updating Arch Keyring"
+# sudo pacman -S archlinux-keyring --needed
+
+if command -v yay >/dev/null; then
+  title "Updating Unofficial Packages (yay)"
+  yay -Su --disable-download-timeout
+elif command -v paru >/dev/null; then
+  title "Updating Unofficial Packages (paru)"
+  # paru --gendb  # make paru aware of all -git packages upstream updates if not installed by it
+  paru -Suu --disable-download-timeout
+elif command -v aura >/dev/null; then
+  title "Updating Unofficial Packages (aura)"
+  sudo aura -Akuax
+else
+  title "Updating Official Packages (pacman, no AUR helper found)"
+  sudo pacman -Su --disable-download-timeout
+fi
+
+title "Removing Orphan Packages"
+sudo pacman -Rns $(pacman -Qtdq)
+
+PKGS_LIST_DIR=$XDG_CONFIG_HOME/pacman/pkg_lists/
+PKGS_LIST_FILE=$PKGS_LIST_DIR/${hostname}
+title "Updating Packages List File"
+mkdir -p $PKGS_LIST_DIR
+pacman -Qsq > $PKGS_LIST_FILE
+echo "Package list written to $PKGS_LIST_FILE"
+
+if command -v pkgfile >/dev/null; then
+  title "Updating Repo Files Lists"
+  sudo pkgfile -u
+fi
+
+if command -v freshclam >/dev/null; then
+  title "Updating ClamAV Malware Signatures"
+  sudo freshclam --show-progress
+fi
+
+if sudo bootctl is-installed >/dev/null; then
+  title "Updating SystemD Boot"
+  sudo bootctl update
+
+  efi_shell_src_path="/usr/share/edk2-shell/x64/Shell_Full.efi"
+  if [[ -e $efi_shell_src_path ]]; then
+    sudo cp "$efi_shell_src_path" /boot/shellx64.efi
+    echo "EFI shell copied to /boot/shellx64.efi"
+  else
+    echo "EFI shell file not available"
+  fi
+fi
+
+title "Updating Fish Completions"
+fish -c fish_update_completions
+
+# title "Rebuilding Font Cache Files"
+# fc-cache -frv
+
+title "Check For failed services"
+systemctl --failed
+
+title "Check For .pacnew/.pacsave Files"
+find /etc -regextype posix-extended -regex ".+\.pac(new|save)" 2>/dev/null
+
+if command -v freshclam >/dev/null; then
+  title "Check For outdated processes"
+  sudo needrestart
+fi

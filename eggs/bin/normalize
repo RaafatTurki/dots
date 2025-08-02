@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+rename_file() {
+  local original_name="$1"
+  local cleaned_name=$(echo "$original_name" | tr '[:upper:]' '[:lower:]' | sed 's/ *- */-/g; s/ /_/g')
+  mv "$original_name" "$cleaned_name"
+}
+
+for file in *; do
+  rename_file "$file"
+done

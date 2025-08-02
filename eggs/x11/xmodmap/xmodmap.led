@@ -1,0 +1,27 @@
+! vim: ft=xmodmap
+! side buttons as scroll wheel
+! pointer = 1 2 3 0 0 6 7 5 4 10
+
+! defaul pointer map
+! pointer = 1 2 3 4 5 6 7 8 9 10
+
+! 1 = left button
+! 2 = middle button (pressing the scroll wheel)
+! 3 = right button
+! 4 = turn scroll wheel up
+! 5 = turn scroll wheel down
+! 6 = push scroll wheel left
+! 7 = push scroll wheel right
+! 8 = 4th button (aka browser backward button)
+! 9 = 5th button (aka browser forward button)
+! 10 = ?
+
+! keycode 135 = Menu NoSymbol Menu
+
+! swap alt_gr with escape
+keycode 108 = Escape NoSymbol Escape
+keycode   9 = Alt_R Meta_R Alt_R Meta_R
+
+! revert alt_gr with escape
+! keycode 9 = Escape NoSymbol Escape
+! keycode 108 = Alt_R Meta_R Alt_R Meta_R

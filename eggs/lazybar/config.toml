@@ -1,0 +1,63 @@
+[bars.top]
+position = "top"
+height = 20
+transparent = true
+bg = "#00000000"
+default_attrs = "default"
+margin_left = 0
+margin_internal = 10
+margin_right = 0
+ipc = true
+panels_left = ["systray"]
+panels_center = ["clock"]
+panels_right = ["xworkspaces"]
+
+
+
+[panels.xworkspaces]
+type = "xworkspaces"
+attrs_active = "on"
+attrs_nonempty = "half"
+attrs_inactive = "off"
+
+[panels.clock]
+type = "clock"
+precisions = ["minimal"]
+formats = ["%a %m/%d %H:%M:%S"]
+
+[panels.systray]
+type = "systray"
+size = 18
+padding = 2
+aggressive = false
+sort = "window_name_lower"
+
+# [panels.xwindow]
+# type = "xwindow"
+# max_width = 100
+
+# [panels.separator]
+# type = "separator"
+# attrs = "none"
+# format = " "
+# dependence = "left"
+
+# [panels.storage]
+# interval = 10
+# path = "/"
+
+
+
+[attrs.default]
+bg = "default"
+fg = "#ccc"
+font = "CommitMono Nerd Font 12"
+
+[attrs.on]
+fg = "#fff"
+
+[attrs.off]
+fg = "#333"
+
+[attrs.half]
+fg = "#999"

@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# notify-send "$SRANDRD_OUTPUT" "$SRANDRD_EVENT"
+
+case "${SRANDRD_OUTPUT:-} ${SRANDRD_EVENT:-}" in
+  "HDMI-1-0 connected") mon-switcher -m 2k;;
+  "HDMI-1-0 disconnected") mon-switcher -m laptop;;
+
+  # "DP-1 connected") mon-switcher -m dp-2k;;
+  # "DP-1 disconnected") mon-switcher -m laptop;;
+esac
+
+
+# pkill lazybar
+# lazybar top &

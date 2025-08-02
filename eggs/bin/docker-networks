@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+if ! command -v docker >/dev/null 2>&1; then
+  echo "docker not found"
+  exit 1
+fi
+
+if ! docker info >/dev/null 2>&1; then
+  echo "docker daemon not available"
+  exit 1
+fi
+
+bridges=$(ip -br link | awk '{print $1}' | grep '^br-' || true)
+if [[ -z "$bridges" ]]; then
+  echo "no docker bridges found"
+  exit 0
+fi
+
+for br in $bridges; do
+  net_id=${br#br-}
+
+  echo "=== $br ==="
+
+  # Find the docker network matching this bridge ID and list its containers
+  docker network ls --no-trunc --format '{{.ID}} {{.Name}}' | \
+  awk -v id="$net_id" '$1 ~ "^"id {print $0}' | \
+  while read nid nname; do
+    echo "Docker network: $nname ($nid)"
+    docker network inspect "$nid" --format '{{range $id,$c := .Containers}}{{println $c.Name}}{{end}}'
+  done
+
+  echo
+done

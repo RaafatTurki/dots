@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# xrandr --output eDP --primary --mode 1440x900 --output HDMI-A-0 --mode 2560x1440 --right-of eDP --dpi 133
+# xrandr --output eDP --mode 1440x900
+# xrandr --output eDP-1 --mode 1440x900
+# mon_switcher
+# autorandr --match-edid horizontal
+
+# xrandr --output HDMI-1-0 --auto --right-of eDP-1
+# xrandr --output HDMI-A-1-0 --auto --mode 2560x1440 --right-of eDP-1

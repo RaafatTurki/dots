@@ -1,0 +1,4 @@
+#!/usr/bin/bash
+
+# curl -s "https://location.services.mozilla.com/v1/geolocate?key=geoclue" | awk 'OFS="\n" {print $3,$5}' | tr -d ',}'
+curl -s "https://location.services.mozilla.com/v1/geolocate?key=geoclue" | jq '.location | .lat, .lng'

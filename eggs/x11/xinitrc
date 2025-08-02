@@ -1,0 +1,40 @@
+#!/bin/sh
+
+# NOTE: this is auto handled by ly-dm
+[ -f /etc/xprofile ] && . /etc/xprofile ]
+[ -f $HOME/.xprofile ] && . $HOME/.xprofile ]
+
+
+# source xinitrc.d files
+if [ -d /etc/X11/xinit/xinitrc.d ] ; then
+ for f in /etc/X11/xinit/xinitrc.d/?*.sh ; do
+  [ -x "$f" ] && . "$f"
+ done
+ unset f
+fi
+
+# launch ssh agent
+# eval $(ssh-agent)
+
+# session=${1:-hlwm}
+#
+# case $session in
+#     hlwm) exec herbstluftwm --locked;;
+#     ff)   exec firefox;;
+#
+#     # unknown session, try to run it as command
+#     *) exec $1;;
+# esac
+
+lxpolkit &
+
+exec herbstluftwm --locked
+# exec sxwm
+
+# exec steamos-session
+# exec dwm
+# exec firefox
+# exec dwm
+# exec awesome
+
+# xrdp-sesrun

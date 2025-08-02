@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+cwd="$(dirname "$0")"
+source "$cwd/rofi-common"
+
+if [ -n "$1" ]; then
+  pkill rofi # Close rofi after selection is made to avoid any hanging rofi instances
+  mon-switcher -m "$1"
+  # autorandr -c "$1"
+else
+  entry laptop icon computer-laptop
+  entry 2k icon computer
+  entry 2k-144 icon computer
+  entry hd icon computer
+
+  # entry main icon computer
+  # entry work icon computer
+
+  # entry "HDMI HD" icon computer
+  # entry "HDMI 2K" icon computer
+  # entry "HDMI 4K" icon computer
+  # entry "Laptop" icon computer
+  # entry "Both" icon computer
+  # entry "HDMI Vert" icon computer
+fi

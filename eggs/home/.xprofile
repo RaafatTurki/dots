@@ -1,0 +1,139 @@
+#!/usr/bin/env bash
+# init
+# setxkbmap -layout us,ara -option 'grp:alt_space_toggle'
+# xwallpaper --zoom ~/files/pics/wallpapers/12.png
+# nitrogen --restore &
+
+# internal=eDP-1
+# external=HDMI-1-0
+# other=DP-1
+
+# internal_bg=~/files/pics/wallpapers/berserk_skull.png
+# external_bg=~/files/pics/wallpapers/berserk_skull.png
+# other_bg=~/files/pics/wallpapers/berserk_skull.png
+
+# internal_bg=~/files/pics/wallpapers/personal_computer.png
+# external_bg=~/files/pics/wallpapers/personal_computer.png
+# other_bg=~/files/pics/wallpapers/personal_computer.png
+# internal_bg=~/files/pics/wallpapers/deadmau5.png
+# external_bg=~/files/pics/wallpapers/deadmau5.png
+# other_bg=~/files/pics/wallpapers/deadmau5.png
+
+
+# --maximize
+# --stretch
+# --tile
+# --zoom
+# --focus
+
+# xwallpaper \
+#   --output $internal --center $internal_bg \
+#   --output $external --center $external_bg \
+#   --output $other --center $other_bg
+
+
+# relaunch() {
+#   local pname="$1"
+#   shift
+#   local cmd="$@"
+#
+#   if ! pgrep -x "$pname" >/dev/null; then
+#     $cmd &
+#   else
+#     pkill linux-wallpaper
+#     $cmd &
+#   fi
+# }
+
+# demo
+# live_wallpaper_id=/home/potato/asd/wallpaper_engine_test/html
+
+# ascii
+# live_wallpaper_id=3136351729
+# 3d object
+# live_wallpaper_id=2573937814
+# no_enemies
+# live_wallpaper_id=3153805129
+# test
+# live_wallpaper_id=2307448045
+
+# relaunch linux-wallpaper       linux-wallpaperengine --no-audio-processing --scaling fit --disable-mouse --fps 120 --screen-root $internal --screen-root $other --screen-root $external $live_wallpaper_id
+# relaunch linux-wallpaper       linux-wallpaperengine --scaling fit --disable-mouse --screen-root $internal $live_wallpaper_id
+
+# relaunch linux-wallpaper       linux-wallpaperengine --no-audio-processing --screen-root $internal $internal_live_wallpaper_id
+# relaunch linux-wallpaper       linux-wallpaperengine --no-audio-processing --screen-root $external $external_live_wallpaper_id
+
+
+# nitrogen --head=1 --set-auto $external_bg
+# nitrogen --head=0 --set-auto $internal_bg
+
+# xwallpaper --zoom ~/files/pics/wallpapers/punpun.png &
+# xwallpaper --zoom ~/files/pics/wallpapers/punpun_dim.png &
+# xwallpaper --zoom ~/files/pics/wallpapers/homunculus.png &
+# xwallpaper --zoom ~/files/pics/wallpapers/homunculus_dim.png &
+# xwallpaper --zoom ~/files/pics/wallpapers/homunculus_dim_r.png &
+# numlockx on
+
+# mon-switcher -m laptop
+
+# synclient TapButton1=1
+# synclient TapButton2=3
+# synclient TapButton3=2
+# synclient VertTwoFingerScroll=1
+# synclient VertScrollDelta=75
+# synclient VertScrollDelta=-75
+
+# sync keyboard leds
+# sudo setleds -D +num < /dev/tty1
+
+
+# xinput set-prop 24 "Synaptics Noise Cancellation" 1 1
+# xinput set-prop 24 "Synaptics Tap Action" 1, 1, 1, 1, 1, 3, 2
+# xinput set-prop 24 "Synaptics Click Action" 1, 3, 2
+# xinput set-prop 24 "Synaptics Scrolling Distance" -157, -157
+# xinput set-prop 24 "Synaptics Two-Finger Scrolling" 1, 1
+# xinput set-prop 24 "Synaptics Edge Scrolling" 0 0 0
+# xinput set-prop 24 "Synaptics Finger" 0 0 0
+# xinput set-prop 24 "Device Accel Adaptive Deceleration" 2.0
+# xinput set-prop 24 "Device Accel Velocity Scaling" 18
+
+
+# xset m 2/1 4
+# xset r rate 300 30
+# xset b on
+# xset s blank
+# xset s on
+# xset s 300 300
+# xset dpms 300 0 0
+
+
+# sudo echo 2 | sudo tee /sys/module/hid_apple/parameters/fnmode
+
+# no longer neeeded, xorg conf handles it
+# xset -dpms
+# xset s off
+
+
+# no longer needed, xinit conf handles it
+# xsetroot -cursor_name left_ptr
+
+# no longer needed, xorg conf handles it
+# watari ?
+# xrandr --output HDMI-1-0 --mode 2560x1440 --rate 144 --primary
+# naya
+# xrandr --output HDMI-1 --mode 2560x1440 --rate 144 --primary
+
+ssh-add ~/.ssh/naya.key &
+
+
+# xrdb
+$XDG_CONFIG_HOME/x11/xrdb/load &
+
+# xbindkeys
+$XDG_CONFIG_HOME/x11/xbindkeys/load &
+
+# xmodmap
+$XDG_CONFIG_HOME/x11/xmodmap/load &
+
+# xrandr
+$XDG_CONFIG_HOME/x11/xrandr/load &

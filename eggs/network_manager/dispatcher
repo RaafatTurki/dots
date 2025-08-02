@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+
+PROFILES_DIR=/home/potato/files/secret/nm_profiles/
+IFACE="$1"
+STATE="$2"
+
+# there are so many fucking workarounds in this function
+# gnome nm-openconnect should get their shit together
+# https://gitlab.gnome.org/GNOME/NetworkManager-openconnect/-/issues/40
+# https://gitlab.gnome.org/GNOME/NetworkManager-openconnect/-/issues/37
+function fortinet() {
+  PROFILE=$1
+  GATEWAY=$2
+  USERNAME=$3
+  PASSWORD=$4
+
+  CERT_SHA=$(echo | openssl s_client -connect $GATEWAY 2>/dev/null | openssl x509 -pubkey -noout | openssl pkey -pubin -outform der 2>/dev/null | openssl dgst -sha256 -binary | openssl base64)
+  CERT=pin-sha256:$CERT_SHA
+
+  # gets the cookie, fingerprint and resolve
+  eval $(echo $PASSWORD | openconnect --protocol=fortinet $GATEWAY -u $USERNAME --passwd-on-stdin --authenticate --servercert $CERT)
+
+  nmcli con up $PROFILE passwd-file /proc/self/fd/5 5<<EOF
+  vpn.secrets.cookie:$COOKIE
+  vpn.secrets.gwcert:$FINGERPRINT
+  vpn.secrets.resolve:$RESOLVE
+  vpn.secrets.gateway:$GATEWAY
+EOF
+}
+
+function openvpn() {
+  PROFILE=$1
+  PASSWORD=$2
+
+  nmcli con up $PROFILE passwd-file /proc/self/fd/5 5<<EOF
+  vpn.secrets.password:$PASSWORD
+EOF
+}
+
+
+if [[ "$STATE" == "up" ]]; then
+  # Only trigger on the interface that currently carries the default route.
+  if ! nmcli -t -f IP4.GATEWAY,IP6.GATEWAY device show "$IFACE" \
+    | awk -F: '($1=="IP4.GATEWAY"||$1=="IP6.GATEWAY") && $2!="" {found=1} END{exit !found}'; then
+    exit 0
+  fi
+
+  # for ENV_FILE in ../profiles/*.env; do
+  for ENV_FILE in $PROFILES_DIR/*.env; do
+    [ -e "$ENV_FILE" ] || continue
+
+    # subshelling to avoid polluting the environment
+    (
+      BASENAME=$(basename "$ENV_FILE" .env)
+      NMCONN_FILE="$PROFILES_DIR/${BASENAME}.nmconnection"
+
+      if [ ! -f "$NMCONN_FILE" ]; then
+        echo "missing nmconnection for ${BASENAME}" >&2
+        continue
+      fi
+
+      # shellcheck source=/dev/null
+      source "$ENV_FILE"
+
+      if grep -q "fortinet" "$NMCONN_FILE"; then
+        fortinet "$BASENAME" "$GATEWAY" "$USERNAME" "$PASSWORD"
+      elif grep -q "openvpn" "$NMCONN_FILE"; then
+        openvpn "$BASENAME" "$PASSWORD"
+      else
+        echo "Unknown VPN type for ${BASENAME}" >&2
+      fi
+    )
+  done
+fi

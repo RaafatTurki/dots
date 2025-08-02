@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+display() {
+  sleep_duration=$1
+  shift
+  message=$@
+
+  # umess-send $sleep_duration $message
+  # use notify-send instead of umess-send
+  notify-send -t $((sleep_duration * 1000)) -r 43 "$message"
+}
+
+display-volume() {
+  mute_status=$(pamixer --get-mute)
+  audio_icon=''
+
+  if [ "$mute_status" = "true" ]; then
+    audio_icon=''
+  fi
+
+  display 1 $audio_icon $(wpctl get-volume @DEFAULT_AUDIO_SINK@ 2>/dev/null | awk '{print $2 * 100}')%
+  # display 1 $audio_icon $(pamixer --get-volume)%
+}
+
+case "${1:-}" in
+  time)
+    display 1 $(date '+%a %d %b %I:%M %p') - $(cat /sys/class/power_supply/BAT1/capacity)% $(cat /sys/class/power_supply/BAT1/status)
+    ;;
+  b+)
+    wm-backlight change 10%+
+    display 1 󰃠 $(wm-backlight get)%
+    ;;
+  b-)
+    wm-backlight change 10%-
+    display 1 󰃠 $(wm-backlight get)%
+    ;;
+  v+)
+    # pamixer -i 5 --allow-boost --set-limit 200
+    wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
+    # display-volume
+    ;;
+  v-)
+    # pamixer -d 5 --allow-boost --set-limit 200
+    wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+    # display-volume
+    ;;
+  mute)
+    # pamixer --toggle-mute
+    wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+    # display-volume
+    ;;
+  kbd)
+    display 1 󰌌 $(wm-xkbd)
+    ;;
+  bar)
+    display 1 󰌌 $(wm-xkbd)
+    ;;
+  # hlwm-ws)
+  #   STRING=`herbstclient tag_status ${DISPLAY:1}`
+  #   ;;
+esac

@@ -1,0 +1,69 @@
+# vim: cms=#%s
+
+[user]
+  name = Raafat Turki
+  email = raafat.turki@proton.me
+  signingkey = ~/.ssh/id_ed25519.pub
+
+[core]
+  excludesFile = ~/.config/git/.gitignore
+
+[init]
+	defaultBranch = master
+
+[pull]
+  ff = only
+
+[alias]
+  glog = log --all --decorate --graph --oneline --abbrev-commit --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+  # staash = stash --all
+  # st = status -sb
+  # last = log -1 HEAD --stat
+  # lscfg = config --global -l
+
+[advice]
+  addEmptyPathspec = false
+  statusHints = false
+
+
+# [diff]
+#   external = difft
+#   tool = difftastic
+
+# [difftool]
+#   prompt = false
+
+# [difftool "difftastic"]
+#   cmd = difft "$LOCAL" "$REMOTE"
+
+# [pager]
+#   difftool = true
+
+# [safe]
+#   directory = /opt/flutter
+
+# git fetch origin
+# git reset --hard origin/master
+# git clean -fdx
+
+# auto merge conflicts if encountered more than once
+[rerere]
+  enabled = true
+
+[column]
+  ui = auto
+
+[branch]
+  sort = -committerdate
+
+# sign stuff w SSH
+[gpg]
+  format = ssh
+
+# github PRs as refs (checkout-able branches)
+[remote "origin"]
+  fetch = +refs/pull/*:refs/remotes/origin/pull/*
+
+# detect copies as well as renames
+[diff]
+  renames = copies

@@ -1,0 +1,58 @@
+/* vim: commentstring=#%s:filetype=css:nofoldenable
+version: 1.7.0 */
+
+* {
+  bg:   #080808;
+  mg:   #292929;
+  sep:  #292929;
+  fg:   #F1F7ED;
+  sel:  #3A8EE6;
+  tr:   #00000000;
+
+  background-color:  @tr;
+  text-color:  @fg;
+}
+window {
+  height:		80%;
+  width:		30%;
+  location:	center;
+  anchor:		center;
+  border:   1px;
+  border-color: @sep;
+}
+mode-switcher {}
+button {
+  text-color: @fg;
+}
+button selected {
+  text-color: @sel;
+}
+inputbar {
+  padding: 4px;
+}
+mainbox {
+  expand: true;
+  background-color: @bg;
+  spacing: 16px;
+  padding: 10px;
+}
+listview {
+  dynamic: true;
+  lines: 10;
+}
+element {
+  padding: 1px 10px;
+}
+element-text {
+  text-color: @fg;
+}
+element-icon {
+  size: 24px;
+  padding: 0px 10px 0px 0px;
+}
+element selected {
+  background-color: @mg;
+}
+element-text selected {
+  /* text-color: @sel; */
+}

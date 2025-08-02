@@ -1,0 +1,24 @@
+[Default Applications]
+application/json=nvim.desktop
+application/octet-stream=Aseprite.desktop
+application/pdf=org.pwmt.zathura-pdf-poppler.desktop
+application/x-zerosize=nvim.desktop
+application/xml=nvim.desktop
+image/heif=imv-dir.desktop
+image/jpeg=imv-dir.desktop
+image/png=imv-dir.desktop
+inode/directory=thunar.desktop
+text/csv=onlyoffice-desktopeditors.desktop
+text/html=nvim.desktop;
+text/plain=nvim.desktop
+x-scheme-handler/bruno=bruno.desktop
+x-scheme-handler/discord=vesktop.desktop
+x-scheme-handler/nxm=com.nexusmods.app.desktop
+x-scheme-handler/postman=Postman.desktop
+x-scheme-handler/tg=Telegram Desktop.desktop
+x-scheme-handler/tonsite=Telegram Desktop.desktop
+
+[Added Associations]
+image/jpeg=gimp.desktop;
+image/png=gimp.desktop;
+text/csv=nvim.desktop;

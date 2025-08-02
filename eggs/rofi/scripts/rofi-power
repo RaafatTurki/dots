@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+cwd="$(dirname "$0")"
+source "$cwd/rofi-common"
+
+if [ -n "$1" ]; then
+  if [ "$1" = "poweroff" ]; then
+    systemctl poweroff
+  elif [ "$1" = "reboot" ]; then
+    systemctl reboot
+  elif [ "$1" = "sleep" ]; then
+    systemctl sleep
+  fi
+else
+  entry "poweroff" icon system-shutdown-symbolic
+  entry "reboot" icon system-reboot-symbolic
+  entry "sleep" icon system-suspend
+fi

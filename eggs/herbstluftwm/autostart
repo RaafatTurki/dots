@@ -1,0 +1,217 @@
+#!/usr/bin/env bash
+
+# for docs visit https://herbstluftwm.org/object-doc.html
+hc() {
+  herbstclient "$@"
+}
+
+launch_once() {
+  local pname="$1"
+  shift
+  local cmd="$@"
+
+  if ! pgrep -x "$pname" >/dev/null; then
+    $cmd &
+  fi
+}
+
+relaunch() {
+  local pname="$1"
+  shift
+  local cmd="$@"
+
+  if pgrep -x "$pname" >/dev/null; then
+    pkill -x "$pname"
+  fi
+  $cmd &
+}
+
+
+hc emit_hook reload
+hc detect_monitors
+
+
+# look and feel
+hc set frame_gap 0
+hc set frame_border_width 0
+hc set frame_bg_transparent on
+hc set window_gap 4
+hc set window_border_active_color $(xgetres hlwm.foreground)
+hc set window_border_urgent_color $(xgetres hlwm.color11)
+# hc set window_border_width 1
+
+
+# misc
+hc set_layout horizontal # apparently the 1st tag wouldn't obey the next line
+hc set default_frame_layout horizontal
+hc set tree_style '╾│ ├└╼─┐'
+hc set focus_stealing_prevention off
+hc set focus_follows_mouse on
+hc set auto_detect_monitors
+hc set swap_monitors_to_get_tag on
+# hc set_monitors 1920x1080+0+0 1366x768+1920+0
+# hc set hide_covered_windows on
+# hc set frame_transparent_width 1
+# hc set show_frame_decorations 'focused_if_multiple'
+
+# theme
+hc attr theme.reset 1
+# title
+# hc attr theme.title_align center
+hc attr theme.title_height 3 # font size + top padding
+hc attr theme.title_depth 0  # bottom padding
+hc attr theme.title_when multiple_tabs
+# borders
+hc attr theme.floating.border_width 1
+hc attr theme.border_width 1
+# colors
+hc attr theme.active.color $(xgetres .foreground)
+hc attr theme.urgent.color $(xgetres .color11)
+hc attr theme.normal.color $(xgetres .background)
+hc attr theme.tab_color $(xgetres .background)
+hc attr theme.tab_title_color $(xgetres .background)
+hc attr theme.title_color $(xgetres .foreground)
+
+
+# keybinds
+Mod=Super
+hc keyunbind --all
+hc keybind $Mod-Shift-r reload
+hc keybind $Mod-q close
+hc keybind $Mod-backslash spawn scratchpad.hlwm 7
+# basic movement in tiling and floating mode
+hc keybind $Mod-Left  focus left
+hc keybind $Mod-Down  focus down
+hc keybind $Mod-Up    focus up
+hc keybind $Mod-Right focus right
+# cycling visible clients (max layout)
+hc keybind $Mod-Alt-Left  cycle_all -1
+hc keybind $Mod-Alt-Right cycle_all 1
+# moving clients in tiling and floating mode
+hc keybind $Mod-Control-Left  shift left
+hc keybind $Mod-Control-Down  shift down
+hc keybind $Mod-Control-Up    shift up
+hc keybind $Mod-Control-Right shift right
+# switching layouts
+hc keybind $Mod-r remove
+hc keybind $Mod-f fullscreen toggle
+hc keybind $Mod-w set_attr clients.focus.floating toggle
+# cycles through the available layouts within a frame, but skips layouts, if the layout change wouldn't affect the actual window positions.
+hc keybind $Mod-space or , and . compare tags.focus.curframe_wcount = 2 . cycle_layout +1 vertical horizontal max vertical grid , cycle_layout +1
+# hc keybind $Mod-space or , and . compare tags.focus.curframe_wcount = 2 . cycle_layout +1 max vertical horizontal grid , cycle_layout +1
+
+
+# tags
+tag_names=( 1 2 3 4 5 6 7 )
+tag_keys=( 1 2 3 4 5 6 7 )
+hc rename default "${tag_names[0]}" || true
+# hc rename default 1
+for i in "${!tag_names[@]}" ; do
+  hc add "${tag_names[$i]}"
+  key="${tag_keys[$i]}"
+  if [ -n "$key" ] ; then
+    hc keybind "$Mod-$key" use_index "$i"
+    hc keybind "$Mod-Shift-$key" move_index "$i"
+  fi
+done
+# cycle through tags
+hc keybind $Mod-Shift-Right use_index +1 --skip-visible
+hc keybind $Mod-Shift-Left  use_index -1 --skip-visible
+
+
+# mousebinds
+hc mouseunbind --all
+hc mousebind $Mod-Button1 move
+hc mousebind $Mod-Button2 zoom
+hc mousebind $Mod-Button3 resize
+
+
+# rules
+# for docs visit https://herbstluftwm.org/herbstluftwm.html#RULES
+hc unrule -F
+hc rule focus=on # normally focus new clients
+hc rule floatplacement=smart
+hc rule fixedsize floating=on
+# hc rule title='Peek preview' focus=off
+hc rule windowtype~'_NET_WM_WINDOW_TYPE_(DIALOG|UTILITY|SPLASH)' floating=on
+hc rule windowtype='_NET_WM_WINDOW_TYPE_DIALOG' focus=on floatplacement=center
+hc rule windowtype~'_NET_WM_WINDOW_TYPE_(NOTIFICATION|DOCK|DESKTOP)' manage=off
+hc rule windowtype~'_NET_WM_WINDOW_TYPE_SPLASH' floatplacement=center
+hc rule class='zoom' floating=on
+hc rule class='kooha' floating=on
+hc rule class='simple_droidcam_client' floating=on
+hc rule class='Rustdesk' floating=on
+hc rule class='pentablet' floating=on
+
+# hc rule class='telegram-desktop' floating=on
+hc rule windowrole='About' floating=on
+hc rule windowrole='Windscribe2' floating=on
+# hc rule title='Pick a Font' floating=off
+# hc rule title='Select Font' floating=off
+hc rule title='Properties' floating=off
+hc rule title='anydesk' floating=on floatplacement=none
+hc rule title='windowkill' floating=on
+# mullvad
+# steam windows
+hc rule instance='mullvad vpn' floating=on floatplacement=center
+# hc rule instance='steamwebhelper' floating=on floatplacement=center
+# hc rule instance='1password' floating=on floatplacement=center
+# hc rule title='Steam' floating=on floatplacement=center
+# hc rule title='Sign in to Steam' focus=on floatplacement=center
+# hc rule title='Launching...' floating=on floatplacement=center
+# hc rule title='Question' floating=on floatplacement=center
+hc rule title='WebStorm User Agreement' floating=on floatplacement=center
+hc rule title='Import Android Studio Settings' floating=on floatplacement=center
+hc rule title='Android Studio Setup Wizard' floating=on floatplacement=center
+hc rule title=' ' floating=on floatplacement=center
+hc rule title='Welcome to Android Studio' floating=on floatplacement=center
+hc rule title~'^Android Emulator' floating=on floatplacement=center
+hc rule title='Quick Access — 1Password' floating=on floatplacement=center
+hc rule instance='ghidra-Ghidra' floating=on floatplacement=center
+hc rule class='C.A.T.' floating=on floatplacement=center
+hc rule title='vesktop' floating=on floatplacement=center
+
+# misc
+hc rule instance='lxpolkit' floating=on floatplacement=center
+hc rule instance='zenity' floating=on
+hc rule instance='arandr' floating=on floatplacement=center
+hc rule instance='xfce4-panel' floating=on floatplacement=center
+hc rule title='Wireless network credentials' floating=on floatplacement=center
+hc rule title='Discord Updater' focus=on floatplacement=center
+hc rule title='Event Tester' floating=on floatplacement=center
+
+hc rule class='my_qml_app' floating=on floatplacement=center
+
+# hc rule class='io.elementary.notification floating=on geometry=300x150-10-10'
+
+
+# daemons
+# launch_once xfsettingsd         xfsettingsd -D --sm-client-disable
+launch_once picom               picom
+launch_once xss-lock            xss-lock wm-xlock
+launch_once thunar              thunar --daemon
+launch_once xwallpaper          xwallpaper --daemon
+launch_once srandrd             srandrd srandr_handler
+launch_once xsettingsd          xsettingsd
+
+launch_once quickshell          quickshell -c osd -d -n
+launch_once lazybar             lazybar top
+
+xwallpaper --maximize ~/.config/wallpapers/personal_computer.png
+
+launch_once udiskie             udiskie -asm flat
+launch_once blueman-applet      blueman-applet
+launch_once parcellite          parcellite
+launch_once pasystray           pasystray
+launch_once arch-audit-gtk      arch-audit-gtk
+launch_once nm-applet           nm-applet --indicator
+launch_once mpris-proxy         mpris-proxy
+
+# unlock, just to be sure
+hc unlock
+
+
+
+# hc set window_border_active_color `xgetres .foreground`
+# hc set window_border_urgent_color `xgetres .color11`
+# hc set window_border_width 1

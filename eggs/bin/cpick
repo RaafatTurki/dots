@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Deps:
+# - xcolor
+# - imagemagick (convert)  [optional, for icon preview]
+# - notify-send (libnotify)
+
+IMAGE="/tmp/color-picker-preview.png"
+REPLACE_ID=69
+APP_NAME="color picker"
+PREVIEW_SIZE=48
+
+make_preview() {
+  local hex="$1"
+  convert -size "${PREVIEW_SIZE}x${PREVIEW_SIZE}" "xc:${hex}" "${IMAGE}"
+}
+
+notify_color() {
+  local hex="$1"
+
+  if [[ -f "${IMAGE}" ]]; then
+    notify-send -u low -a "${APP_NAME}" -r "${REPLACE_ID}" -i "${IMAGE}" "${hex} (copied)"
+  else
+    notify-send -u low -a "${APP_NAME}" -r "${REPLACE_ID}" "${hex} (copied)"
+  fi
+}
+
+main() {
+  local color
+
+  color="$(
+    xcolor \
+      --format hex \
+      --selection clipboard \
+      2>/dev/null || true
+  )"
+
+  # cancelled / no selection
+  [[ -n "${color}" ]] || exit 0
+
+  # optional preview icon
+  if command -v convert >/dev/null 2>&1; then
+    make_preview "${color}"
+  else
+    rm -f "${IMAGE}" 2>/dev/null || true
+  fi
+
+  notify_color "${color}"
+}
+
+main "$@"

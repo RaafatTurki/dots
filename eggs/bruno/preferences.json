@@ -1,0 +1,100 @@
+{
+	"window-bounds": {
+		"x": 5,
+		"y": 25,
+		"width": 2550,
+		"height": 1410
+	},
+	"lastOpenedCollections": [
+		"/home/potato/sectors/bruno/misc",
+		"/home/potato/work/tam/Tamweeniya-API/assets/bruno",
+		"/home/potato/work/tam/tam_api/assets/bruno"
+	],
+	"preferences": {
+		"request": {
+			"sslVerification": true,
+			"customCaCertificate": {
+				"enabled": false,
+				"filePath": null
+			},
+			"keepDefaultCaCertificates": {
+				"enabled": true
+			},
+			"storeCookies": true,
+			"sendCookies": true,
+			"timeout": 0,
+			"oauth2": {
+				"useSystemBrowser": false
+			}
+		},
+		"font": {
+			"codeFont": "default",
+			"codeFontSize": 13
+		},
+		"proxy": {
+			"inherit": false,
+			"config": {
+				"protocol": "http",
+				"hostname": "",
+				"port": null,
+				"auth": {
+					"username": "",
+					"password": "",
+					"disabled": true
+				},
+				"bypassProxy": ""
+			},
+			"disabled": true
+		},
+		"features": {
+			"terminal": true,
+			"apiSpec": false,
+			"fileExplorer": true,
+			"git": true,
+			"brunoJson": false
+		},
+		"secretsProviders": [],
+		"awsConfig": {
+			"enabled": false,
+			"accessKeyId": "",
+			"secretAccessKey": "",
+			"region": "",
+			"sessionToken": ""
+		},
+		"azureConfig": {
+			"enabled": false,
+			"tenantId": "",
+			"clientId": "",
+			"clientSecret": ""
+		},
+		"autoupdate": {
+			"downloadUpdates": false
+		},
+		"layout": {
+			"responsePaneOrientation": "horizontal"
+		},
+		"beta": {
+			"nodevm": false,
+			"grpc": false
+		},
+		"onboarding": {
+			"hasLaunchedBefore": true
+		},
+		"general": {
+			"defaultCollectionLocation": "",
+			"defaultWorkspacePath": "/home/potato/.config/bruno/default-workspace"
+		},
+		"autoSave": {
+			"enabled": false,
+			"interval": 1000
+		},
+		"license": {
+			"proxy": {
+				"auth": {}
+			}
+		},
+		"_migrations": {
+			"codeFontSize14to13": true
+		}
+	}
+}

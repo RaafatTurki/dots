@@ -1,0 +1,83 @@
+# vim: ft=conf
+
+# "st"
+# "st -e fish"
+"term"
+Mod4 + Return
+
+# "nemo"
+"thunar"
+Mod4 + e
+
+# "nemo trash:///"
+"thunar trash:///"
+Mod4 + KP_Enter
+
+# "nemo trash:///"
+"thunar trash:///"
+Mod4 + Delete
+
+"rofi -font "$(xgetres rofi.font_name) $(xgetres rofi.font_size)" -show drun"
+Mod4 + d
+
+"loginctl lock-session $XDG_SESSION_ID"
+Mod4 + l
+
+"sshot -s -c"
+Mod4 + s
+
+"sshot -s -f"
+Mod4 + Shift + s
+
+"cpick"
+Mod4 + c
+
+# "mon-switcher -m laptop"
+"firefox"
+Mod4 + b
+
+"wm-control v+"
+Mod4 + Prior
+
+"wm-control v+"
+Mod4 + KP_Add
+
+"wm-control v-"
+Mod4 + Next
+
+"wm-control v-"
+Mod4 + KP_Subtract
+
+"wm-control mute"
+Mod4 + KP_Multiply
+
+"wm-control v+"
+XF86AudioRaiseVolume
+
+"wm-control v-"
+XF86AudioLowerVolume
+
+# "/home/potato/work/tam/reset_card_0.sh"
+"wm-control mute"
+XF86AudioMute
+
+# "wm_control -mm"
+# XF86AudioMicMute
+
+"wm-control b+"
+Mod4 + Shift + KP_Add 
+
+"wm-control b-"
+Mod4 + Shift + KP_Subtract
+
+"wm-control b+"
+XF86MonBrightnessUp 
+
+"wm-control b-"
+XF86MonBrightnessDown 
+
+"wm-control time"
+Mod4 + z
+
+"wm-control kbd"
+Mod1 + space

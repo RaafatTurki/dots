@@ -1,0 +1,12 @@
+#!/usr/bin/bash
+
+# find ~/.local/share/nvim/sessions/ -printf '%P\n' | xargs
+find ~/.local/share/nvim/sessions/ -printf '%P\n' | sed 's/\.[^.]*$//' | xargs
+
+# cat ~/.local/share/nvim/session/$1
+
+# grep -m 1 '^cd .*$' ~/.local/share/nvim/session/$1
+# path=$(grep -m 1 '^cd .*$' ~/.local/share/nvim/session/$1)
+# echo $path
+# cd $1
+# cd /home

@@ -1,0 +1,36 @@
+#!/bin/bash
+
+GIT_DIR="$HOME/.dit"
+WORK_TREE="/"
+
+TMP_DIR="/tmp/dit"
+TMP_DIFF_DIT_TREE_FILE="$TMP_DIR/diff_dit_tree"
+TMP_DIFF_FS_TREE_FILE="$TMP_DIR/diff_fs_tree"
+
+mkdir -p $TMP_DIR
+
+if [ -z "$1" ]; then
+  if ! command -v gitui > /dev/null
+  then
+    echo "gitui is not installed on this system"
+    return 1
+  fi
+  # gitui --watcher -d "$HOME/.dit" -w "$HOME"
+  gitui -l -d "$HOME/.dit" -w "/"
+elif [ "$1" = "tree" ]; then
+  if ! command -v git > /dev/null; then
+    echo "git is not installed on this system"
+    return 1
+  fi
+  git --git-dir="$GIT_DIR" --work-tree="$WORK_TREE" ls-files | tree --fromfile
+elif [ "$1" = "tree-diff" ]; then
+  dit tree > $TMP_DIFF_DIT_TREE_FILE
+  tree > $TMP_DIFF_FS_TREE_FILE
+  diff --color=always -y -d $TMP_DIFF_DIT_TREE_FILE $TMP_DIFF_FS_TREE_FILE
+else
+  if ! command -v git > /dev/null; then
+    echo "git is not installed on this system"
+    return 1
+  fi
+  git --git-dir="$GIT_DIR" --work-tree="$WORK_TREE" "$@"
+fi

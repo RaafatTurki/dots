@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# redis-cli dep check
+if ! command -v redis-cli &> /dev/null; then
+  echo "Error: redis-cli command not found. Please install it."
+  exit 1
+fi
+
+# loop through keys using SCAN
+for key in $(redis-cli --scan -n $1); do
+  # data type
+  type=$(redis-cli type "$key")
+
+  # get value based on data type
+  case "$type" in
+    string)
+      value=$(redis-cli get "$key")
+      ;;
+    hash)
+      value=$(redis-cli hgetall "$key" | tr '\n' ' ')  # Combine hash fields into space-separated string
+      ;;
+    set)
+      value=$(redis-cli smembers "$key" | tr '\n' ' ')  # Combine set members into space-separated string
+      ;;
+    list)
+      value=$(redis-cli lrange "$key" 0 -1 | tr '\n' ' ')  # Combine list elements into space-separated string
+      ;;
+    zset)
+      value=$(redis-cli zrange "$key" 0 -1 withscores | tr '\n' ' ')  # Combine sorted set elements with scores into space-separated string
+      ;;
+    *)
+      echo "Warning: Unknown data type for key '$key'"
+      continue
+      ;;
+  esac
+
+  # display
+  # echo "> $key $type: $value"
+  printf "%30s %10s %10s\n" $key $value $type
+done

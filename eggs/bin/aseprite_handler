@@ -1,0 +1,13 @@
+#!/usr/bin/bash
+
+ASEPRITE_BIN=/home/potato/.local/share/Steam/steamapps/common/Aseprite/aseprite
+
+FILE="${1//file:\/\//}"
+
+if [ -z $FILE ]; then
+    exec $ASEPRITE_BIN
+else
+    exec $ASEPRITE_BIN "${1//file:\/\//}"
+fi
+
+# TODO: auto detect ASEPRITE_BIN

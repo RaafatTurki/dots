@@ -1,0 +1,172 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+launch() {
+  local terminals=()
+
+  if [[ -n ${TERMINAL:-} ]]; then
+    terminals+=("$(basename "$TERMINAL")")
+  fi
+
+  terminals+=(x-terminal-emulator urxvt rxvt terminology qterminal Eterm aterm uxterm xterm roxterm xfce4-terminal mate-terminal lxterminal konsole alacritty kitty)
+
+  for terminal in "${terminals[@]}"; do
+    if command -v "$terminal" >/dev/null 2>&1; then
+      if [[ "$terminal" == "$(basename "$0")" ]]; then
+        echo "\$TERMINAL is set to \"$TERMINAL\" which is a terminal finder script, please set \$TERMINAL to something else"
+        continue
+      else
+        TERMINAL_SHELL=${TERMINAL_SHELL:-sh}
+        exec env SHELL="$TERMINAL_SHELL" "$terminal" "$@"
+      fi
+    fi
+  done
+}
+
+zoom() {
+  case "$TERM" in
+    xst-256color)
+      zoom_xst_xres_manage "$@"
+      ;;
+    st-256color)
+      zoom_c_s_pgup_pgdown "$@"
+      ;;
+    xterm-kitty)
+      zoom_c_plus_underscore "$@"
+      ;;
+    *)
+      echo "\$TERM $TERM unrecognized, trying default zoom method"
+      zoom_c_plus_underscore "$@"
+  esac
+}
+
+zoom_xst_xres_manage() {
+  dep_check xdotool
+  dep_check xres_manage
+
+  FACTOR=${1:-1}
+
+  if [[ ${FACTOR:0:1} == '-' ]]; then
+    FACTOR="${FACTOR:1}"
+    kill -USR1 $(xdotool getwindowfocus getwindowpid)
+  else
+    xrdb <(FN_TUI=Terminus FS_TUI=19 xres_manage compile)
+    # xrdb <(FN_TUI='FiraCode Nerd Font' FS_TUI=15 xres_manage compile)
+    kill -USR1 $(xdotool getwindowfocus getwindowpid)
+    xres_manage load
+  fi
+}
+
+zoom_c_s_pgup_pgdown() {
+  dep_check xdotool
+
+  FACTOR=${1:-1}
+  KEYCODE_ZOOM=112
+
+  if [[ ${FACTOR:0:1} == '-' ]]; then
+    FACTOR="${FACTOR:1}"
+    KEYCODE_ZOOM=117
+  else
+    KEYCODE_ZOOM=112
+  fi
+
+  XDOTOOL_ARGS="getactivewindow keydown ctrl keydown shift "
+  for i in $(seq 1 "$FACTOR"); do
+    XDOTOOL_ARGS+="key $KEYCODE_ZOOM "
+    # echo $i $KEYCODE_ZOOM
+  done
+  XDOTOOL_ARGS+="keyup ctrl keyup shift"
+
+  xdotool $XDOTOOL_ARGS
+}
+
+zoom_c_plus_underscore() {
+  dep_check xdotool
+
+  FACTOR=${1:-1}
+  KEYCODE_ZOOM=112
+
+  if [[ ${FACTOR:0:1} == '-' ]]; then
+    FACTOR="${FACTOR:1}"
+    KEYCODE_ZOOM=20
+  else
+    KEYCODE_ZOOM=21
+  fi
+
+  XDOTOOL_ARGS="getactivewindow keydown ctrl keydown shift "
+  for i in $(seq 1 "$FACTOR"); do
+    XDOTOOL_ARGS+="key $KEYCODE_ZOOM "
+    # echo $i $KEYCODE_ZOOM
+  done
+  XDOTOOL_ARGS+="keyup ctrl keyup shift"
+
+  xdotool $XDOTOOL_ARGS
+}
+
+
+# kitty
+# st
+# termite
+# xfce-terminal
+# gnome-terminal
+# urxvt
+# xterm
+
+
+dep_check() {
+  cmd=$1
+  opt=${2:-true}
+  msg="Missing dependency '$cmd'"
+
+  type -p "$cmd" &>/dev/null || {
+    notify-send "Scrscn" "$msg"
+    echo "$msg"
+    if $opt ; then exit 2 ; fi
+  }
+}
+
+help() {
+	cat <<-EOF
+Usage: term COMMAND [ARGS...]
+
+Commands:
+
+    launch            Launches $TERMINAL with it's SHELL set to $TERM_SHELL, all args are passed (default).
+    zoom [-]<X>       Changes terminal font size by X amount of of steps, "term zoom -5" decreases font size by 10 steps.
+    help              Print this help text.
+
+Env Vars
+    $TERMINAL         Terminal program name (must be on $PATH)
+    $TERM_SHELL       Shell to use within the $TERMINAL (default is bash)
+EOF
+}
+
+default() {
+  launch
+}
+
+main() {
+  if [ $# -eq 0 ]; then
+    default
+    exit 0
+  fi
+
+  cmd="$1"
+  shift
+
+  case "$cmd" in
+    launch|zoom|help)
+      "$cmd" "$@"
+      ;;
+    *)
+      echo "Unknown command $cmd"
+      help
+      exit 2
+  esac
+}
+
+# dep_check bash
+# dep_check xst false
+
+main "$@"

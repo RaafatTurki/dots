@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+edps=eDP-1
+hdmi=HDMI-1-0
+usbc=DP-1
+
+res_md=1024x600
+res_hd=1920x1080
+res_2k=2560x1440
+# res_4k=3840x2160
+
+# internal_bg=~/files/pics/wallpapers/punpun_dim.png
+# external_bg=~/files/pics/wallpapers/berserk_skull.jpg
+
+mon=""
+
+usage() {
+  echo "Usage: $0 [OPTIONS]"
+  echo "Options:"
+  echo "  -m, --monitor [intern|extern]   Set the monitor to switch to"
+  echo "  -h, --help                      Display this help message"
+}
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    -m|--monitor)
+      if [[ -z $2 || $2 == -* ]]; then
+        echo "Error: Value missing for option '$1'"
+        usage
+        exit 1
+      fi
+      mon="$2"
+      shift 2
+      ;;
+    *)
+      if [[ $1 == -* ]]; then
+        echo "Error: Unrecognized option '$1'"
+        usage
+        exit 1
+      fi
+      ;;
+  esac
+done
+
+
+if [ $mon == "laptop" ]; then
+  xrandr \
+  --output $edps --mode $res_hd --rate 120 --primary \
+  --output $hdmi --off \
+  --output $usbc --off
+elif [ $mon == "2k" ]; then
+  xrandr \
+  --output $hdmi --mode $res_2k --rate 120 --primary \
+  --output $usbc --off \
+  --output $edps --off
+elif [ $mon == "2k-144" ]; then
+  xrandr \
+  --output $hdmi --mode $res_2k --rate 144 --primary \
+  --output $usbc --off \
+  --output $edps --off
+elif [ $mon == "hd" ]; then
+  xrandr \
+  --output $hdmi --mode $res_hd --rate 120 --primary \
+  --output $usbc --off \
+  --output $edps --off
+elif [ $mon == "dp-2k" ]; then
+  xrandr \
+  --output $usbc --mode $res_2k --rate 120 --primary \
+  --output $hdmi --off \
+  --output $edps --off
+else
+  echo "Invalid monitor value \"${mon}\""
+  exit 2
+fi
+
+# reload xprofile
+~/.xprofile
+
+# xwallpaper --output $internal --zoom $internal_bg --output $external --zoom $external_bg
+
+# kill all init programs that need to be restarted
+pkill xfce4-panel
+
+# reload wm
+# TODO: extract into `wm_control realod`
+herbstclient reload
+
+# TODO: take screen DPI change into account if needed
+# --dpi 133

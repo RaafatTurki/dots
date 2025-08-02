@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+cwd="$(dirname "$0")"
+source "$cwd/rofi-common"
+
+if [ -n "$1" ]; then
+  if [ "$1" = "gmail-reader" ]; then
+    GMAIL_READER_PATH=$HOME/sectors/python/gmail-reader
+    cd $GMAIL_READER_PATH
+    nohup ./venv/bin/python ./main.py >/dev/null 2>&1 &
+  # elif [ "$1" = "sleep" ]; then
+  #   systemctl sleep
+  fi
+else
+  entry "gmail-reader" icon gmail-symbolic
+fi

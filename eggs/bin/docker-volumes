@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+if ! command -v docker >/dev/null 2>&1; then
+  echo "docker not found"
+  exit 1
+fi
+
+if ! docker info >/dev/null 2>&1; then
+  echo "docker daemon not available"
+  exit 1
+fi
+
+vols=$(docker volume ls -q || true)
+if [[ -z "$vols" ]]; then
+  echo "no docker volumes found"
+  exit 0
+fi
+
+for vol in $vols; do
+  echo "=== $vol ==="
+
+  docker ps -a --format '{{.ID}} {{.Names}}' | while read -r cid cname; do
+    docker inspect "$cid" --format '{{range .Mounts}}{{if eq .Type "volume"}}{{.Name}} {{.Destination}} {{.RW}}{{"\n"}}{{end}}{{end}}' \
+      | awk -v v="$vol" -v n="$cname" -v id="$cid" '$1==v {printf "Container: %s (%s) -> %s RW=%s\n", n, id, $2, $3}'
+  done
+
+  echo
+done

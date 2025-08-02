@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+dep_check() {
+  dep=$1
+  type -p "$dep" &>/dev/null || {
+    echo "missing dependency '$dep'"
+    return 3
+  }
+}
+
+dep_check xdg-user-dir
+
+templates_dir=$(xdg-user-dir TEMPLATES)
+target_template=${1:-}
+
+if [[ -z "$target_template" ]]; then
+  echo "usage: touch-template <template>"
+  exit 2
+fi
+
+target_template_full_path="$templates_dir/$target_template"
+
+if [ -f "$target_template_full_path" ]; then
+  cp "$target_template_full_path" .
+else
+  echo "template \"$target_template\" not found!"
+fi

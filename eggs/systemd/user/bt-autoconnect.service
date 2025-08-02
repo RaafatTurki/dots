@@ -1,0 +1,11 @@
+[Unit]
+Description=Auto connect bluetooth speaker
+After=bluetooth.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/bluetoothctl connect 78:66:F3:21:B4:3F
+RemainAfterExit=yes
+
+[Install]
+WantedBy=default.target

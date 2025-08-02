@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+XDG_DATA_HOME=${XDG_DATA_HOME:-"$HOME/.local/share"}
+
+# home cleaning
+shopt -s nullglob
+GARBAGE=(
+~/.ICEauthority
+~/.cinnamon
+~/.dart
+~/.dartServer
+~/.degit
+~/.eclipse
+~/.flutter
+~/.gnome
+~/.gnupg
+~/.gscriptor
+~/.gtkrc-2.0
+~/.iredis_history
+~/.java
+~/.lesshst
+~/.mariadb_history
+~/.mono
+~/.npm
+~/.nuget
+~/.pki
+~/.pnpm-debug.log
+~/.pnpm-store
+~/.psql_history
+~/.pulse-cookie
+~/.python_history
+~/.stack
+~/.steampath
+~/.steampid
+~/.subversion
+~/.swt
+~/.synergy
+~/.tig_history
+~/.ts_node_repl_history
+~/.urserver
+~/.viminfo
+~/.wget-hsts
+~/.yarn
+~/.yarnrc
+~/.zoom
+~/unity.lock
+~/yarn.lock
+
+# wine
+$XDG_DATA_HOME/applications/wine*
+$XDG_DATA_HOME/mime/packages/x-wine*
+$XDG_DATA_HOME/applications/wine-extension*
+$XDG_DATA_HOME/icons/hicolor/*/*/application-x-wine-extension*
+$XDG_DATA_HOME/mime/application/x-wine-extension*
+)
+
+for t in ${GARBAGE[@]}; do
+
+  # echo $t
+
+  # rm file if exists
+  if [ -e $t ]; then
+    gio trash $t
+    echo $t
+  fi
+
+  # rm file if symlink
+  if [ -L $t ]; then
+    gio trash $t
+    echo $t
+  fi
+done

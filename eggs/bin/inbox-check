@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# inbox-check: nag (desktop notification) when ~/inbox has stuff or ~ has things outside the fixed layout.
+# Run weekly by inbox-check.timer; run it by hand with --print to just list.
+
+set -uo pipefail
+
+ALLOWED=(archive art code docs inbox media notes immich)
+
+inbox=()
+while IFS= read -r -d '' f; do inbox+=("${f#"$HOME"/inbox/}"); done \
+  < <(find "$HOME/inbox" -mindepth 1 -maxdepth 1 -print0 2>/dev/null)
+
+loose=()
+while IFS= read -r -d '' f; do
+  n=${f##*/}
+  [[ $n == .* ]] && continue
+  printf '%s\n' "${ALLOWED[@]}" | grep -qxF -- "$n" || loose+=("$n")
+done < <(find "$HOME" -mindepth 1 -maxdepth 1 -print0)
+
+birthdays=$(command -v people >/dev/null && people --birthdays 7 2>/dev/null | grep -v '^no birthdays' || true)
+
+if [[ ${1:-} == --print ]]; then
+  printf 'inbox (%d):\n' "${#inbox[@]}"; printf '  %s\n' "${inbox[@]}"
+  printf 'loose in ~ (%d):\n' "${#loose[@]}"; printf '  %s\n' "${loose[@]}"
+  [[ -n $birthdays ]] && printf 'birthdays this week:\n%s\n' "$(sed 's/^/  /' <<<"$birthdays")"
+  exit 0
+fi
+
+[[ -n $birthdays ]] && notify-send -a inbox-check "Birthdays this week" "$birthdays"
+(( ${#inbox[@]} + ${#loose[@]} == 0 )) && exit 0
+msg="${#inbox[@]} item(s) in ~/inbox"
+(( ${#loose[@]} )) && msg+=", ${#loose[@]} loose in ~: ${loose[*]:0:5}"
+notify-send -a inbox-check "Weekly sort (≈10 min)" "$msg"

@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# Adds a C:\SteamLibrary shortcut (symlink) inside a Wine prefix, pointing
+# at your real Steam steamapps/common folder. Makes it trivial to browse to
+# any installed game from inside a Windows app's file picker (e.g. Vortex,
+# ReShade's installer) instead of digging through Z:\home\<user>\.local\...
+#
+# Usage:
+#   wine-add-steamlibrary.sh              # adds it to ~/.wine
+#   wine-add-steamlibrary.sh /path/to/pfx # adds it to a specific prefix
+
+set -euo pipefail
+
+PREFIX="${1:-$HOME/.wine}"
+STEAM_COMMON="$HOME/.local/share/Steam/steamapps/common"
+LINK="$PREFIX/drive_c/SteamLibrary"
+
+if [ ! -d "$PREFIX/drive_c" ]; then
+  echo "Error: '$PREFIX' doesn't look like a Wine prefix (no drive_c found)." >&2
+  exit 1
+fi
+
+if [ ! -d "$STEAM_COMMON" ]; then
+  echo "Error: Steam library not found at '$STEAM_COMMON'." >&2
+  exit 1
+fi
+
+if [ -e "$LINK" ] || [ -L "$LINK" ]; then
+  if [ -L "$LINK" ] && [ "$(readlink -f "$LINK")" = "$(readlink -f "$STEAM_COMMON")" ]; then
+    echo "Already set up: $LINK -> $STEAM_COMMON"
+    exit 0
+  fi
+  echo "Error: '$LINK' already exists and doesn't point at the Steam library. Remove it manually first." >&2
+  exit 1
+fi
+
+ln -s "$STEAM_COMMON" "$LINK"
+echo "Done: $LINK -> $STEAM_COMMON"
+echo "Inside this prefix, browse to C:\\SteamLibrary\\<Game Folder> to reach any installed game."

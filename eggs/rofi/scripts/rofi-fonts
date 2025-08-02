@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+cwd="$(dirname "$0")"
+source "$cwd/rofi-common"
+
+escape_pango() {
+  local value="$1"
+
+  value=${value//&/&amp;}
+  value=${value//</&lt;}
+  value=${value//>/&gt;}
+  value=${value//\"/&quot;}
+  value=${value//\'/&apos;}
+
+  printf '%s' "$value"
+}
+
+list_fonts() {
+  local -a fonts
+
+  mapfile -t fonts < <(
+    fc-list : family |
+      tr ',' '\n' |
+      sed 's/^[[:space:]]*//; s/[[:space:]]*$//' |
+      sort -u |
+      awk 'NF'
+    )
+
+    for font in "${fonts[@]}"; do
+      local escaped
+      escaped="$(escape_pango "$font")"
+      entry "<span font=\"${escaped} 13\">${escaped}</span>" icon "applications-fonts-symbolic" info "$font"
+    done
+}
+
+case "${ROFI_RETV:-0}" in
+  0)
+    printf '\0markup-rows\x1ftrue\n'
+    list_fonts
+    ;;
+  1)
+    FONT="$ROFI_INFO"
+    printf '%s' "$FONT" | xsel --input --clipboard
+    notify-send "Font copied to clipboard" "$FONT"
+    ;;
+  *)
+    exit 0
+    ;;
+esac

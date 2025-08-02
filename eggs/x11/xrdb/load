@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+SYS_XRDB=/etc/X11/xinit/.Xresources
+USER_XRDB=$XDG_CONFIG_HOME/x11/xrdb/xrdb
+USER_XRDB_INCLUDE=$XDG_CONFIG_HOME/x11/xrdb/include
+
+if [ -f "$SYS_XRDB" ]; then
+  xrdb -merge $SYS_XRDB
+fi
+
+if [ -f "$USER_XRDB" ]; then
+  xrdb -I$USER_XRDB_INCLUDE -merge "$USER_XRDB"
+fi
+
+if [ -f "$USER_XRDB.$(hostnamectl hostname)" ]; then
+  xrdb -I$USER_XRDB_INCLUDE -merge "$USER_XRDB.$(hostnamectl hostname)"
+fi

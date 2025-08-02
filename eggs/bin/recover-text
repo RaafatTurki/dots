@@ -1,0 +1,170 @@
+#!/bin/bash
+# Recover deleted text files by scanning a raw partition for keywords.
+# Read-only on the device; results go to a tmpfs dir so the disk isn't written to.
+#
+#   recover-text [-d device|image] [-o outdir] [-n top] word1 word2 ...
+#
+# Matching is case-insensitive. Rare words (names, identifiers) work best.
+set -euo pipefail
+
+dev="" out="" top=100
+while getopts "d:o:n:h" opt; do
+  case $opt in
+    d) dev=$OPTARG ;;
+    o) out=$OPTARG ;;
+    n) top=$OPTARG ;;
+    *) sed -n '2,7p' "$0" | sed 's/^# \{0,1\}//'; exit 1 ;;
+  esac
+done
+shift $((OPTIND - 1))
+[ $# -ge 1 ] || { sed -n '2,7p' "$0" | sed 's/^# \{0,1\}//'; exit 1; }
+
+dev=${dev:-$(findmnt -no SOURCE -T "$HOME")}
+out=${out:-/tmp/recover-$(date +%Y%m%d-%H%M%S)}
+mkdir -p "$out"
+[ "$(findmnt -no FSTYPE -T "$out")" = tmpfs ] || echo "warning: $out is not tmpfs; results may overwrite deleted data" >&2
+fstype=$(sudo blkid -o value -s TYPE "$dev" || true)
+# works on disk image files too; ext* reports its own block size, else fall back to the device's
+bs=$(sudo dumpe2fs -h "$dev" 2>/dev/null | awk '/^Block size:/{print $3}' || true)
+[ -n "$bs" ] || { [ -b "$dev" ] && bs=$(sudo blockdev --getbsz "$dev"); } || bs=4096
+
+printf '%s\n' "$@" > "$out/patterns.txt"
+
+# Work out what to read: on ext*, only free space (a deleted file can't be anywhere else),
+# as ~1 GiB jobs overlapping by one block so a word straddling two jobs isn't missed.
+sudo python3 - "$dev" "$bs" "$fstype" > "$out/ranges.txt" <<'EOF'
+import sys, subprocess, re
+dev, BS, fstype = sys.argv[1], int(sys.argv[2]), sys.argv[3]
+with open(dev, "rb") as f: nblocks = f.seek(0, 2) // BS
+ranges = []
+if fstype.startswith("ext"):
+    for attempt in range(3):
+        txt = subprocess.run(["dumpe2fs", dev], capture_output=True, text=True).stdout
+        for line in txt.splitlines():
+            if line.startswith("  Free blocks: "):
+                for part in line[15:].split(", "):
+                    if part:
+                        a, _, b = part.partition("-")
+                        ranges.append((int(a), int(b or a) + 1))
+        if ranges: break
+    else:
+        print("warning: couldn't read free-space map, scanning everything", file=sys.stderr)
+if not ranges:
+    ranges = [(0, nblocks)]
+ranges.sort()
+merged = [list(ranges[0])]
+for a, b in ranges[1:]:
+    if a - merged[-1][1] <= 256: merged[-1][1] = max(merged[-1][1], b)  # reading a small used gap beats a new job
+    else: merged.append([a, b])
+CH = (1 << 30) // BS
+for a, b in merged:
+    for s in range(a, b, CH):
+        e = min(b + 1, s + CH + 1, nblocks)
+        print(s * BS, (e - s) * BS)
+EOF
+total=$(awk '{t+=$2} END{printf "%.0f", t/1e9}' "$out/ranges.txt")
+echo "scanning $dev ($fstype) for: $* -> $out"
+echo "reading ${total} GB in $(wc -l < "$out/ranges.txt") jobs"
+
+# O_DIRECT keeps a multi-TB read from evicting the page cache; not supported on image files in tmpfs
+direct=""; [ -b "$dev" ] && direct=",direct"
+mkdir -p "$out/parts"
+# rg -z splits on NUL so huge zero runs don't become giant lines; -b offsets are relative to each job's start
+sudo parallel --will-cite -j 8 --bar --colsep ' ' \
+  "dd if='$dev' iflag=skip_bytes,count_bytes$direct skip={1} count={2} bs=4M status=none \
+   | rg -a -z -b -o -i -F --no-line-number -f '$out/patterns.txt' > '$out/parts/{1}'; true" \
+  :::: "$out/ranges.txt"
+echo "analysing..."
+
+sudo python3 - "$dev" "$out" "$bs" "$fstype" "$top" "$#" <<'EOF'
+import sys, collections, hashlib, subprocess, os
+dev, out, BS, fstype, top, nwords = sys.argv[1], sys.argv[2], int(sys.argv[3]), sys.argv[4], int(sys.argv[5]), int(sys.argv[6])
+
+found = set()  # (absolute offset, word); a set because job overlaps can report a hit twice
+for name in os.listdir(f"{out}/parts"):
+    base = int(name)
+    for line in open(f"{out}/parts/{name}", errors="replace"):
+        off, _, w = line.strip().partition(":")
+        if off.isdigit():
+            found.add((base + int(off), w.lower()))
+with open(f"{out}/hits.txt", "w") as h:
+    for off, w in sorted(found): h.write(f"{off}:{w}\n")
+print(f"{len(found)} matches")
+hits = collections.defaultdict(collections.Counter)
+for off, w in found:
+    hits[off // BS][w] += 1
+
+f = open(dev, "rb")
+cache = {}
+def blk(b):
+    if b not in cache:
+        f.seek(b * BS); cache[b] = f.read(BS)
+    return cache[b]
+def texty(d):
+    d = d.rstrip(b"\0")
+    return bool(d) and sum(1 for x in d if 32 <= x < 127 or x in (9, 10, 13) or x >= 0x80) / len(d) >= 0.9
+
+R = 64  # how far (in blocks) a file may extend around a hit
+hitblocks = [b for b in sorted(hits) if texty(blk(b))]
+
+# on ext4, read the block bitmap around every hit: deleted data lives in free blocks
+if fstype.startswith("ext"):
+    nblocks = f.seek(0, 2) // BS
+    span = lambda b: (max(1, b - R), min(nblocks - 1, b + R))  # testb rejects block 0 and past-the-end
+    cmds = "".join(f"testb {lo} {hi - lo + 1}\n" for lo, hi in map(span, hitblocks))
+    # reading the bitmap of a mounted, busy fs occasionally comes back empty; retry, never silently skip
+    for attempt in range(3):
+        p = subprocess.run(["debugfs", "-f", "-", dev], input=cmds, capture_output=True, text=True)
+        lines = [l for l in p.stdout.splitlines() if l.startswith("Block ")]
+        if lines: break
+    else:
+        sys.exit(f"debugfs could not read the block bitmap:\n{p.stderr[-2000:]}")
+    free = {int(l.split()[1]) for l in lines if "not in use" in l}
+    isfree = free.__contains__
+else:
+    isfree = lambda b: True
+
+# grow each free hit block into a file: backwards through full (NUL-free) text blocks,
+# forwards until the block holding the file's zero-padded end
+full = lambda b: b"\0" not in blk(b)
+need = min(2, nwords)
+seen, regs = set(), []
+for b in hitblocks:
+    if b in seen or not isfree(b):
+        continue
+    s = b
+    while s > max(0, b - R) and isfree(s - 1) and texty(blk(s - 1)) and full(s - 1): s -= 1
+    e = b
+    while e < b + R and full(e) and isfree(e + 1) and texty(blk(e + 1)): e += 1
+    seen.update(range(s, e + 1))
+    c = collections.Counter()
+    for x in range(s, e + 1): c.update(hits.get(x, {}))
+    if len(c) < need:
+        continue
+    data = b"".join(blk(x) for x in range(s, e + 1)).split(b"\0")[0]
+    # skip Claude Code transcripts, which echo the keywords back
+    if b'"parentUuid"' in data or b'"sessionId"' in data:
+        continue
+    regs.append([s, e, dict(c), data])
+
+uniq = {}
+for s, e, c, data in regs:
+    h = hashlib.md5(data).hexdigest()
+    if h in uniq: uniq[h][4] += 1
+    else: uniq[h] = [s, e, c, data, 1]
+
+ranked = sorted(uniq.values(), key=lambda r: (-len(r[2]), -sum(r[2].values())))
+uid, gid = int(os.environ.get("SUDO_UID", 0)), int(os.environ.get("SUDO_GID", 0))
+summary = []
+for i, (s, e, c, data, copies) in enumerate(ranked[:top]):
+    p = f"{out}/{i:02d}_block{s}.txt"
+    open(p, "wb").write(data); os.chown(p, uid, gid)
+    first = next((l for l in data.decode("utf-8", "replace").splitlines() if l.strip()), "")[:70]
+    summary.append(f"{i:02d}  words={len(c)} lines={data.count(b'\n'):>4} bytes={len(data):>6} copies={copies:>2}  {first}")
+open(f"{out}/SUMMARY.txt", "w").write("\n".join(summary) + "\n")
+os.chown(f"{out}/SUMMARY.txt", uid, gid)
+print(f"{len(uniq)} unique deleted text regions; top {len(summary)} saved:\n")
+print("\n".join(summary))
+EOF
+echo
+echo "candidates in $out  (inspect with: less $out/00_*.txt; diff versions with diff)"

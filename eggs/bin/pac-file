@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+pacman_cmd=${AUR_HELPER:-paru}
+
+pkg=$("$pacman_cmd" -Qsq | fzf -q "${1:-}") || exit 0
+[[ -n "$pkg" ]] || exit 0
+
+files=$("$pacman_cmd" -Ql "$pkg" | cut -d ' ' -f 2)
+file=$(printf "%s\n" "$files" | fzf) || exit 0
+[[ -n "$file" ]] || exit 0
+
+echo "$file"

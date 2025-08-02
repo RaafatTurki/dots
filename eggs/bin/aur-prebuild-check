@@ -1,0 +1,198 @@
+#!/usr/bin/env bash
+# aur-prebuild-check: heuristic scan of PKGBUILD and install scripts,
+# meant for paru's PreBuildCommand (cwd = package clone dir, PKGBASE set).
+#
+# HIGH findings abort the build; MEDIUM findings only warn.
+# First build of a package scans whole files; later builds scan only lines
+# added since the last approved commit.
+#
+# Approved-state file: ${XDG_CONFIG_HOME:-~/.config}/pacman/aur-blacklist.txt
+#   one line per package: <pkgbase> <last approved commit> <commit author>
+#   (written by this script; delete a line to force a full rescan)
+#
+# Allowlist: ${XDG_CONFIG_HOME:-~/.config}/pacman/aur-whitelist.txt
+#   <pkgbase>            always let this package through (findings still shown)
+#   <pkgbase> <commit>   let it through only at this commit (prefix is fine)
+#   lines starting with # are comments
+set -uo pipefail
+
+: "${PKGBASE:?must be run from paru PreBuildCommand}"
+
+conf_dir="${XDG_CONFIG_HOME:-$HOME/.config}/pacman"
+state_file="$conf_dir/aur-blacklist.txt"
+allow_file="$conf_dir/aur-whitelist.txt"
+mkdir -p "$conf_dir"
+
+shopt -s nullglob
+files=(PKGBUILD *.install *.sh)
+shopt -u nullglob
+
+NET='(^|[^[:alnum:]_])(curl|wget|nc|ncat|npx)[[:space:]]|npm[[:space:]]+(i|install|ci)([^[:alnum:]_-]|$)|pip[[:space:]]+install|git[[:space:]]+clone'
+
+# "regex::description"
+HIGH=(
+  '(curl|wget)[^#]*\|[[:space:]]*(sudo[[:space:]]+)?(ba|z|da)?sh([^[:alnum:]_]|$)::download piped into a shell'
+  '(ba|z)?sh[[:space:]]+<\([[:space:]]*(curl|wget)::download executed via process substitution'
+  'base64[[:space:]]+(-d|--decode)|xxd[[:space:]]+-r|openssl[[:space:]]+(enc|base64)::decodes embedded data'
+  '/dev/(tcp|udp)/::raw network socket'
+  'ld\.so\.preload|LD_PRELOAD=::library preload (rootkit technique)'
+  '\.ssh/|\.gnupg|authorized_keys|/etc/sudoers::touches keys or sudo config'
+  '\.mozilla|\.librewolf|google-chrome|chromium/|BraveSoftware|\.config/discord|\.aws/|\.kube/|wallet::touches browser profiles, tokens or credentials'
+  '\.bashrc|\.zshrc|crontab|/etc/cron::shell-startup or cron persistence'
+  '(^|[:;&|[:space:]])sudo[[:space:]]::calls sudo (makepkg never needs it)'
+  'https?://[0-9]{1,3}(\.[0-9]{1,3}){3}::URL with a raw IP address'
+  'pastebin\.com|transfer\.sh|0x0\.st|termbin|ngrok|discord(app)?\.com/api/webhooks|cdn\.discordapp|bit\.ly|tinyurl|t\.me/::paste site, webhook or URL shortener'
+)
+
+MEDIUM=(
+  "${NET}::fetches code or data at build time"
+  '(^|[^[:alnum:]_])eval[[:space:]]::eval'
+  '\\x[0-9a-fA-F]{2}.*\\x[0-9a-fA-F]{2}::hex-escaped strings'
+  'systemctl[[:space:]]+(enable|start)::enables or starts a service'
+  'insmod|modprobe|bpftool::loads kernel modules or BPF programs'
+  '\$HOME|~/::references the home directory'
+  '/tmp/::uses /tmp'
+  'http://::unencrypted URL'
+)
+
+# previous approved state: "<pkgbase> <commit> <author...>"
+old_rev="" old_author=""
+if [[ -f $state_file ]]; then
+  while read -r name rev rest; do
+    if [[ $name == "$PKGBASE" ]]; then old_rev=$rev old_author=$rest; break; fi
+  done < "$state_file"
+fi
+
+in_git=0
+git rev-parse --is-inside-work-tree &>/dev/null && in_git=1
+have_old=0
+if (( in_git )) && [[ -n $old_rev ]] && git cat-file -e "$old_rev^{commit}" 2>/dev/null; then
+  have_old=1
+fi
+
+# print "lineno:content" (whole file) or "new:content" (added lines only)
+lines_to_scan() {
+  if (( have_old )); then
+    git diff --unified=0 "$old_rev" HEAD -- "$1" | sed -n 's/^+\([^+].*\)$/new:\1/p'
+  else
+    grep -n '' "$1"
+  fi | grep -vE '^[^:]*:[[:space:]]*#'
+}
+
+# is PKGBASE allowed at commit $1?
+is_allowed() {
+  local rev=$1 name pin
+  [[ -f $allow_file ]] || return 1
+  while read -r name pin _; do
+    [[ -z $name || $name == \#* || $name != "$PKGBASE" ]] && continue
+    [[ -z $pin ]] && return 0
+    [[ -n $rev && $rev == "$pin"* ]] && return 0
+  done < "$allow_file"
+  return 1
+}
+
+high_hits=() med_hits=()
+
+for f in "${files[@]}"; do
+  text=$(lines_to_scan "$f") || true
+  [[ -z $text ]] && continue
+
+  high=("${HIGH[@]}")
+  [[ $f == *.install ]] && high+=("${NET}::network access from an install script (runs as root)")
+
+  for entry in "${high[@]}"; do
+    re=${entry%%::*} desc=${entry##*::}
+    while IFS= read -r hit; do
+      high_hits+=("$f:$hit    <- $desc")
+    done < <(grep -E -- "$re" <<<"$text")
+  done
+
+  for entry in "${MEDIUM[@]}"; do
+    re=${entry%%::*} desc=${entry##*::}
+    while IFS= read -r hit; do
+      med_hits+=("$f:$hit    <- $desc")
+    done < <(grep -E -- "$re" <<<"$text")
+  done
+done
+
+author=""
+if (( in_git )); then
+  author=$(git log -1 --format='%an <%ae>' 2>/dev/null || true)
+  if [[ -n $old_author && -n $author && $author != "$old_author" ]]; then
+    high_hits+=("git: commit author changed: $old_author -> $author    <- possible package hijack")
+  fi
+fi
+
+# ---- output: pacman/paru-style, colored on a tty, fenced off from build noise
+if [[ -t 2 && -z ${NO_COLOR:-} ]]; then
+  R=$'\e[1;31m' Y=$'\e[1;33m' G=$'\e[1;32m' B=$'\e[1;34m' W=$'\e[1m' D=$'\e[2m' Z=$'\e[0m'
+else
+  R= Y= G= B= W= D= Z=
+fi
+
+rule() { # rule <color> <text>
+  local cols=${COLUMNS:-72} head="── aur-guard · $2 " fill
+  (( cols > 78 )) && cols=78
+  fill=$(printf '%*s' $(( cols - ${#head} > 3 ? cols - ${#head} : 3 )) '' | sed 's/ /─/g')
+  printf '\n%s%s%s%s\n' "$1" "$head" "$fill" "$Z" >&2
+}
+
+show_hits() { # show_hits <color> <label> hits...
+  local c=$1 label=$2 hit loc desc file rest line code; shift 2
+  for hit in "$@"; do
+    loc=${hit%%    <- *} desc=${hit##*    <- }
+    file=${loc%%:*}
+    if [[ $file == git ]]; then
+      printf ' %s%s%s %s%s%s\n' "$c" "$label" "$Z" "$W" "$desc" "$Z" >&2
+      printf '     %s%s%s\n' "$D" "${loc#git: }" "$Z" >&2
+      continue
+    fi
+    rest=${loc#*:} line=${rest%%:*} code=${rest#*:}
+    code=${code#"${code%%[![:space:]]*}"}
+    printf ' %s%s%s %s%s%s\n' "$c" "$label" "$Z" "$W" "$desc" "$Z" >&2
+    printf '     %s%s:%s%s  %s\n' "$D" "$file" "$line" "$Z" "$code" >&2
+  done
+}
+
+# a line already reported as HIGH needn't also be reported as WARN
+high_locs=$'\n'
+for hit in "${high_hits[@]}"; do high_locs+="${hit%%    <- *}"$'\n'; done
+kept=()
+for hit in "${med_hits[@]}"; do
+  [[ $high_locs == *$'\n'"${hit%%    <- *}"$'\n'* ]] || kept+=("$hit")
+done
+med_hits=("${kept[@]}")
+
+if (( ${#med_hits[@]} || ${#high_hits[@]} )); then
+  rule "$B" "$PKGBASE ${VERSION:-}"
+  (( ${#med_hits[@]} )) && show_hits "$Y" "WARN " "${med_hits[@]}"
+  (( ${#high_hits[@]} )) && show_hits "$R" "HIGH " "${high_hits[@]}"
+fi
+
+if (( ${#high_hits[@]} )); then
+  head_rev=""
+  (( in_git )) && head_rev=$(git rev-parse HEAD 2>/dev/null || true)
+  if is_allowed "$head_rev"; then
+    printf '\n%s::%s %s%s is whitelisted%s %s(%s)%s, continuing\n' "$G" "$Z" "$G" "$PKGBASE" "$Z" "$D" "${allow_file/#$HOME/\~}" "$Z" >&2
+  else
+    command -v notify-send >/dev/null &&
+      notify-send -u critical "AUR guard" "Blocked $PKGBASE: suspicious PKGBUILD/install script"
+    printf '\n%s::%s %s%sBUILD BLOCKED%s for %s\n' "$R" "$Z" "$R" "$W" "$Z" "$PKGBASE" >&2
+    printf '   after reviewing, to allow this exact version add to %s:\n' "${allow_file/#$HOME/\~}" >&2
+    printf '   %s%s %s%s\n' "$W" "$PKGBASE" "${head_rev:0:12}" "$Z" >&2
+    printf '%s%s%s\n' "$R" "$(printf '%*s' $(( ${COLUMNS:-72} > 78 ? 78 : ${COLUMNS:-72} )) '' | sed 's/ /─/g')" "$Z" >&2
+    exit 1
+  fi
+elif (( ${#med_hits[@]} )); then
+  printf '%s%s%s\n' "$B" "$(printf '%*s' $(( ${COLUMNS:-72} > 78 ? 78 : ${COLUMNS:-72} )) '' | sed 's/ /─/g')" "$Z" >&2
+fi
+(( ${#high_hits[@]} )) && printf '%s%s%s\n' "$G" "$(printf '%*s' $(( ${COLUMNS:-72} > 78 ? 78 : ${COLUMNS:-72} )) '' | sed 's/ /─/g')" "$Z" >&2
+
+# approve this version so next time only new lines are scanned
+if (( in_git )); then
+  tmp=$(mktemp "$state_file.XXXXXX")
+  { [[ -f $state_file ]] && awk -v n="$PKGBASE" '$1 != n' "$state_file"
+    printf '%s %s %s\n' "$PKGBASE" "$(git rev-parse HEAD)" "$author"
+  } > "$tmp" && mv "$tmp" "$state_file" || rm -f "$tmp"
+fi
+exit 0

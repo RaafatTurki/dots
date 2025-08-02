@@ -1,0 +1,81 @@
+#!/bin/bash
+
+set -euo pipefail
+
+PREFIX="Pasted_image"
+LOG_FILE="/tmp/thunar-paste-image.log"
+
+> "$LOG_FILE"
+log() { echo "$(date): $*" >> "$LOG_FILE"; }
+
+notify_error() {
+  local msg="$1"
+  log "Error: $msg"
+  if command -v dunstify &>/dev/null; then
+    dunstify -u critical "Error" "$msg"
+  elif command -v notify-send &>/dev/null; then
+    notify-send -u critical "Error" "$msg"
+  fi
+  exit 1
+}
+
+notify_success() {
+  local msg="$1"
+  if command -v dunstify &>/dev/null; then
+    dunstify -u low "Image Pasted" "$msg"
+  elif command -v notify-send &>/dev/null; then
+    notify-send "Image Pasted" "$msg"
+  fi
+}
+
+if [ -n "${1:-}" ] && [ -d "$1" ]; then
+  TARGET_DIR=$(realpath "$1")
+  log "Using argument directory: $TARGET_DIR"
+else
+  TARGET_DIR=$(pwd)
+  log "Using current working directory: $TARGET_DIR"
+fi
+
+mkdir -p "$TARGET_DIR" || notify_error "Cannot create directory $TARGET_DIR"
+
+save_from_xclip() {
+  command -v xclip &>/dev/null || return 1
+
+  local targets
+  targets=$(xclip -selection clipboard -t TARGETS -o 2>/dev/null || true)
+  log "Available targets: $targets"
+
+  local image_target
+  image_target=$(echo "$targets" | grep "^image/" | head -n 1 || true)
+
+  if [ -z "$image_target" ]; then
+    log "No image/ target found in clipboard"
+    return 1
+  fi
+
+  local ext="${image_target#image/}"
+  [ "$ext" = "jpeg" ] && ext="jpg"
+
+  local filename="${PREFIX}_$(date +%Y%m%d_%H%M%S).$ext"
+  local filepath="$TARGET_DIR/$filename"
+  log "Trying xclip: $image_target -> $filepath"
+
+  if xclip -selection clipboard -t "$image_target" -o > "$filepath" 2>>"$LOG_FILE" && [ -s "$filepath" ]; then
+    log "xclip success, size: $(stat -c %s "$filepath") bytes"
+    echo "$filepath"
+    return 0
+  else
+    log "xclip failed or saved empty file"
+    rm -f "$filepath"
+    return 1
+  fi
+}
+
+saved_file=""
+if saved_file=$(save_from_xclip); then
+  filename=$(basename "$saved_file")
+  notify_success "Saved as $filename"
+  log "Final success: $saved_file"
+else
+  notify_error "No image data found in clipboard (xclip)"
+fi

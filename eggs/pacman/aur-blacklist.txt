@@ -1,0 +1,28 @@
+1code b810e34eb0081e84bb731d71585d39b6c223409c InsidiousFiddler <archlinux@codycody31.dev>
+photocraft-bin e62fd59284bf496ee3fb7199b8285c14b2eb9764 modinfo <skorotkiewicz@gmail.com>
+tableplus 426c310a583a869b3de623d8b854865ac1d27830 Maged <cookingspoon721@gmail.com>
+google-calendar-tui-bin 46e7ae767ab8cd79d3fa545029fc646025fa4cb6 AkitaOnRails (GitHub Actions) <boss@akitaonrails.com>
+gcalcli aa73506ce944a67b0a4fb236abdfbeb1016ba83b Brett Cornwall <brett@i--b.com>
+activitywatch-bin 92c304312809e668e11a163a17ba4571e70ebe30 Brayo <vukubrian@gmail.com>
+bruno-bin 341fd66858874ddf1b252dc580dd71072ee95ec5 Vianney Bouchaud <vianney@bouchaud.org>
+codex-acp acdaa55047f682b9d5c5892eb89b0e74562e968c x1unix <aur@x1unix.dev>
+downgrade 6a212a797a36629197a00b06b5b6c3e231b38462 pbrisbin <50812+pbrisbin@users.noreply.github.com>
+onlyoffice-bin 35b7d85bf49e5a89c089115b49c92ef8d6daea35 Robin Candau <antiz@archlinux.org>
+vesktop-bin 959b8f8a487147cd1276d85e6ac27db2fc45b36d Vendicated <vendicated@riseup.net>
+censor-git cd67a0034673e2d05bd506fca0f39f1bbc506f03 awahab <awahab@adhoc.tools>
+xava-git 86432779d1a189352fc5d0c15eae19ba78394499 nikp123 <nikp123@e.email>
+blockbench-bin b166988b6d85ea3a3477c6c3b2a9054192597e24 txtsd <code@ihavea.quest>
+gtk-nocsd-git 28479328db8502a4f8fecc7f3cbf374d2614cb8e MorsMortium <mors.mortium.8@protonmail.com>
+paru-git f099fdc4d8efd4e4622a8f238b59b6fc540e8304 morganamilo <morganamilo@archlinux.org>
+1password-cli a18aa43bfcf753042eab690c95941d01eec6a70c slurpee <aur@lylat.io>
+aider-chat-venv 9f07fbb3482e990eb2d7868191941cb8faf4d711 AlphaJack <alphajack@tuta.io>
+claude-code d921a4be9f443d4e224742eedcf0a806fb6f5a30 github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+coredeck-bin e8b445344b40712dad236cc1d39c1e8c172f79a6 Raafat Turki <raafat.turki@proton.me>
+httptoolkit 0cc4b9719362b7857b75b16b4efa23b7be033459 Antti Ellilä <antti@antti.codes>
+proton-ge-custom-bin 6ce7f4f71e20831b24d6ddac744b815dcfab37d7 tludwig <business@tludwig.dev>
+anydesk-bin 388c4ee6b258fd8542710541d762be51c17d8049 D3SOX <nico@d3sox.me>
+gtkglext b0b48aa19ba3c8a24c9106f80347298ad6301b8b lquidfire <ejjl@pm.me>
+pangox-compat f65b833c1fb9cc9de9be5b49a8e940504ce14cdc Chris Severance <aur.severach@spamgourmet.com>
+anydesk-legacy-bin 556469f3e90c9629119ef3435652f863e238f53f Microck <contact@micr.dev>
+graphify-bin a057ad10c78500be7b6924448e62de55851c912e Islam Nofl <islamnofl.official@gmail.com>
+python-resend 027970760c61ba27ab848ad42b4b113de7f802f4 Lukas Fleischer <lfleischer@archlinux.org>

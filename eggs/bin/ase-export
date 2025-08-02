@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# ase-export [art-dir]
+# Export the first frame of every .ase/.aseprite under art-dir (default ~/art) to
+# art-dir/exports/<same relative path>.png, so Immich (which can't read .ase) can show them.
+# Only re-exports files that changed. Never touches your own PNGs.
+#
+# Uses LibreSprite. It ignores --frame-range for --save-as and writes multi-frame sprites as
+# name1.png, name2.png, ..., so each file is exported into a temp dir and frame 1 is kept.
+
+set -euo pipefail
+
+SPRITE_BIN=${SPRITE_BIN:-$(command -v libresprite || true)}
+ART=$(realpath "${1:-$HOME/art}")
+OUT=$ART/exports
+
+[[ -x $SPRITE_BIN ]] || { echo "libresprite not found (set SPRITE_BIN)" >&2; exit 1; }
+
+tmp=$(mktemp -d)
+trap 'rm -rf "$tmp"' EXIT
+
+find "$ART" -path "$OUT" -prune -o -type f \( -name '*.ase' -o -name '*.aseprite' \) -print0 |
+  while IFS= read -r -d '' src; do
+    rel=${src#"$ART"/}
+    dst=$OUT/${rel%.*}.png
+    [[ -e $dst && $dst -nt $src ]] && continue
+
+    rm -f "$tmp"/*
+    "$SPRITE_BIN" -b "$src" --save-as "$tmp/x.png" >/dev/null 2>&1 || true
+    first=
+    for f in "$tmp/x.png" "$tmp/x1.png" "$tmp/x01.png" "$tmp/x001.png"; do
+      [[ -s $f ]] && { first=$f; break; }
+    done
+
+    if [[ -n $first ]]; then
+      mkdir -p "$(dirname "$dst")"
+      mv "$first" "$dst"
+      echo "$dst"
+    else
+      echo "failed: $src" >&2
+    fi
+  done

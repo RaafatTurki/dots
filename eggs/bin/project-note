@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+# project-note <repo-dir>...
+# Create a stub note in ~/notes/repos for each repo (skips repos that already have one).
+# The note's frontmatter links the repo to its owner (a person/company/client note) so
+# Obsidian Bases can answer "every project for X". Fill in people/status by hand.
+
+set -euo pipefail
+
+NOTES=${NOTES_DIR:-$HOME/notes}/repos
+mkdir -p "$NOTES"
+
+detect_stack() {
+  local d=$1 s=()
+  if [[ -f $d/package.json ]]; then
+    local pj; pj=$(<"$d/package.json")
+    local pair
+    for pair in next=nextjs nuxt=nuxt @sveltejs/kit=sveltekit svelte=svelte vue=vue \
+      react-native=react-native expo=expo react=react @angular/core=angular astro=astro \
+      electron=electron @tauri-apps/api=tauri express=express @nestjs/core=nestjs hono=hono \
+      fastify=fastify @shopify/hydrogen=hydrogen three=threejs; do
+      [[ $pj == *"\"${pair%%=*}\""* ]] && s+=("${pair#*=}")
+    done
+    [[ -f $d/tsconfig.json ]] && s+=(typescript) || s+=(javascript)
+  fi
+  [[ -f $d/Cargo.toml ]] && s+=(rust)
+  [[ -f $d/go.mod ]] && s+=(go)
+  [[ -f $d/pubspec.yaml ]] && s+=(flutter)
+  [[ -f $d/composer.json ]] && s+=(php)
+  [[ -f $d/project.godot ]] && s+=(godot)
+  [[ -f $d/build.gradle || -f $d/build.gradle.kts || -f $d/app/build.gradle ]] && s+=(android)
+  [[ -f $d/pyproject.toml || -f $d/requirements.txt || -f $d/setup.py ]] && s+=(python)
+  [[ -f $d/CMakeLists.txt ]] && s+=(cmake)
+  compgen -G "$d/*.csproj" >/dev/null && s+=(dotnet)
+  compgen -G "$d/*.typ" >/dev/null && s+=(typst)
+  compgen -G "$d/*.tex" >/dev/null && s+=(latex)
+  compgen -G "$d/*.lua" >/dev/null && s+=(lua)
+  [[ ${#s[@]} -eq 0 ]] && { compgen -G "$d/*.c" >/dev/null || compgen -G "$d/src/*.c" >/dev/null; } && s+=(c)
+  [[ -f $d/Dockerfile || -f $d/docker-compose.yml || -f $d/compose.yml ]] && s+=(docker)
+  local IFS=,
+  echo "${s[*]}" | sed 's/,/, /g'
+}
+
+# --path: print each repo's note path (creating the note if missing), e.g. for `pn`
+print_path=
+[[ ${1:-} == --path ]] && { print_path=1; shift; }
+
+for dir in "$@"; do
+  dir=$(realpath "$dir")
+  [[ -d $dir ]] || { echo "skip (not a dir): $dir" >&2; continue; }
+
+  # an existing note for this exact path wins, whatever it's named
+  existing=$(grep -lxF -- "path: ${dir/#$HOME/\~}" "$NOTES"/*.md 2>/dev/null | head -1 || true)
+  if [[ -n $existing ]]; then
+    [[ -n $print_path ]] && echo "$existing"
+    continue
+  fi
+
+  repo=$(basename "$dir")
+  # owner = first folder under ~/code (so ~/code/tam/legacy/x belongs to tam)
+  rel=${dir#"$HOME/code/"}
+  if [[ $rel != "$dir" ]]; then owner=${rel%%/*}; else owner=$(basename "$(dirname "$dir")"); fi
+  case $owner in
+    me|others|sandbox) owner_link='' ;;
+    *)                 owner_link="\"[[$owner]]\"" ;;
+  esac
+
+  # your own and third-party repos: <repo>.md, everything else: <owner>-<repo>.md
+  case $owner in
+    me|others) note="$NOTES/$repo.md" ;;
+    *)         note="$NOTES/$owner-$repo.md" ;;
+  esac
+  # name taken by a different repo -> use the full path under ~/code, e.g. me-watari-resume.latex.md
+  [[ -e $note ]] && note="$NOTES/${rel//\//-}.md"
+  [[ -e $note ]] && { [[ -n $print_path ]] && echo "$note"; continue; }
+
+  remote=$(git -C "$dir" remote get-url origin 2>/dev/null || true)
+  last=$(git -C "$dir" log -1 --format=%cs 2>/dev/null || true)
+
+  cat >"$note" <<EOF
+---
+path: ${dir/#$HOME/\~}
+owner: $owner_link
+people: []
+stack: [$(detect_stack "$dir")]
+remote: $remote
+last_commit: $last
+status:
+tags: [project]
+---
+
+# $repo
+
+EOF
+  echo "$note"
+done

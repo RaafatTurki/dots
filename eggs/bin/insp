@@ -1,0 +1,37 @@
+#!/bin/bash
+
+set -uo pipefail
+
+if [ "$#" -eq 0 ]; then
+    printf 'Usage: %s <command> [args]\n' "$0" >&2
+    exit 1
+fi
+
+LOG_FILE="$PWD/command_history.log"
+
+START_TIME=$(date "+%Y-%m-%d %H:%M:%S")
+
+{
+    printf '==========================================\n'
+    printf 'Date:    %s\n' "$START_TIME"
+    printf 'Path:    %s\n' "$PWD"
+    printf 'Command: '
+    printf '%q ' "$@"
+    printf '\nOutput:\n'
+    printf -- '--------------------------------------------\n'
+} >> "$LOG_FILE"
+
+"$@" 2>&1 | tee -a "$LOG_FILE"
+
+EXIT_CODE="${PIPESTATUS[0]}"
+
+END_TIME=$(date "+%Y-%m-%d %H:%M:%S")
+
+{
+    printf -- '--------------------------------------------\n'
+    printf 'Exit:    %d\n' "$EXIT_CODE"
+    printf 'Ended:   %s\n' "$END_TIME"
+    printf '==========================================\n\n'
+} >> "$LOG_FILE"
+
+exit "$EXIT_CODE"

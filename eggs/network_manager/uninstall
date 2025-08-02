@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# Undo ./setup: remove the custom dispatcher, the VPN connections it installed,
+# and the OpenVPN certs/keys it extracted. Wi-Fi/wired connections are not touched.
+
+set -euo pipefail
+
+PROFILES_DIR=/home/potato/archive/nm_profiles   # where the profiles setup installed now live
+NM_DISP_DIR=/etc/NetworkManager/dispatcher.d/
+CERT_DIR=/home/potato/.local/share/networkmanagement/certificates/nm-openvpn
+
+shopt -s nullglob
+profiles=()
+for p in "$PROFILES_DIR"/*.nmconnection; do profiles+=("$(basename "$p" .nmconnection)"); done
+certs=()
+for p in "${profiles[@]}"; do certs+=("$CERT_DIR/$p"-*.pem); done
+shopt -u nullglob
+
+echo "This removes:"
+[[ -e $NM_DISP_DIR/dispatcher ]] && echo "  dispatcher   $NM_DISP_DIR/dispatcher"
+for p in "${profiles[@]}"; do
+  nmcli -t -f NAME connection show | grep -qxF -- "$p" && echo "  connection   $p"
+done
+for c in "${certs[@]}"; do echo "  cert/key     $c"; done
+read -rp "Continue? [y/N] " ok
+[[ $ok == [yY] ]] || exit 0
+
+# dispatcher first, so nothing tries to bring the VPNs back up
+sudo rm -f "$NM_DISP_DIR/dispatcher"
+
+for p in "${profiles[@]}"; do
+  if nmcli -t -f NAME connection show | grep -qxF -- "$p"; then
+    sudo nmcli connection delete id "$p"   # disconnects first if active
+  fi
+done
+
+(( ${#certs[@]} )) && rm -f -- "${certs[@]}"
+rmdir "$CERT_DIR" 2>/dev/null || true
+
+echo "done. Profiles are still archived in $PROFILES_DIR; run ./setup to reinstall."

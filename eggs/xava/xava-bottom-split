@@ -1,0 +1,143 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+height=${XAVA_SPLIT_HEIGHT:-1440}
+left_width=${XAVA_SPLIT_LEFT_WIDTH:-900}
+right_width=${XAVA_SPLIT_RIGHT_WIDTH:-940}
+script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+config_dir=${XAVA_SPLIT_CONFIG_DIR:-$script_dir}
+
+die() {
+  printf 'xava-bottom-split: %s\n' "$*" >&2
+  exit 1
+}
+
+is_positive_int() {
+  [[ ${1:-} =~ ^[1-9][0-9]*$ ]]
+}
+
+monitor_rect() {
+  local rect geom
+
+  if command -v herbstclient >/dev/null 2>&1; then
+    rect=$(herbstclient monitor_rect -p "" 2>/dev/null || true)
+    if [[ -n "$rect" ]]; then
+      printf '%s\n' "$rect"
+      return 0
+    fi
+  fi
+
+  if command -v xrandr >/dev/null 2>&1; then
+    geom=$(
+      xrandr --current 2>/dev/null |
+        awk '
+          / connected primary/ {
+            for (i = 1; i <= NF; i++) {
+              if ($i ~ /^[0-9]+x[0-9]+[-+][0-9]+[-+][0-9]+$/) {
+                print $i
+                exit
+              }
+            }
+          }
+        '
+    )
+
+    if [[ -z "$geom" ]]; then
+      geom=$(
+        xrandr --current 2>/dev/null |
+          awk '
+            / connected/ {
+              for (i = 1; i <= NF; i++) {
+                if ($i ~ /^[0-9]+x[0-9]+[-+][0-9]+[-+][0-9]+$/) {
+                  print $i
+                  exit
+                }
+              }
+            }
+          '
+      )
+    fi
+
+    if [[ -n "$geom" ]]; then
+      sed -E 's/^([0-9]+)x([0-9]+)([-+][0-9]+)([-+][0-9]+)$/\3 \4 \1 \2/' <<<"$geom"
+      return 0
+    fi
+  fi
+
+  return 1
+}
+
+write_config() {
+  local path=$1
+  local alignment=$2
+  local width=$3
+
+  cat >"$path" <<EOF
+[general]
+framerate = 120
+bar_width = 4
+bar_spacing = 4
+
+[window]
+width = $width
+height = $height
+fullscreen = false
+border = false
+transparency = true
+keep_below = true
+alignment = '$alignment'
+x_padding = 0
+y_padding = 0
+interactable = false
+taskbar_icon = false
+hold_size = false
+
+[x11]
+root_window = false
+override_redirect = true
+reload_on_display_configure = false
+
+[gl]
+module_1 = bars
+
+[cairo]
+module_1 = bars
+
+[output]
+method = opengl
+
+[color]
+background_opacity = 0.0
+gradient_count = 2
+gradient_color_1 = '#E2E2E2'
+gradient_color_2 = '#000000'
+EOF
+}
+
+is_positive_int "$height" || die "XAVA_SPLIT_HEIGHT must be a positive integer"
+is_positive_int "$left_width" || die "XAVA_SPLIT_LEFT_WIDTH must be a positive integer"
+is_positive_int "$right_width" || die "XAVA_SPLIT_RIGHT_WIDTH must be a positive integer"
+
+read -r _screen_x _screen_y screen_w _screen_h < <(monitor_rect) || die "could not detect monitor geometry"
+is_positive_int "$screen_w" || die "invalid monitor width: $screen_w"
+
+total_w=$((left_width + right_width))
+if (( total_w > screen_w )); then
+  die "left/right widths total $total_w exceeds monitor width $screen_w"
+fi
+
+mkdir -p "$config_dir"
+
+left_config="$config_dir/config.bottom-left"
+right_config="$config_dir/config.bottom-right"
+write_config "$left_config" bottom_left "$left_width"
+write_config "$right_config" bottom_right "$right_width"
+
+xava -p "$left_config" &
+left_pid=$!
+xava -p "$right_config" &
+right_pid=$!
+
+trap 'kill "$left_pid" "$right_pid" 2>/dev/null || true' INT TERM EXIT
+wait "$left_pid" "$right_pid"
+trap - INT TERM EXIT

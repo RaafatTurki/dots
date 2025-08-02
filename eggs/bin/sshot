@@ -1,0 +1,87 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+TITLE="sshot"
+CACHE="/tmp/sshot.png"
+SAVE_DIR="$(xdg-user-dir PICTURES)/sshot"
+
+DO_SELECT=false
+DO_FILE=false
+DO_CLIP=false
+
+usage() {
+  cat <<EOF
+Usage: ${TITLE} [OPTIONS]
+
+  -s, --select     Select region
+  -f, --file       Save to file
+  -c, --clip       Copy to clipboard
+  -h, --help       Show help
+
+Default (no args): save to file
+EOF
+}
+
+die() {
+  echo "${TITLE}: $*" >&2
+  exit 1
+}
+
+need() {
+  command -v "$1" >/dev/null 2>&1 || die "missing dependency: $1"
+}
+
+parse_args() {
+  # Default (no args): save to file
+  if [[ $# -eq 0 ]]; then
+    DO_FILE=true
+    return
+  fi
+
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -h|--help) usage; exit 0 ;;
+      -s|--select) DO_SELECT=true ;;
+      -f|--file) DO_FILE=true ;;
+      -c|--clip) DO_CLIP=true ;;
+      *) die "unknown option: $1" ;;
+    esac
+    shift
+  done
+}
+
+take_screenshot() {
+  if $DO_SELECT; then
+    maim -s "${CACHE}"
+  else
+    maim "${CACHE}"
+  fi
+}
+
+save_to_file() {
+  mkdir -p "${SAVE_DIR}"
+  local out="${SAVE_DIR}/$(date +'%Y-%m-%d_%H-%M-%S').png"
+  cp -- "${CACHE}" "${out}"
+  echo "Saved: ${out}"
+}
+
+copy_to_clipboard() {
+  xclip -selection clipboard -t image/png -i < "${CACHE}"
+}
+
+main() {
+  parse_args "$@"
+
+  need maim
+
+  if $DO_CLIP; then
+    need xclip
+  fi
+
+  take_screenshot
+
+  $DO_FILE && save_to_file
+  $DO_CLIP && copy_to_clipboard
+}
+
+main "$@"

@@ -1,0 +1,14 @@
+# vim: commentstring=#%s
+
+# mac
+# mac ip
+# mac ip port
+# mac hostname
+
+# the wakeonlan doesn't support hosname resolution with
+# explicit ports at the same time, however flag -f does
+
+# specifying a hostname or an ip doesn't work will all routers indefinitely
+
+1C:1B:0D:BE:DB:77   krastiva
+54:EE:75:fC:65:49   led

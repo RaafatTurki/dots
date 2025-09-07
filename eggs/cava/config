@@ -1,0 +1,17 @@
+# vim:commentstring=#%s
+
+[general]
+framerate = 120
+
+#[input]
+#method = pulse
+#source = auto
+
+[color]
+#foreground = '#294374'
+
+gradient = 1
+gradient_count = 8
+gradient_color_1 = '#0d1017'
+gradient_color_2 = '#294374'
+gradient_color_3 = '#FFFFFF'

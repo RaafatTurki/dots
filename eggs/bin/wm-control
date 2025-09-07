@@ -50,10 +50,10 @@ case $1 in
     # display-volume
     ;;
   kbd)
-    display 1 󰌌 $(wm-xkbd)
+    display 1 "󰌌 $(wm-xkbd)"
     ;;
   bar)
-    display 1 󰌌 $(wm-xkbd)
+    display 1 "󰌌 $(wm-xkbd)"
     ;;
   # hlwm-ws)
   #   STRING=`herbstclient tag_status ${DISPLAY:1}`

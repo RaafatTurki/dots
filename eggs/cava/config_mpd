@@ -1,0 +1,19 @@
+# vim:commentstring=#%s
+
+[general]
+framerate = 60
+
+[input]
+method = fifo
+source = /tmp/mpd.fifo
+sample_rate = 44100
+sample_bits = 16
+
+[color]
+foreground = '#294374'
+
+# gradient = 1
+# gradient_count = 3 
+# gradient_color_1 = '#294374'
+# gradient_color_2 = '#0d1017'
+# gradient_color_3 = '#FFFFFF'

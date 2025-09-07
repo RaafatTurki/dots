@@ -122,4 +122,7 @@ export let eggs = #{
   x11: #{
     targets: "~/.config/x11",
   },
+  cava: #{
+    targets: "~/.config/cava",
+  },
 };

@@ -88,7 +88,7 @@ alias fdisk='fdisk --color=auto'
 alias free='free -h'
 alias tree='tree -C'
 alias du='du -h'
-alias less="$LESSPAGER"
+# alias less="$LESSPAGER"
 alias echo='echo -n'
 alias rg='rg --hidden'
 alias lsblk="lsblk -o NAME,FSTYPE,FSSIZE,FSAVAIL,FSUSE%,MOUNTPOINT,LABEL"
@@ -129,13 +129,13 @@ alias yt-video='yt-dlp -f bestvideo+bestaudio'
 # alias cava-mpd='cava -p ~/.config/cava/config_mpd'
 
 # python
-alias pip-install-req='pip install -r requirements.txt'
-alias pip-activate-env='source venv/bin/activate.fish'
+alias py-install-req='pip install -r requirements.txt'
+alias py-activate-env='source venv/bin/activate.fish'
+alias py-create-env='python -m venv ./venv'
 # alias pip-make-all-req='pip freeze > requirements.txt'
 # alias pip-fzf='pip list - | fzf'
 # alias pip-self-update='python -m pip install --upgrade pip'
 # alias pnpm-update='npm add -g pnpm'
-# alias venv='python -m venv'
 
 # network misc
 alias nmovpn='nmcli connection import type openvpn file'

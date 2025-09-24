@@ -17,5 +17,5 @@
 # export XSECURELOCK_BLANK_DPMS_STATE=suspend
 
 
-# slock
-slock -m "$(misfortune)"
+slock
+# slock -m "$(misfortune)"

@@ -24,7 +24,8 @@ append_infopath() {
   export INFOPATH=$INFOPATH:$1
 }
 
-export VK_DRIVER_FILES=/usr/share/vulkan/icd.d/nvidia_icd.json
+# export VK_DRIVER_FILES=/usr/share/vulkan/icd.d/radeon_icd.x86_64.json
+export VK_DRIVER_FILES=/usr/share/vulkan/icd.d/amd_pro_icd64.json
 
 # fail safes
 export USER=${USER:-$(whoami)}
@@ -33,6 +34,7 @@ export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-"$HOME/.config"}
 export XDG_CACHE_HOME=${XDG_CACHE_HOME:-"$HOME/.cache"}
 export XDG_DATA_HOME=${XDG_DATA_HOME:-"$HOME/.local/share"}
 export XDG_STATE_HOME=${XDG_STATE_HOME:-"$HOME/.local/state/"}
+export XDG_SESSION_TYPE=x11
 append_path "$HOME/.local/bin"
 append_path "$HOME/.local/share/cargo/bin/"
 append_path "$HOME/.local/share/go/bin/"
@@ -63,13 +65,17 @@ append_path "$XDG_CACHE_HOME/.bun/bin"
 append_path "$XDG_CONFIG_HOME/rofi/scripts"
 
 
+export ENCORE_INSTALL="/home/potato/.encore"
+append_path "$ENCORE_INSTALL/bin"
+
+
 # env
 export SHELL=$(bin_path bash)
 export AUR_HELPER=$(bin_path paru)
 export EDITOR=$(bin_path nvim)
 export SYSTEMD_EDITOR=$(bin_path nvim)
 export VISUAL=$EDITOR
-export LESSPAGER="$(bin_path less) -R -S -X -e"
+# export LESSPAGER="$(bin_path less) -R -S -X -e"
 export PAGER="$LESSPAGER"
 export MANPAGER="$(bin_path nvim) +Man!"
 export PARU_PAGER="$(bin_path nvim) +Man!"
@@ -85,7 +91,8 @@ export COLOR_PICKER=$(bin_path color-picker)
 
 # theming
 export XCURSOR_THEME=Yaru
-# export GTK_THEME=Adwaita:dark
+export GTK_THEME=Yaru-blue-dark
+export XDG_CURRENT_DESKTOP=gtk
 # export QT_STYLE_OVERRIDE=adwaita-dark
 
 # telegram

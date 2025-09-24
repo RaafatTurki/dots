@@ -17,13 +17,6 @@
 # brwhite="\[\033[1;37m\]"
 # rc="\[\033[0m\]"
 
-function prompt_command {
-  RET=$?
-  export PS1=$(~/.bashp $RET)
-}
-PROMPT_DIRTRIM=3
-export PROMPT_COMMAND=prompt_command
-
 # lazies
 alias s='sudo'
 alias se='sudo -E'

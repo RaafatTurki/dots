@@ -2,9 +2,14 @@
 
 current_stage=1
 
+
+
 title() {
+  local BG='\033[0;44m'
+  local RESET='\033[0m'
+
   # set_color green
-  echo -e "\n - STAGE $current_stage $1\n"
+  echo -e "\n$BG#$current_stage $1$RESET\n"
   # set_color normal
   current_stage=$((current_stage + 1))
 }
@@ -18,9 +23,6 @@ sudo pacman -Syy
 # title "Updating Arch Keyring"
 # sudo pacman -S archlinux-keyring --needed
 
-title "Updating Official Packages"
-sudo pacman -Su --disable-download-timeout
-
 if command -v paru >/dev/null; then
   title "Updating Unofficial Packages (paru)"
   # paru --gendb  # make paru aware of all -git packages upstream updates if not installed by it
@@ -31,10 +33,18 @@ elif command -v aura >/dev/null; then
 elif command -v yay >/dev/null; then
   title "Updating Unofficial Packages (yay)"
   yay -Su --disable-download-timeout
+else
+  title "Updating Official Packages (pacman, no AUR helper found)"
+  sudo pacman -Su --disable-download-timeout
 fi
 
 title "Removing Orphan Packages"
 sudo pacman -Rns $(pacman -Qtdq)
+
+PKGS_LIST_FILE=$XDG_CONFIG_HOME/pacman/pkgs
+title "Updating Packages List File"
+pacman -Qsq > $XDG_CONFIG_HOME/pacman/pkgs
+echo "Package list written to $PKGS_LIST_FILE"
 
 if command -v pkgfile >/dev/null; then
   title "Updating Repo Files Lists"

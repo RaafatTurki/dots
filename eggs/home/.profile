@@ -35,6 +35,12 @@ export XDG_CACHE_HOME=${XDG_CACHE_HOME:-"$HOME/.cache"}
 export XDG_DATA_HOME=${XDG_DATA_HOME:-"$HOME/.local/share"}
 export XDG_STATE_HOME=${XDG_STATE_HOME:-"$HOME/.local/state/"}
 export XDG_SESSION_TYPE=x11
+export XDG_CURRENT_DESKTOP=GNOME
+export XDG_SESSION_DESKTOP=GNOME
+
+export GTK_USE_PORTAL=1
+export GDK_DEBUG=portals
+
 append_path "$HOME/.local/bin"
 append_path "$HOME/.local/share/cargo/bin/"
 append_path "$HOME/.local/share/go/bin/"
@@ -64,7 +70,7 @@ append_path "$XDG_CACHE_HOME/.bun/bin"
 # rofi scripts
 append_path "$XDG_CONFIG_HOME/rofi/scripts"
 
-
+# encore
 export ENCORE_INSTALL="/home/potato/.encore"
 append_path "$ENCORE_INSTALL/bin"
 
@@ -76,6 +82,7 @@ export EDITOR=$(bin_path nvim)
 export SYSTEMD_EDITOR=$(bin_path nvim)
 export VISUAL=$EDITOR
 # export LESSPAGER="$(bin_path less) -R -S -X -e"
+export LESSPAGER="$(bin_path less)"
 export PAGER="$LESSPAGER"
 export MANPAGER="$(bin_path nvim) +Man!"
 export PARU_PAGER="$(bin_path nvim) +Man!"
@@ -83,21 +90,21 @@ export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 
 export TERMINAL=$(bin_path st)
 export TERMINAL_SHELL=$(bin_path fish) # NOTE: CUSTOM
-export FM=$(bin_path nemo)
+export FM=$(bin_path thunar)
 export READER=$(bin_path zathura)
-export BROWSER=$(bin_path zen-browser)
-export SCREENSHOT=$(bin_path cshot)
-export COLOR_PICKER=$(bin_path color-picker)
+export BROWSER=$(bin_path firefox)
+export SCREENSHOT=$(bin_path sshot)
+export COLOR_PICKER=$(bin_path cpick)
 
 # theming
-export XCURSOR_THEME=Yaru
-export GTK_THEME=Yaru-blue-dark
-export XDG_CURRENT_DESKTOP=gtk
+# export XCURSOR_THEME=Yaru
+# export GTK_THEME=Yaru-blue-dark
+# export XDG_CURRENT_DESKTOP=gtk
 # export QT_STYLE_OVERRIDE=adwaita-dark
 
-# telegram
-# export QT_QPA_PLATFORMTHEME=gtk3
-export QT_QPA_PLATFORMTHEME=qt5ct
+# qt
+export QT_QPA_PLATFORMTHEME=gtk3
+# export QT_QPA_PLATFORMTHEME=qt5ct
 # export QT_QPA_PLATFORMTHEME=qt6ct
 # export QT_QPA_PLATFORMTHEME=gtk2
 # export TDESKTOP_I_KNOW_ABOUT_GTK_INCOMPATIBILITY=1
@@ -110,7 +117,7 @@ export DOTNET_CLI_TELEMETRY_OPTOUT=1
 export _JAVA_AWT_WM_NONREPARENTING=1
 
 # nemo
-export GNOME22_USER_DIR="$HOME/.config/nemo"
+# export GNOME22_USER_DIR="$HOME/.config/nemo"
 
 # lua
 export LUA_PATH='/usr/share/lua/5.4/?.lua;/usr/share/lua/5.4/?/init.lua;/usr/lib/lua/5.4/?.lua;/usr/lib/lua/5.4/?/init.lua;./?.lua;./?/init.lua;/home/potato/.luarocks/share/lua/5.4/?.lua;/home/potato/.luarocks/share/lua/5.4/?/init.lua'

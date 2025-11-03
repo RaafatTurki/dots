@@ -1,0 +1,77 @@
+#!/bin/env bash
+
+# files
+GTK2_CONF="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
+GTK3_CONF="$XDG_CONFIG_HOME/gtk-3.0/settings.ini"
+GTK4_CONF="$XDG_CONFIG_HOME/gtk-4.0/settings.ini"
+QT5_CONF="$XDG_CONFIG_HOME/qt5ct/qt5ct.conf"
+QT6_CONF="$XDG_CONFIG_HOME/qt6ct/qt6ct.conf"
+
+# loop over all file and check if they exist
+for file in $GTK2_CONF $GTK3_CONF $GTK4_CONF $QT5_CONF $QT6_CONF; do
+  if [ ! -f "$file" ]; then
+    echo "file $file does not exist"
+  fi
+done
+
+
+
+# data
+GTK2_THEME=$(awk -F= '/gtk-theme-name/ {print $2}' $GTK2_CONF | tr -d '"')
+GTK2_ICON_THEME=$(awk -F= '/gtk-icon-theme-name/ {print $2}' $GTK2_CONF | tr -d '"')
+GTK2_CURSOR_THEME=$(awk -F= '/gtk-cursor-theme-name/ {print $2}' $GTK2_CONF | tr -d '"')
+GTK2_FONT=$(awk -F= '/gtk-font-name/ {print $2}' $GTK2_CONF | tr -d '"')
+
+GTK3_THEME=$(awk -F= '/gtk-theme-name/ {print $2}' $GTK3_CONF)
+GTK3_ICON_THEME=$(awk -F= '/gtk-icon-theme/ {print $2}' $GTK3_CONF)
+GTK3_CURSOR_THEME=$(awk -F= '/gtk-cursor-theme-name/ {print $2}' $GTK3_CONF)
+GTK3_FONT=$(awk -F= '/gtk-font-name/ {print $2}' $GTK3_CONF)
+
+GTK4_THEME=$(awk -F= '/gtk-theme-name/ {print $2}' $GTK4_CONF)
+GTK4_ICON_THEME=$(awk -F= '/gtk-icon-theme/ {print $2}' $GTK4_CONF)
+GTK4_CURSOR_THEME=$(awk -F= '/gtk-cursor-theme-name/ {print $2}' $GTK4_CONF)
+GTK4_FONT=$(awk -F= '/gtk-font-name/ {print $2}' $GTK4_CONF)
+
+QT5_THEME=$(awk -F= '/style/ {print $2}' $QT5_CONF)
+QT5_ICON_THEME=$(awk -F= '/icon_theme/ {print $2}' $QT5_CONF)
+QT5_FONT_MONO=$(awk -F= '/fixed/ {print $2}' $QT5_CONF | tr -d '"' | awk -F, '{print $1,$2}')
+QT5_FONT_REG=$(awk -F= '/general/ {print $2}' $QT5_CONF | tr -d '"' | awk -F, '{print $1,$2}')
+
+QT6_THEME=$(awk -F= '/style/ {print $2}' $QT6_CONF)
+QT6_ICON_THEME=$(awk -F= '/icon_theme/ {print $2}' $QT6_CONF)
+QT6_FONT_MONO=$(awk -F= '/fixed/ {print $2}' $QT6_CONF | tr -d '"' | awk -F, '{print $1,$2}')
+QT6_FONT_REG=$(awk -F= '/general/ {print $2}' $QT6_CONF | tr -d '"' | awk -F, '{print $1,$2}')
+
+# print
+echo "GTK2"
+echo "Theme : $GTK2_THEME"
+echo "Icon  : $GTK2_ICON_THEME"
+echo "Cursor: $GTK2_CURSOR_THEME"
+echo "Font  : $GTK2_FONT"
+echo
+
+echo "GTK3"
+echo "Theme : $GTK3_THEME"
+echo "Icon  : $GTK3_ICON_THEME"
+echo "Cursor: $GTK3_CURSOR_THEME"
+echo "Font  : $GTK3_FONT"
+echo
+
+echo "GTK4"
+echo "Theme : $GTK4_THEME"
+echo "Icon  : $GTK4_ICON_THEME"
+echo "Cursor: $GTK4_CURSOR_THEME"
+echo "Font  : $GTK4_FONT"
+echo
+
+echo "QT5"
+echo "Icon  : $QT5_ICON_THEME"
+echo "Font M: $QT5_FONT_MONO"
+echo "Font R: $QT5_FONT_REG"
+echo
+
+echo "QT6"
+echo "Icon  : $QT6_ICON_THEME"
+echo "Font M: $QT6_FONT_MONO"
+echo "Font R: $QT6_FONT_REG"
+echo

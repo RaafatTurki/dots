@@ -15,6 +15,18 @@ launch_once() {
   fi
 }
 
+relaunch() {
+  local pname="$1"
+  shift
+  local cmd="$@"
+
+  if pgrep -x "$pname" >/dev/null; then
+    pkill -x "$pname"
+  fi
+  $cmd &
+}
+
+
 hc emit_hook reload
 hc detect_monitors
 
@@ -169,24 +181,29 @@ hc rule title='Event Tester' floating=on floatplacement=center
 
 hc rule class='my_qml_app' floating=on floatplacement=center
 
+hc rule class='io.elementary.notification floating=on geometry=300x150-10-10'
+
 
 # daemons
 # launch_once xfsettingsd         xfsettingsd -D --sm-client-disable
-launch_once xsettingsd          xsettingsd
 launch_once picom               picom
 launch_once xss-lock            xss-lock wm-xlock
 launch_once udiskie             udiskie -asm flat
 launch_once parcellite          parcellite
 launch_once thunar              thunar --daemon
 launch_once blueman-applet      blueman-applet
+# launch_once runst               runst
 # launch_once blueberry-tray      blueberry-tray
-launch_once xfce4-notifyd       /usr/lib/xfce4/notifyd/xfce4-notifyd
-launch_once xfce4-power-manager xfce4-power-manager
+# launch_once io.elementary.n     io.elementary.notifications
+# launch_once mic-indicator       mic-indicator -v 0.03
+launch_once pasystray           pasystray
+  # launch_once xfce4-notifyd       /usr/lib/xfce4/notifyd/xfce4-notifyd
+  # launch_once xfce4-power-manager xfce4-power-manager
 launch_once arch-audit-gtk      arch-audit-gtk
 # launch_once xwallpaper          xwallpaper --maximize ~/files/pics/wallpapers/berserk_skull.png
 # launch_once xwallpaper          xwallpaper --daemon --maximize ~/files/pics/wallpapers/scavengers-1.jpg
-# launch_once xwallpaper          xwallpaper --daemon --maximize ~/files/pics/wallpapers/berserk_skull.png
-launch_once xwallpaper          xwallpaper --daemon --maximize ~/files/pics/wallpapers/personal_computer.png
+launch_once xwallpaper          xwallpaper --daemon
+# launch_once xwallpaper          xwallpaper --daemon --maximize ~/files/pics/wallpapers/personal_computer.png
 # launch_once gpu-state-tray      ~/sectors/rust/gpu-state-tray/target/debug/gpu-state-tray
 # launch_once stremio-service     stremio-service
 # launch_once 1password           1password --silent
@@ -205,13 +222,12 @@ launch_once nm-applet           nm-applet --indicator
 # launch_once networkd-notify     networkd-notify
 
 # launch_once redshift-gtk        redshift-gtk -r -l 33.33:44.40
-launch_once xfce4-panel         xfce4-panel
-# launch_once quickshell          quickshell -c volume-osd
-# launch_once quickshell          quickshell -c bar
+# launch_once xfce4-panel         xfce4-panel
+launch_once quickshell          quickshell -c osd -d -n
 # launch_once applet.py           system-config-printer-applet --debug
-launch_once canto-daemon        canto-daemon
+# launch_once canto-daemon        canto-daemon
 
-# launch_once cbatticon           cbatticon
+launch_once cbatticon           cbatticon
 # launch_once mullvad-vpn         mullvad-vpn
 
 # launch_once barriers            barriers --disable-crypto -f -c ~/.config/barrier.conf
@@ -222,8 +238,14 @@ launch_once canto-daemon        canto-daemon
 #   MONITOR=$mon launch_once polybar             polybar -r watari
 # done
 
+launch_once lazybar             lazybar top
+launch_once xsettingsd          xsettingsd
+
+xwallpaper --maximize ~/files/pics/wallpapers/personal_computer.png
+
 # unlock, just to be sure
 hc unlock
+
 
 # hc set window_border_active_color `xgetres .foreground`
 # hc set window_border_urgent_color `xgetres .color11`

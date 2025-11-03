@@ -3,7 +3,7 @@ vim: filetype=css
 */
 
 configuration {
-modi: "drun,MONITORS:rofi-monitors,POWER:rofi-power,window,run,ssh";
+modi: "drun,MONITORS:rofi-monitors,BLUETOOTH:rofi-bluetooth,POWER:rofi-power,window,run,ssh";
 /* modi: "drun,MONITORS:rofi-monitors,POWER:rofi-power"; */
 /* modi: "drun"; */
 /* font: "FiraCode Nerd Font 14"; */

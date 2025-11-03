@@ -32,18 +32,18 @@
 #   --output $other --center $other_bg
 
 
-relaunch() {
-  local pname="$1"
-  shift
-  local cmd="$@"
-
-  if ! pgrep -x "$pname" >/dev/null; then
-    $cmd &
-  else
-    pkill linux-wallpaper
-    $cmd &
-  fi
-}
+# relaunch() {
+#   local pname="$1"
+#   shift
+#   local cmd="$@"
+#
+#   if ! pgrep -x "$pname" >/dev/null; then
+#     $cmd &
+#   else
+#     pkill linux-wallpaper
+#     $cmd &
+#   fi
+# }
 
 # demo
 # live_wallpaper_id=/home/potato/asd/wallpaper_engine_test/html
@@ -106,11 +106,14 @@ relaunch() {
 # xset s 300 300
 # xset dpms 300 0 0
 
+echo 2 | sudo tee /sys/module/hid_apple/parameters/fnmode
+
 xsetroot -cursor_name left_ptr
 
-
+xrandr --output HDMI-1 --mode 2560x1440 --rate 144 --primary
 
 ssh-add ~/.ssh/id_ed25519 &
+
 
 # xrdb
 $XDG_CONFIG_HOME/x11/xrdb/load &

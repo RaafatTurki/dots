@@ -4,7 +4,7 @@ alias se='sudo -E'
 alias x='chmod +x'
 alias aa='paru'
 alias gg='gitui'
-alias cb="xsel --input --clipboard"
+# alias cb="xsel --input --clipboard"
 alias ssh="env TERM=xterm-256color ssh"
 alias neo="neofetch"
 alias sd="systemctl"
@@ -66,15 +66,18 @@ alias hexc="cd ~/sectors/nvim/hex.nvim && nvims"
 alias rofic="cd $XDG_CONFIG_HOME/rofi && nvims"
 alias nvimt="cd $XDG_CONFIG_HOME/nvim.test && NVIM_APPNAME=nvim.test nvims"
 alias sshc="cd $HOME/.ssh && nvims"
-alias gitc="cd $XDG_CONFIG_HOME/git && nvims"
 alias fishc="cd $XDG_CONFIG_HOME/fish && nvims"
 alias x11c="cd $XDG_CONFIG_HOME/x11/ && nvims"
-alias hlwmc="cd $XDG_CONFIG_HOME/herbstluftwm/ && nvims"
+alias gitc="nvim $XDG_CONFIG_HOME/git/config $XDG_CONFIG_HOME/git/.gitconfig"
+alias lazybarc="nvim $XDG_CONFIG_HOME/lazybar/config.toml"
+alias hlwmc="nvim $XDG_CONFIG_HOME/herbstluftwm/autostart"
 alias tmuxc="cd $XDG_CONFIG_HOME/tmux/ && nvims"
 alias bins="cd ~/.local/bin && nvims"
 alias notes="cd ~/files/docs/notes && nvims"
 alias boots="cd /boot && nvimses"
 alias gtkc='nvim $XDG_CONFIG_HOME/gtk-2.0/gtkrc $XDG_CONFIG_HOME/gtk-3.0/settings.ini $XDG_CONFIG_HOME/gtk-4.0/settings.ini'
+alias qtc='nvim $XDG_CONFIG_HOME/qt5ct/qt5ct.conf $XDG_CONFIG_HOME/qt6ct/qt6ct.conf'
+alias dunstc='nvim $XDG_CONFIG_HOME/dunst/dunstrc'
 
 # alias gtk_inspect='GTK_DEBUG=interactive '
 

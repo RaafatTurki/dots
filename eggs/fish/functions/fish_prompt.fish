@@ -40,16 +40,16 @@ function fish_prompt
   end
 
   # git branch
-  if [ (_git_branch_name) ]
-    set -l git_branch (_git_branch_name)
-    set -l git_branch "$red$git_branch"
-
-    if [ (_is_git_dirty) ]
-      set git_dirty "$normal •"
-    end
-
-    set git_info "$git_branch$git_dirty "
-  end
+  # if [ (_git_branch_name) ]
+  #   set -l git_branch (_git_branch_name)
+  #   set -l git_branch "$red$git_branch"
+  #
+  #   if [ (_is_git_dirty) ]
+  #     set git_dirty "$normal •"
+  #   end
+  #
+  #   set git_info "$git_branch$git_dirty "
+  # end
 
   # exit codes
   if test $last_status != 0

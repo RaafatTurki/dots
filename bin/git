@@ -1,0 +1,5 @@
+#!/bin/env bash
+
+notify-send "yolk is gitting"
+
+PATH=/usr/bin yolk git "$@"
